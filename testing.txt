@@ -1,3 +1,6 @@
+
+now I changing it via notepad and push it back via github on desktop
+
 This is a testing file
 bla
 bla
@@ -5,5 +8,7 @@ bla
 ~
 ~
 ~
-~
-~
+
+
+And now I chack when github on desktop show me the changes I have made.
+It is show immidiatlly.
