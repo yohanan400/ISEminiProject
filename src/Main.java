@@ -1,2 +1,2 @@
-public class Main {bjkbi
+public class Main {bji
 }
