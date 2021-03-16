@@ -20,11 +20,11 @@ public final class Coordinate {
      * Coordinate constructor receiving a coordinate value
      *
      * @param coord coordinate value
-     */
-    public Coordinate(double coord) {
+*/    public Coordinate(double coord) {
         // if it too close to zero make it zero
         this.coord = alignZero(coord);
     }
+
 
     /*************** Admin *****************/
     @Override
@@ -35,6 +35,9 @@ public final class Coordinate {
         Coordinate other = (Coordinate)obj;
         return isZero(coord - other.coord);
     }
+
+
+
 
     @Override
     public String toString() {
