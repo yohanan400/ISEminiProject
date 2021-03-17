@@ -1,7 +1,7 @@
 package geometries;
 
-import primitives.Point3D;
-import primitives.Vector;
+import primitives.*;
+
 
 /**
  * Cylinder class representing a three-dimensional cylinder in 3D Cartesian coordinate
