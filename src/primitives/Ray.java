@@ -1,20 +1,40 @@
 package primitives;
 
+/**
+ * Ray class representing a ray.
+ */
+
 public class Ray {
 
     Point3D _p0;
     Vector _dir;
 
 
+    /**
+     * Ray c-tor receiving a Point3D and a Vector.
+     *
+     * @param p0  Point3D value
+     * @param dir Vector value
+     */
     public Ray(Point3D p0, Vector dir) {
         _p0 = p0;
-        _dir = dir.normalize();
+        _dir = dir.normalized();
     }
 
+    /**
+     * getP0 method return 'this' p0 Point3D.
+     *
+     * @return Point3D
+     */
     public Point3D getP0() {
         return _p0;
     }
 
+    /**
+     * getDir method return the 'this' dir Vector.
+     *
+     * @return Vector
+     */
     public Vector getDir() {
         return _dir;
     }

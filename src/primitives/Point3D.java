@@ -2,38 +2,55 @@ package primitives;
 
 import java.lang.Math;
 
+/**
+ * class Point3D representing a point in 3 domination
+ */
+
 public class Point3D {
 
     final Coordinate _x;
     final Coordinate _y;
     final Coordinate _z;
 
-    static Point3D ZERO = new Point3D(0.0d, 0.0d, 0.0d);
+    public static Point3D ZERO = new Point3D(0.0d, 0.0d, 0.0d);
 
-
-    public Point3D(Coordinate x, Coordinate y, Coordinate z) {
-        _x = new Coordinate(x.coord);
-        _y = new Coordinate(y.coord);
-        _z = new Coordinate(z.coord);
-    }
-
+    /**
+     * Point3D c-tor receiving 3 double values
+     *
+     * @param x double value
+     * @param y double value
+     * @param z double value
+     */
     public Point3D(double x, double y, double z) {
         _x = new Coordinate(x);
         _y = new Coordinate(y);
         _z = new Coordinate(z);
     }
 
-
+    /**
+     * subtract method return new Vector witch his coordinates is the subtract of the
+     * receiving point's coordinates from 'this' point's coordinates.
+     *
+     * @param point Point3D value
+     * @return Vector value
+     */
     public Vector subtract(Point3D point) {
 
-        Point3D newPoint = new Point3D(point._x.coord - _x.coord,
-                point._y.coord - _y.coord,
-                point._z.coord - _z.coord);
+        Point3D newPoint = new Point3D(_x.coord - point._x.coord,
+                _y.coord - point._y.coord,
+                _z.coord - point._z.coord);
 
         return new Vector(newPoint);
     }
 
 
+    /**
+     * add method return new Poind3D witch his coordinates is the sum of the
+     * receiving vector's coordinates and 'this' point's coordinates.
+     *
+     * @param vector Vector value
+     * @return Point3D value
+     */
     public Point3D add(Vector vector) {
 
         Point3D newPoint = new Point3D(_x.coord + vector._head._x.coord,
@@ -43,7 +60,12 @@ public class Point3D {
         return newPoint;
     }
 
-
+    /**
+     * distanceSquared method return the distance between 2 points power 2.
+     *
+     * @param point Point3D value
+     * @return double value
+     */
     public double distanceSquared(Point3D point) {
 
         double distanceX = (_x.coord - point._x.coord),
@@ -57,7 +79,13 @@ public class Point3D {
         return distance;
     }
 
-    public double distance (Point3D point){
+    /**
+     * distanceSquared method return the distance between 2 points.
+     *
+     * @param point Point3D value
+     * @return double value
+     */
+    public double distance(Point3D point) {
 
         return Math.sqrt(distanceSquared(point));
 
