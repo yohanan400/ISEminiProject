@@ -10,7 +10,7 @@ public abstract class Util {
     private static final int ACCURACY = -40;
 
     /**
-     * Empty private ctor to hide the public one
+     * Empty private c-tor to hide the public one
      */
     private Util() {
     }

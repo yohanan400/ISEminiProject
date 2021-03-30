@@ -14,6 +14,7 @@ public class Plane implements Geometry {
 
     /**
      * plane c-tor receiving 3 Point3D values
+     * and calculate the normal of the plane
      *
      * @param p0 Point3D value
      * @param p1 Point3D value
@@ -21,7 +22,9 @@ public class Plane implements Geometry {
      */
     public Plane(Point3D p0, Point3D p1, Point3D p2) {
         _p0 = p0;
-        _normal = new Vector(null);
+        Vector v1 = new Vector(p1.subtract(p0).getHead());
+        Vector v2 = new Vector(p2.subtract(p0).getHead());
+        _normal = new Vector(v1.crossProduct(v2).normalize().getHead());
     }
 
     /**
