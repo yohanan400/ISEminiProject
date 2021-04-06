@@ -1,6 +1,8 @@
 package geometries;
 
-import primitives.*;
+import primitives.Point3D;
+import primitives.Ray;
+import primitives.Vector;
 
 
 /**
@@ -33,10 +35,32 @@ public class Cylinder extends Tube {
     }
 
 
+    /**
+     * getNormal method return the normal vector of the cylinder
+     *
+     * @param point Point3D value
+     * @return return the normal of cylinder (Vector value)
+     */
     @Override
     public Vector getNormal(Point3D point) {
 
-        return null;
+        // if the point is the center base
+        if (point.equals(_axisRay.getP0()) || point.equals(_axisRay.getP0().add(_axisRay.getDir().scale(_height)))) {
+            return _axisRay.getDir();
+        }
+
+        double projection = _axisRay.getDir().dotProduct(point.subtract(_axisRay.getP0()));
+        //if the point is on the bases but not the center point
+        if (projection == 0) {
+            Vector v1 = point.subtract(_axisRay.getP0());
+            return v1.normalize();
+        }
+
+        //if the point is on the side of the cylinder
+        Point3D center = _axisRay.getP0().add(_axisRay.getDir().scale(projection));
+        Vector v = point.subtract(center);
+        return v.normalize();
+
     }
 
 
