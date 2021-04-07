@@ -27,6 +27,18 @@ public class Point3D {
         _z = new Coordinate(z);
     }
 
+    public double getX() {
+        return _x.coord;
+    }
+
+    public double getY() {
+        return _y.coord;
+    }
+
+    public double getZ() {
+        return _z.coord;
+    }
+
     /**
      * subtract method return new Vector witch his coordinates is the subtract of the
      * receiving point's coordinates from 'this' point's coordinates.

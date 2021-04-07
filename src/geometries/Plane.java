@@ -1,7 +1,10 @@
 package geometries;
 
 import primitives.Point3D;
+import primitives.Ray;
 import primitives.Vector;
+
+import java.util.List;
 
 /**
  * Plane class representing a two-dimensional plane in 3D Cartesian coordinate
@@ -62,11 +65,15 @@ public class Plane implements Geometry {
     }
 
     @Override
+    public List<Point3D> findIntsersections(Ray ray) {
+        return null;
+    }
+
+    @Override
     public String toString() {
         return "Plane{" +
                 "p0=" + _p0 +
                 ", normal=" + _normal +
                 '}';
     }
-
 }

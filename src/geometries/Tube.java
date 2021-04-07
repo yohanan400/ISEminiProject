@@ -2,6 +2,8 @@ package geometries;
 
 import primitives.*;
 
+import java.util.List;
+
 /**
  * Tube class representing three-dimensional tube in 3D Cartesian coordinate
  * system
@@ -69,10 +71,17 @@ public class Tube implements Geometry {
     }
 
     @Override
+    public List<Point3D> findIntsersections(Ray ray) {
+        return null;
+    }
+
+    @Override
     public String toString() {
         return "Tube{" +
                 "_axisRay=" + _axisRay +
                 ", _radius=" + _radius +
                 '}';
     }
+
+
 }

@@ -4,6 +4,8 @@ import primitives.Point3D;
 import primitives.Ray;
 import primitives.Vector;
 
+import java.util.List;
+
 
 /**
  * Cylinder class representing a three-dimensional cylinder in 3D Cartesian coordinate
@@ -63,6 +65,10 @@ public class Cylinder extends Tube {
 
     }
 
+    @Override
+    public List<Point3D> findIntsersections(Ray ray) {
+        return null;
+    }
 
     @Override
     public boolean equals(Object o) {
