@@ -22,7 +22,7 @@ public class Triangle extends Polygon {
 
 
     @Override
-    public List<Point3D> findIntsersections(Ray ray) {
+    public List<Point3D> findIntersections(Ray ray) {
         return null;
     }
 

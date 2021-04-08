@@ -6,6 +6,8 @@ import primitives.Vector;
 
 import java.util.List;
 
+import static primitives.Util.isZero;
+
 /**
  * Plane class representing a two-dimensional plane in 3D Cartesian coordinate
  * system
@@ -64,9 +66,42 @@ public class Plane implements Geometry {
         return _normal;
     }
 
+
+    /**
+     * find the intersections
+     *
+     * @param ray light ray
+     * @return List of intersections
+     */
     @Override
-    public List<Point3D> findIntsersections(Ray ray) {
-        return null;
+    public List<Point3D> findIntersections(Ray ray) {
+
+        if (_p0.equals(ray.getP0())) {
+            return null;
+        }
+
+        double numerator = (double) _normal.dotProduct(_p0.subtract(ray.getP0()));
+        double denominator = (double) _normal.dotProduct(ray.getDir());
+
+        //if the numerator equal to 0, the starting point is at the plane
+        // if the denominator equal to 0, denominator can't be equal to 0
+        if (isZero(numerator) || isZero(denominator)) {
+            return null;
+        }
+
+        double t = numerator / denominator;
+
+        // if t<0, the starting point after the plane
+        if (t < 0) {
+            return null;
+        }
+
+        // the intersection point
+        Point3D p = new Point3D(ray.getP0().add(ray.getDir().scale(t)).getX(),
+                ray.getP0().add(ray.getDir().scale(t)).getY(),
+                ray.getP0().add(ray.getDir().scale(t)).getZ());
+
+        return List.of(p);
     }
 
     @Override

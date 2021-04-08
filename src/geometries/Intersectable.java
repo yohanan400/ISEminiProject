@@ -16,5 +16,5 @@ public interface Intersectable {
      * @param ray light ray
      * @return List of all the intersections between the shape and the ray (List type)
      */
-    List<Point3D> findIntsersections(Ray ray);
+    List<Point3D> findIntersections(Ray ray);
 }
