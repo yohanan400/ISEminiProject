@@ -63,29 +63,36 @@ public class Sphere implements Geometry {
         Point3D O = _center;
         Vector V = ray.getDir();
 
+        // if p0 on the center, calculate with line parametric representation
+        // the direction vector normalized
+        if (O.equals(p0)) {
+            Point3D newPoint = p0.add(ray.getDir().scale(_radius));
+            return List.of(new Point3D(newPoint.getX(), newPoint.getY(), newPoint.getZ()));
+        }
+
         Vector U = O.subtract(p0);
         double tm = V.dotProduct(U);
-        double d = Math.sqrt(U.lengthSquared() - tm*tm);
-        if (d>= _radius){
+        double d = Math.sqrt(U.lengthSquared() - tm * tm);
+        if (d >= _radius) {
             return null;
         }
 
-        double th = Math.sqrt(_radius*_radius - d*d);
-        double t1 = tm-th;
-        double t2 = tm+th;
+        double th = Math.sqrt(_radius * _radius - d * d);
+        double t1 = tm - th;
+        double t2 = tm + th;
 
-        if (t1> 0 && t2>0){
+        if (t1 > 0 && t2 > 0) {
             Point3D p1 = p0.add(V.scale(t1));
             Point3D p2 = p0.add(V.scale(t2));
-            return List.of(p1,p2);
+            return List.of(p1, p2);
         }
 
-        if (t1>0){
+        if (t1 > 0) {
             Point3D p1 = p0.add(V.scale(t1));
             return List.of(p1);
         }
 
-        if (t2>0){
+        if (t2 > 0) {
             Point3D p2 = p0.add(V.scale(t2));
             return List.of(p2);
         }

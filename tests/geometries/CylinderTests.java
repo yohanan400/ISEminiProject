@@ -38,6 +38,5 @@ class CylinderTests {
         assertEquals(cy._axisRay.getDir(), cy.getNormal(new Point3D(0,0,10)),
                 "Bad normal to second base center of the cylinder");
 
-
     }
 }
