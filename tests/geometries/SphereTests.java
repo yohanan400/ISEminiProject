@@ -75,13 +75,27 @@ class SphereTests {
                 "Ray starts before the sphere and need to be 2 intersections");
 
         // TC14: Ray starts at sphere and goes inside (1 points)
+        assertEquals(List.of(new Point3D(2, 0, 0)),
+                sphere.findIntersections(new Ray(new Point3D(0, 0, 0), new Vector(1, 0, 0))),
+                "Ray starts at sphere and goes inside");
+
         // TC15: Ray starts inside (1 points)
+        assertEquals(List.of(new Point3D(2, 0, 0)),
+                sphere.findIntersections(new Ray(new Point3D(0.5, 0, 0), new Vector(1, 0, 0))),
+                "Ray starts inside ");
+
         // TC16: Ray starts at the center (1 points)
+        assertEquals(List.of(new Point3D(2, 0, 0)),
+                sphere.findIntersections(new Ray(new Point3D(1, 0, 0), new Vector(0.5, 0, 0))),
+                "Ray starts at the center ");
+
         // TC17: Ray starts at sphere and goes outside (0 points)
         assertNull(sphere.findIntersections(new Ray(new Point3D(2, 0, 0), new Vector(1, 0, 0))),
                 "Ray starts at sphere and goes outside");
 
         // TC18: Ray starts after sphere (0 points)
+        assertNull(sphere.findIntersections(new Ray(new Point3D(3, 0, 0), new Vector(1, 0, 0))),
+                "Ray starts after sphere");
 
         // **** Group: Ray's line is tangent to the sphere (all tests 0 points)
         // TC19: Ray starts before the tangent point
@@ -91,9 +105,11 @@ class SphereTests {
         assertNull(sphere.findIntersections(new Ray(new Point3D(2, 0, 0), new Vector(0, 1, 1))),
                 "Ray starts at the tangent point");
         // TC21: Ray starts after the tangent point
-
+        assertNull(sphere.findIntersections(new Ray(new Point3D(2, 2, 2), new Vector(0, 1, 1))),
+                "Ray starts after the tangent point");
         // **** Group: Special cases
         // TC19: Ray's line is outside, ray is orthogonal to ray start to sphere's center line
-
+        assertNull(sphere.findIntersections(new Ray(new Point3D(3, 0, 0), new Vector(0, 0, 1))),
+                "Ray starts after the tangent point");
     }
 }
