@@ -6,6 +6,7 @@ import primitives.Vector;
 
 import java.util.List;
 
+import static primitives.Util.alignZero;
 import static primitives.Util.isZero;
 
 /**
@@ -85,11 +86,11 @@ public class Plane implements Geometry {
 
         //if the numerator equal to 0, the starting point is at the plane
         // if the denominator equal to 0, denominator can't be equal to 0
-        if (isZero(numerator) || isZero(denominator)) {
+            if (isZero(numerator) || isZero(denominator)) {
             return null;
         }
 
-        double t = numerator / denominator;
+        double t = alignZero(numerator / denominator);
 
         // if t<0, the starting point after the plane
         if (t < 0) {

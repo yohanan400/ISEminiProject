@@ -39,6 +39,16 @@ public class Ray {
         return _dir;
     }
 
+
+    /**
+     * Calculate points on the ray
+     * @param t is distance from the ray origin p0 to some point on the ray
+     * @return point on the ray
+     */
+    public Point3D getPoint (double t){
+        return _p0.add(_dir.scale(t));
+    }
+
     @Override
     public String toString() {
         return "Ray{" +
