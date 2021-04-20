@@ -23,7 +23,12 @@ public class Triangle extends Polygon {
         super(vertices);
     }
 
-
+    /**
+     * find the intersections
+     *
+     * @param ray light ray
+     * @return List of intersections
+     */
     @Override
     public List<Point3D> findIntersections(Ray ray) {
 

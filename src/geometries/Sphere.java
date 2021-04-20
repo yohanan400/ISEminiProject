@@ -57,6 +57,13 @@ public class Sphere implements Geometry {
         return v.normalize();
     }
 
+
+    /**
+     * find the intersections
+     *
+     * @param ray light ray
+     * @return List of intersections
+     */
     @Override
     public List<Point3D> findIntersections(Ray ray) {
         Point3D p0 = ray.getP0();
