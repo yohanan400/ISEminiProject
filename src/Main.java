@@ -7,10 +7,11 @@
  * @email yohananyakir@gmail.com
  */
 
-import primitives.*;
+import primitives.Point3D;
+import primitives.Vector;
 
 import static java.lang.System.out;
-import static primitives.Util.*;
+import static primitives.Util.isZero;
 
 /**
  * Test program for the 1st stage
@@ -18,6 +19,7 @@ import static primitives.Util.*;
  * @author Dan Zilberstein
  */
 public final class Main {
+
 
     /**
      * Main program to tests initial functionality of the 1st stage

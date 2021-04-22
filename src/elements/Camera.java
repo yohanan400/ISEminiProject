@@ -27,11 +27,11 @@ public class Camera {
         if (!isZero(vUp.dotProduct(vTo)))
             throw new IllegalArgumentException("The received vectors are not orthogonal");
 
-        _p0 = new Point3D(p0.getX(), p0.getY(), p0.getZ());
-        _vUp = new Vector(vUp.getHead()).normalize();
-        _vTo = new Vector(vTo.getHead()).normalize();
+        _p0 =p0;
+        _vUp = vUp.normalized();
+        _vTo = vTo.normalized();
 
-        _vRight = new Vector(vTo.crossProduct(vUp).getHead()).normalize();
+        _vRight = vTo.crossProduct(vUp).normalize();
     }
 
     /**
