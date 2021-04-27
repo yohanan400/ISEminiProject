@@ -9,10 +9,10 @@ import java.util.MissingResourceException;
 
 public class Render {
 
-    ImageWriter _imageWriter;
-    Scene _scene;
-    Camera _camera;
-    RayTracerBase _rayTracerBase;
+    ImageWriter _imageWriter = null;
+    Scene _scene = null;
+    Camera _camera = null;
+    RayTracerBase _rayTracerBase = null;
 
     public Render setImageWriter(ImageWriter imageWriter) {
         _imageWriter = imageWriter;
@@ -37,31 +37,35 @@ public class Render {
     }
 
     public void renderImage() {
-        if (_imageWriter == null) {
-            throw new MissingResourceException("Missing imageWriter", "ImageWriter", "String imageName/ int nX/ int nY");
-        }
+        try {
 
-        if (_scene == null) {
-            throw new MissingResourceException("Missing scene", "Scene", "String name");
-        }
-
-        if (_camera == null) {
-            throw new MissingResourceException("Missing camera", "Camera", "Point3D p0/ Vector vUp/ Vector vTo");
-        }
-
-        if (_rayTracerBase == null) {
-            throw new MissingResourceException("Missing rayTracerBase", "RayTracerBase", "Scene scene");
-        }
-        //throw new UnsupportedOperationException();
-
-        for (int i = 0; i< _imageWriter.getNx(); i++){
-            for (int j = 0; j< _imageWriter.getNy(); j++){
-                Ray ray = _camera.constructRayThroughPixel(_imageWriter.getNx(), _imageWriter.getNy(), j,i);
-                Color color = _rayTracerBase.traceRay(ray);
-                _imageWriter.writePixel(i,j,color);
+            if (_imageWriter == null) {
+                throw new MissingResourceException("Missing imageWriter", "ImageWriter", "String imageName/ int nX/ int nY");
             }
-        }
 
+            if (_scene == null) {
+                throw new MissingResourceException("Missing scene", "Scene", "String name");
+            }
+
+            if (_camera == null) {
+                throw new MissingResourceException("Missing camera", "Camera", "Point3D p0/ Vector vUp/ Vector vTo");
+            }
+
+            if (_rayTracerBase == null) {
+                throw new MissingResourceException("Missing rayTracerBase", "RayTracerBase", "Scene scene");
+            }
+            //throw new UnsupportedOperationException();
+
+            for (int i = 0; i < _imageWriter.getNy(); i++) {
+                for (int j = 0; j < _imageWriter.getNx(); j++) {
+                    Ray ray = _camera.constructRayThroughPixel(_imageWriter.getNx(), _imageWriter.getNy(), j, i);
+                    Color color = _rayTracerBase.traceRay(ray);
+                    _imageWriter.writePixel(j, i, color);
+                }
+            }
+        }catch (MissingResourceException e){
+            throw new UnsupportedOperationException("No implement yet:" + e.getClassName());
+        }
     }
 
     public void printGrid(int interval, Color color) {

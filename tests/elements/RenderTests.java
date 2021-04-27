@@ -15,7 +15,7 @@ import scene.Scene;
  * @author Dan
  */
 public class RenderTests {
-    private Camera camera = new Camera(Point3D.ZERO, new Vector(0, 0, -1), new Vector(0, 1, 0)) //
+    private Camera camera = new Camera(Point3D.ZERO, new Vector(0, 1, 0), new Vector(0, 0, -1)) //
             .setDistance(100) //
             .setViewPlaneSize(500, 500);
 
@@ -48,26 +48,26 @@ public class RenderTests {
         render.writeToImage();
     }
 
-    /**
-     * Test for XML based scene - for bonus
-     */
-    @Test
-    public void basicRenderXml() {
-        Scene scene = new Scene("XML Test scene");
-        // enter XML file name and parse from XML file into scene object
-        // ...
-
-        ImageWriter imageWriter = new ImageWriter("xml render test", 1000, 1000);
-        Render render = new Render() //
-                .setImageWriter(imageWriter) //
-                .setScene(scene) //
-                .setCamera(camera) //
-                .setRayTracerBase(new RayTracerBasic(scene));
-
-        render.renderImage();
-        render.printGrid(100, new Color(java.awt.Color.YELLOW));
-        render.writeToImage();
-    }
+//    /**
+//     * Test for XML based scene - for bonus
+//     */
+//    @Test
+//    public void basicRenderXml() {
+//        Scene scene = new Scene("XML Test scene");
+//        // enter XML file name and parse from XML file into scene object
+//        // ...
+//
+//        ImageWriter imageWriter = new ImageWriter("xml render test", 1000, 1000);
+//        Render render = new Render() //
+//                .setImageWriter(imageWriter) //
+//                .setScene(scene) //
+//                .setCamera(camera) //
+//                .setRayTracerBase(new RayTracerBasic(scene));
+//
+//        render.renderImage();
+//        render.printGrid(100, new Color(java.awt.Color.YELLOW));
+//        render.writeToImage();
+//    }
 
 
 }
