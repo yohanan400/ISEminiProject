@@ -13,7 +13,7 @@ import static primitives.Util.isZero;
  * Plane class representing a two-dimensional plane in 3D Cartesian coordinate
  * system
  */
-public class Plane implements Geometry {
+public class Plane extends Geometry {
 
     Point3D _p0;
     Vector _normal;

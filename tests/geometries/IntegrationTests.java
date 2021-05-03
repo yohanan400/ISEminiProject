@@ -1,3 +1,5 @@
+package geometries;
+
 import elements.Camera;
 import geometries.Intersectable;
 import geometries.Plane;

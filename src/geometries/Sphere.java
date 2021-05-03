@@ -10,7 +10,7 @@ import java.util.List;
  * Sphere class representing three-dimensional sphere in 3D Cartesian coordinate
  * system
  */
-public class Sphere implements Geometry {
+public class Sphere extends Geometry {
 
     Point3D _center;
     double _radius;
