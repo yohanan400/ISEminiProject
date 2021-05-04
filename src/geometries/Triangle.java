@@ -55,6 +55,18 @@ public class Triangle extends Polygon {
             return null;
     }
 
+    /**
+     * find the intersection point of the ray and the triangle
+     * @param ray The light ray
+     * @return GeoPoint with the triangle and the intersection point
+     */
+    public List<GeoPoint> findGeoIntersections(Ray ray){
+        List<Point3D> intersectionPoints = this.findIntersections(ray);
+        int numberOfIntersectionPoints = intersectionPoints.size();
+        if (numberOfIntersectionPoints == 0) return null;
+        return List.of(new GeoPoint(this, intersectionPoints.get(0)));
+    }
+
     @Override
     public String toString() {
         return "Triangle{" +

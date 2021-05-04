@@ -34,6 +34,10 @@ public class Scene {
         _geometries = new Geometries();
     }
 
+    /**
+     * Get the values of the scenes fields from .xml file
+     * @param fileName the .xml file name
+     */
     public void getSceneFieldsFromXML(String fileName){
 
         //get the file
@@ -110,6 +114,8 @@ public class Scene {
             }
 
             //collect planes
+            //work just with the Plane(Point3D p0, Vector normal) c-tor
+            //and not with public Plane(Point3D p0, Point3D p1, Point3D p2)
             NodeList planes = doc.getElementsByTagName("plane");
             for (int i = 0; i< planes.getLength(); i++){
                 Element planeElement = (Element) planes.item(i);

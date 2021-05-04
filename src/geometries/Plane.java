@@ -105,6 +105,18 @@ public class Plane extends Geometry {
         return List.of(p);
     }
 
+    /**
+     * find the intersection point of the ray and the plane
+     * @param ray The light ray
+     * @return GeoPoint with the plane and the intersection point
+     */
+    public List<GeoPoint> findGeoIntersections(Ray ray){
+        List<Point3D> intersectionPoints = this.findIntersections(ray);
+        int numberOfIntersectionPoints = intersectionPoints.size();
+        if (numberOfIntersectionPoints == 0) return null;
+        return List.of(new GeoPoint(this, intersectionPoints.get(0)));
+    }
+
     @Override
     public String toString() {
         return "Plane{" +

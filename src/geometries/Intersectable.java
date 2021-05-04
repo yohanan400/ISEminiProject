@@ -19,6 +19,12 @@ public interface Intersectable {
      */
     List<Point3D> findIntersections(Ray ray);
 
+    /**
+     * find geometries' intersections
+     * @param ray The light ray
+     * @return List of intersections points (List)
+     */
+    public List<GeoPoint> findGeoIntersections(Ray ray);
 
     /**
      * The class represent geometries points. (PDS)
@@ -30,16 +36,6 @@ public interface Intersectable {
         public GeoPoint(Geometry geometry, Point3D point) {
             this._geometry = geometry;
             this._point = point;
-        }
-
-        /**
-         * find geometries' intersections
-         * @param ray The light ray
-         * @return List of intersections points (List)
-         */
-        public List<GeoPoint> findGeoIntersections(Ray ray)
-        {
-            return new LinkedList<>();
         }
 
 

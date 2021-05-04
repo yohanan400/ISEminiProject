@@ -4,6 +4,7 @@ import primitives.Point3D;
 import primitives.Ray;
 import primitives.Vector;
 
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -91,7 +92,11 @@ public class Sphere extends Geometry {
         if (t1 > 0 && t2 > 0) {
             Point3D p1 = ray.getPoint(t1);
             Point3D p2 = ray.getPoint(t2);
-            return List.of(p1, p2);
+            // return the closest point first
+            if (p1.distance(ray.getP0()) <= p2.distance(ray.getP0()))
+                return List.of(p1, p2);
+            else
+                return List.of(p2, p1);
         }
 
         if (t1 > 0) {
@@ -105,6 +110,22 @@ public class Sphere extends Geometry {
         }
 
         return null;
+    }
+
+    /**
+     * find the first intersection point of the ray and the sphere
+     *
+     * @param ray The light ray
+     * @return GeoPoint with the sphere and the first intersection point
+     */
+    public List<GeoPoint> findGeoIntersections(Ray ray) {
+        List<Point3D> intersectionPoints = this.findIntersections(ray);
+        int numberOfIntersectionPoints = intersectionPoints.size();
+        if (numberOfIntersectionPoints == 0) return null;
+        if (numberOfIntersectionPoints == 1) return List.of(new GeoPoint(this, intersectionPoints.get(0)));
+        else return List.of(new GeoPoint(this, intersectionPoints.get(0)),
+                new GeoPoint(this, intersectionPoints.get(1))
+                );
     }
 
     @Override

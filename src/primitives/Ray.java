@@ -71,6 +71,11 @@ public class Ray {
         return _dir != null ? _dir.equals(ray._dir) : ray._dir == null;
     }
 
+    /**
+     * find the closest point to the ray
+     * @param point3DList list of points
+     * @return the closest point (Point3D value)
+     */
     public Point3D findClosestPoint(List<Point3D> point3DList) {
         if (point3DList.isEmpty())
             return null;
