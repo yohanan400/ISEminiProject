@@ -1,10 +1,19 @@
 package renderer;
 
+import elements.AmbientLight;
 import elements.Camera;
+import geometries.Sphere;
+import geometries.Triangle;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 import primitives.Color;
+import primitives.Point3D;
 import primitives.Ray;
 import scene.Scene;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import java.util.MissingResourceException;
 
 /**

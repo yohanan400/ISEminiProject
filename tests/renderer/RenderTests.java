@@ -59,86 +59,8 @@ public class RenderTests {
     @Test
     public void basicRenderXml() {
         Scene scene1 = new Scene("XML Test scene");
-        // This code is for the specific xml file from the moodle!
-        String docName = "basicRenderTestTwoColors.xml";
 
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        try {
-            DocumentBuilder builder = factory.newDocumentBuilder();
-            Document doc = builder.parse(docName);
-
-
-            //getting the background color
-            NodeList sceneNode = doc.getElementsByTagName("scene");
-            Element element =(Element) sceneNode.item(0);
-            String[] backgroundParams =  element.getAttribute("background-color").split(" ");
-            Color backgroundColor = new Color(Double.parseDouble(backgroundParams[0]) ,
-                    Double.parseDouble(backgroundParams[1]) ,
-                    Double.parseDouble(backgroundParams[2]));
-            scene1.setBackground(backgroundColor);
-
-
-            //getting the ambient light color
-           NodeList ambientlightNode = doc.getElementsByTagName("ambient-light");
-           Element ambientlightElement = (Element) ambientlightNode.item(0);
-            String[] ambientlightParams = ambientlightElement.getAttribute("color").split(" ");
-           Color ambientLightColor = new Color(Double.parseDouble(ambientlightParams[0]) ,
-                   Double.parseDouble(ambientlightParams[1]) ,
-                   Double.parseDouble(ambientlightParams[2]));
-            AmbientLight ambientLight = new AmbientLight(ambientLightColor, 1);
-            scene1.setAmbientLight(ambientLight);
-
-            // get the geometries
-            // sphere
-            NodeList spheres = doc.getElementsByTagName("sphere");
-            Element spheresElement = (Element) spheres.item(0);
-            String[] spheresCenter = spheresElement.getAttribute("center").split(" ");
-            String[] spheresRadius = spheresElement.getAttribute("radius").split(" ");
-            Point3D center = new Point3D(
-                    Double.parseDouble(spheresCenter[0]) ,
-                    Double.parseDouble(spheresCenter[1]) ,
-                    Double.parseDouble(spheresCenter[2])
-            );
-            Sphere sphere = new Sphere(center, Double.parseDouble(spheresRadius[0]));
-            scene1._geometries.add(sphere);
-
-            //triangles
-            NodeList triangles = doc.getElementsByTagName("triangle");
-            for (int i = 0; i< triangles.getLength(); i++) {
-                Element triangleElement = (Element) triangles.item(i);
-                String[] p0Arr = triangleElement.getAttribute("p0").split(" ");
-                String[] p1Arr = triangleElement.getAttribute("p1").split(" ");
-                String[] p2Arr = triangleElement.getAttribute("p2").split(" ");
-
-                Point3D p0 = new Point3D(
-                        Double.parseDouble(p0Arr[0]) ,
-                        Double.parseDouble(p0Arr[1]) ,
-                        Double.parseDouble(p0Arr[2])
-                );
-
-                Point3D p1 = new Point3D(
-                        Double.parseDouble(p1Arr[0]) ,
-                        Double.parseDouble(p1Arr[1]) ,
-                        Double.parseDouble(p1Arr[2])
-                );
-
-                Point3D p2 = new Point3D(
-                        Double.parseDouble(p2Arr[0]) ,
-                        Double.parseDouble(p2Arr[1]) ,
-                        Double.parseDouble(p2Arr[2])
-                );
-
-                Triangle triangle = new Triangle(p0, p1, p2);
-                scene1._geometries.add(triangle);
-
-            }
-
-        }catch (Exception e) {
-            System.out.println("busted");
-            e.printStackTrace();
-        }
-
-
+        scene1.getSceneFieldsFromXML("basicRenderTestTwoColors.xml");
         ImageWriter imageWriter = new ImageWriter("xml render test", 1000, 1000);
         Render render = new Render() //
                 .setImageWriter(imageWriter) //
