@@ -9,6 +9,11 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Testing Geometries Class
+ *
+ * @author Aviel buta and Yakir Yohanan
+ */
 class GeometriesTests {
 
     @Test

@@ -6,7 +6,9 @@ import static java.lang.System.out;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Unit tests for primitives.Point3D class
+ * Testing Point3D Class
+ *
+ * @author Aviel buta and Yakir Yohanan
  */
 class Point3DTest {
     Point3D p1 = new Point3D(1, 2,3);

@@ -3,24 +3,31 @@ package geometries;
 import primitives.Point3D;
 import primitives.Ray;
 
-
-import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Intersectable interface, to calculate all the intersections on the geometries shapes
+ *
+ * @author Aviel Buta and Yakir Yohanan
  */
 public interface Intersectable {
 
     /**
      * calculate the intersactions on the geometry shapes
+     *
      * @param ray light ray
      * @return List of all the intersections between the shape and the ray (List type)
      */
-    List<Point3D> findIntersections(Ray ray);
+    default List<Point3D> findIntersections(Ray ray) {
+        var geoList = findGeoIntersections(ray);
+        return geoList == null ? null
+                : geoList.stream().map(gp -> gp._point).collect(Collectors.toList());
+    }
 
     /**
      * find geometries' intersections
+     *
      * @param ray The light ray
      * @return List of intersections points (List)
      */
@@ -37,7 +44,6 @@ public interface Intersectable {
             this._geometry = geometry;
             this._point = point;
         }
-
 
         @Override
         public boolean equals(Object o) {

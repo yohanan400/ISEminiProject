@@ -12,6 +12,8 @@ import static primitives.Util.isZero;
 /**
  * Plane class representing a two-dimensional plane in 3D Cartesian coordinate
  * system
+ *
+ * @author Aviel Buta and Yakir Yohanan
  */
 public class Plane extends Geometry {
 
@@ -67,15 +69,14 @@ public class Plane extends Geometry {
         return _normal;
     }
 
-
     /**
-     * find the intersections
+     * find the intersection point of the ray and the plane
      *
-     * @param ray light ray
-     * @return List of intersections
+     * @param ray The light ray
+     * @return GeoPoint with the plane and the intersection point
      */
     @Override
-    public List<Point3D> findIntersections(Ray ray) {
+    public List<GeoPoint> findGeoIntersections(Ray ray) {
 
         if (_p0.equals(ray.getP0())) {
             return null;
@@ -86,7 +87,7 @@ public class Plane extends Geometry {
 
         //if the numerator equal to 0, the starting point is at the plane
         // if the denominator equal to 0, denominator can't be equal to 0
-            if (isZero(numerator) || isZero(denominator)) {
+        if (isZero(numerator) || isZero(denominator)) {
             return null;
         }
 
@@ -102,19 +103,7 @@ public class Plane extends Geometry {
                 ray.getP0().add(ray.getDir().scale(t)).getY(),
                 ray.getP0().add(ray.getDir().scale(t)).getZ());
 
-        return List.of(p);
-    }
-
-    /**
-     * find the intersection point of the ray and the plane
-     * @param ray The light ray
-     * @return GeoPoint with the plane and the intersection point
-     */
-    public List<GeoPoint> findGeoIntersections(Ray ray){
-        List<Point3D> intersectionPoints = this.findIntersections(ray);
-        int numberOfIntersectionPoints = intersectionPoints.size();
-        if (numberOfIntersectionPoints == 0) return null;
-        return List.of(new GeoPoint(this, intersectionPoints.get(0)));
+        return List.of(new GeoPoint(this, p));
     }
 
     @Override

@@ -6,6 +6,8 @@ import scene.Scene;
 
 /**
  * an abstract class responsible on the Ray tracer
+ *
+ * @author Aviel Buta and Yakir Yohanan
  */
 public abstract class RayTracerBase {
 

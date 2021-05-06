@@ -1,23 +1,16 @@
 package renderer;
 
-import elements.AmbientLight;
 import elements.Camera;
-import geometries.Sphere;
-import geometries.Triangle;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 import primitives.Color;
-import primitives.Point3D;
 import primitives.Ray;
 import scene.Scene;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import java.util.MissingResourceException;
 
 /**
  * Render class responsible to render the scene
+ *
+ * @author Aviel Buta and Yakir Yohanan
  */
 public class Render {
 
@@ -101,15 +94,16 @@ public class Render {
                     _imageWriter.writePixel(j, i, color);
                 }
             }
-        }catch (MissingResourceException e){ // if one of the objects are null then throw UnsupportedOperationException to the user
+        } catch (MissingResourceException e) { // if one of the objects are null then throw UnsupportedOperationException to the user
             throw new UnsupportedOperationException("No implement yet:" + e.getClassName());
         }
     }
 
     /**
      * print a grid on the image
+     *
      * @param interval the interval between all grid lines (int)
-     * @param color the color of the lines (Color)
+     * @param color    the color of the lines (Color)
      */
     public void printGrid(int interval, Color color) {
 
@@ -128,7 +122,7 @@ public class Render {
     /**
      * produce to the image
      */
-    public void writeToImage(){
+    public void writeToImage() {
         if (_imageWriter == null) {
             throw new MissingResourceException("Missing imageWriter", "ImageWriter", "String imageName/ int nX/ int nY");
         }

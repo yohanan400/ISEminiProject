@@ -10,7 +10,11 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-
+/**
+ * Testing Triangle Class
+ *
+ * @author Aviel buta and Yakir Yohanan
+ */
 class TriangleTests {
 
     @Test

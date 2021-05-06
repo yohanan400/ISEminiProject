@@ -4,6 +4,8 @@ import static primitives.Point3D.ZERO;
 
 /**
  * Vector class representing a vector.
+ *
+ * @author Aviel Buta and Yakir Yohanan
  */
 public class Vector {
 

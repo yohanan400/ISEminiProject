@@ -9,6 +9,11 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Testing Plane Class
+ *
+ * @author Aviel buta and Yakir Yohanan
+ */
 class PlaneTests {
 
 

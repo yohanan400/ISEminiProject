@@ -7,6 +7,11 @@ import primitives.Vector;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Testing Cylinder Class
+ *
+ * @author Aviel buta and Yakir Yohanan
+ */
 class CylinderTests {
 
     /**

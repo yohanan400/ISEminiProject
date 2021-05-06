@@ -1,6 +1,7 @@
 package scene;
 
 import elements.AmbientLight;
+import elements.LightSource;
 import geometries.Geometries;
 import geometries.Plane;
 import geometries.Sphere;
@@ -14,9 +15,13 @@ import primitives.Vector;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * combine all the attributes of the scene
+ *
+ * @author Aviel Buta and Yakir Yohanan
  */
 public class Scene {
 
@@ -24,6 +29,7 @@ public class Scene {
     public Color _background = Color.BLACK;
     public AmbientLight _ambientLight = new AmbientLight(_background, 0);
     public Geometries _geometries;
+    public List<LightSource> _lightSourceList = new LinkedList<LightSource>();
 
     /**
      * set the name and initialize the geometries list of the scene
@@ -158,6 +164,16 @@ public class Scene {
      */
     public Scene setAmbientLight(AmbientLight ambientLight) {
         _ambientLight = ambientLight;
+        return this;
+    }
+
+    /**
+     * set the light source list of the scene
+     * @param lightSourceList the light source list (List<LightSource>)
+     * @return the scene (Scene)
+     */
+    public Scene setLightSourceList(List<LightSource> lightSourceList) {
+        _lightSourceList = lightSourceList;
         return this;
     }
 }

@@ -163,6 +163,15 @@ public class Color {
     }
 
     /**
+     * add a scalar to the color object
+     * @param k the scalar to add
+     * @return new color object (Color)
+     */
+    public Color add(double k){
+        return new Color(r + k, g + k, b + k);
+    }
+
+    /**
      * Scale the color by (1 / reduction factor)
      *
      * @param k reduction factor

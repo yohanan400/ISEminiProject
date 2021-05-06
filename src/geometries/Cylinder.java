@@ -10,6 +10,8 @@ import java.util.List;
 /**
  * Cylinder class representing a three-dimensional cylinder in 3D Cartesian coordinate
  * system
+ *
+ * @author Aviel Buta and Yakir Yohanan
  */
 public class Cylinder extends Tube {
 

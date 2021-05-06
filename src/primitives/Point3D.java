@@ -4,6 +4,8 @@ import java.lang.Math;
 
 /**
  * class Point3D representing a point in 3 domination
+ *
+ * @author Aviel Buta and Yakir Yohanan
  */
 
 public class Point3D {

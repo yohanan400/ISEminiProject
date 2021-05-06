@@ -1,15 +1,17 @@
 package geometries;
 
+import org.jetbrains.annotations.NotNull;
 import primitives.Point3D;
 import primitives.Ray;
 import primitives.Vector;
 
-import java.util.LinkedList;
 import java.util.List;
 
 /**
  * Sphere class representing three-dimensional sphere in 3D Cartesian coordinate
  * system
+ *
+ * @author Aviel Buta and Yakir Yohanan
  */
 public class Sphere extends Geometry {
 
@@ -58,74 +60,51 @@ public class Sphere extends Geometry {
         return v.normalize();
     }
 
-
-    /**
-     * find the intersections
-     *
-     * @param ray light ray
-     * @return List of intersections
-     */
-    @Override
-    public List<Point3D> findIntersections(Ray ray) {
-        Point3D p0 = ray.getP0();
-        Point3D O = _center;
-        Vector V = ray.getDir();
-
-        // if p0 on the center, calculate with line parametric representation
-        // the direction vector normalized
-        if (O.equals(p0)) {
-            Point3D newPoint = p0.add(ray.getDir().scale(_radius));
-            return List.of(new Point3D(newPoint.getX(), newPoint.getY(), newPoint.getZ()));
-        }
-
-        Vector U = O.subtract(p0);
-        double tm = V.dotProduct(U);
-        double d = Math.sqrt(U.lengthSquared() - tm * tm);
-        if (d >= _radius) {
-            return null;
-        }
-
-        double th = Math.sqrt(_radius * _radius - d * d);
-        double t1 = tm - th;
-        double t2 = tm + th;
-
-        if (t1 > 0 && t2 > 0) {
-            Point3D p1 = ray.getPoint(t1);
-            Point3D p2 = ray.getPoint(t2);
-            // return the closest point first
-            if (p1.distance(ray.getP0()) <= p2.distance(ray.getP0()))
-                return List.of(p1, p2);
-            else
-                return List.of(p2, p1);
-        }
-
-        if (t1 > 0) {
-            Point3D p1 = ray.getPoint(t1);
-            return List.of(p1);
-        }
-
-        if (t2 > 0) {
-            Point3D p2 = ray.getPoint(t2);
-            return List.of(p2);
-        }
-
-        return null;
-    }
-
     /**
      * find the first intersection point of the ray and the sphere
-     *
      * @param ray The light ray
      * @return GeoPoint with the sphere and the first intersection point
      */
+    @Override
     public List<GeoPoint> findGeoIntersections(Ray ray) {
-        List<Point3D> intersectionPoints = this.findIntersections(ray);
-        int numberOfIntersectionPoints = intersectionPoints.size();
-        if (numberOfIntersectionPoints == 0) return null;
-        if (numberOfIntersectionPoints == 1) return List.of(new GeoPoint(this, intersectionPoints.get(0)));
-        else return List.of(new GeoPoint(this, intersectionPoints.get(0)),
-                new GeoPoint(this, intersectionPoints.get(1))
-                );
+
+            Point3D p0 = ray.getP0();
+            Point3D O = _center;
+            Vector V = ray.getDir();
+
+            // if p0 on the center, calculate with line parametric representation
+            // the direction vector normalized
+            if (O.equals(p0)) {
+                return List.of(new GeoPoint(this, p0.add(ray.getDir().scale(_radius))));
+            }
+
+            Vector U = O.subtract(p0);
+            double tm = V.dotProduct(U);
+            double d = Math.sqrt(U.lengthSquared() - tm * tm);
+            if (d >= _radius) {
+                return null;
+            }
+
+            double th = Math.sqrt(_radius * _radius - d * d);
+            double t1 = tm - th;
+            double t2 = tm + th;
+
+            if (t1 > 0 && t2 > 0) {
+                GeoPoint gp1 = new GeoPoint(this, ray.getPoint(t1));
+                GeoPoint gp2 = new GeoPoint(this, ray.getPoint(t2));
+                return List.of(gp1, gp2);
+            }
+
+            if (t1 > 0) {
+                GeoPoint gp1 = new GeoPoint(this, ray.getPoint(t1));
+                return List.of(gp1);
+            }
+
+            if (t2 > 0) {
+                GeoPoint gp2 = new GeoPoint(this, ray.getPoint(t2));
+                return List.of(gp2);
+            }
+            return null;
     }
 
     @Override

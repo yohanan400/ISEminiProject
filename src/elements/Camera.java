@@ -8,6 +8,8 @@ import static primitives.Util.isZero;
 
 /**
  * Camera class representing a camera in 3d space.
+ *
+ * @author Aviel Buta and Yakir Yohanan
  */
 public class Camera {
 

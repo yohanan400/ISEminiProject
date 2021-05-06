@@ -11,6 +11,8 @@ import static primitives.Util.alignZero;
 /**
  * Triangle class representing a two-dimensional Triangle in 3D Cartesian coordinate
  * system
+ *
+ * @author Aviel Buta and Yakir Yohanan
  */
 public class Triangle extends Polygon {
 
@@ -24,13 +26,13 @@ public class Triangle extends Polygon {
     }
 
     /**
-     * find the intersections
+     * find the intersection point of the ray and the triangle
      *
-     * @param ray light ray
-     * @return List of intersections
+     * @param ray The light ray
+     * @return GeoPoint with the triangle and the intersection point
      */
     @Override
-    public List<Point3D> findIntersections(Ray ray) {
+    public List<GeoPoint> findGeoIntersections(Ray ray) {
 
         //check if the ray intersect the plane
         if (plane.findIntersections(ray) == null) {
@@ -48,23 +50,11 @@ public class Triangle extends Polygon {
         Vector v = ray.getDir();
 
         if ((alignZero(v.dotProduct(n1)) > 0 && alignZero(v.dotProduct(n2)) > 0 && alignZero(v.dotProduct(n3)) > 0) ||
-                (alignZero(v.dotProduct(n1)) < 0 && alignZero(v.dotProduct(n2)) < 0 && alignZero(v.dotProduct(n3)) < 0)){
+                (alignZero(v.dotProduct(n1)) < 0 && alignZero(v.dotProduct(n2)) < 0 && alignZero(v.dotProduct(n3)) < 0)) {
 
-            return  plane.findIntersections(ray);
+            return List.of(new GeoPoint(this, plane.findGeoIntersections(ray).get(0)._point));
         }
-            return null;
-    }
-
-    /**
-     * find the intersection point of the ray and the triangle
-     * @param ray The light ray
-     * @return GeoPoint with the triangle and the intersection point
-     */
-    public List<GeoPoint> findGeoIntersections(Ray ray){
-        List<Point3D> intersectionPoints = this.findIntersections(ray);
-        int numberOfIntersectionPoints = intersectionPoints.size();
-        if (numberOfIntersectionPoints == 0) return null;
-        return List.of(new GeoPoint(this, intersectionPoints.get(0)));
+        return null;
     }
 
     @Override

@@ -7,6 +7,8 @@ import java.util.List;
 /**
  * Tube class representing three-dimensional tube in 3D Cartesian coordinate
  * system
+ *
+ * @author Aviel Buta and Yakir Yohanan
  */
 public class Tube extends Geometry {
 
@@ -72,6 +74,11 @@ public class Tube extends Geometry {
 
     @Override
     public List<Point3D> findIntersections(Ray ray) {
+        return null;
+    }
+
+    @Override
+    public List<GeoPoint> findGeoIntersections(Ray ray) {
         return null;
     }
 

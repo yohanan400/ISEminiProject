@@ -1,18 +1,15 @@
 package renderer;
 
 
-import elements.*;
-import geometries.*;
+import elements.AmbientLight;
+import elements.Camera;
+import geometries.Sphere;
+import geometries.Triangle;
 import org.junit.jupiter.api.Test;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-import primitives.*;
+import primitives.Color;
+import primitives.Point3D;
+import primitives.Vector;
 import scene.Scene;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 
 /**
  * Test rendering a basic image
@@ -78,7 +75,7 @@ public class RenderTests {
         Scene scene = new Scene("Test scene")//
                 .setAmbientLight(new AmbientLight(new Color(java.awt.Color.WHITE), 0.2)); //
 
-        scene._geometries.add(new Sphere(50, new Point3D(0, 0, -100)), //
+        scene._geometries.add(new Sphere(new Point3D(0, 0, -100), 50d), //
                 new Triangle(new Point3D(-100, 0, -100), new Point3D(0, 100, -100), new Point3D(-100, 100, -100))// up left
                         .setEmission(new Color(java.awt.Color.GREEN)),
                 new Triangle(new Point3D(100, 0, -100), new Point3D(0, 100, -100), new Point3D(100, 100, -100)), // up right
