@@ -24,7 +24,8 @@ public abstract class Geometry implements Intersectable {
     public abstract Vector getNormal(Point3D point);
 
     /**
-     * return the emmission of the object
+     * return the emission of the object
+     *
      * @return Color value
      */
     public Color getEmission() {
@@ -33,6 +34,7 @@ public abstract class Geometry implements Intersectable {
 
     /**
      * return the material of the geometry
+     *
      * @return the material of the geometry (Material)
      */
     public Material getMaterial() {
@@ -40,8 +42,9 @@ public abstract class Geometry implements Intersectable {
     }
 
     /**
-     * set the emmission of the object
-     * @param emission the emmission of the object
+     * set the emission of the object
+     *
+     * @param emission the emission of the object
      * @return this
      */
     public Geometry setEmission(Color emission) {
@@ -51,6 +54,7 @@ public abstract class Geometry implements Intersectable {
 
     /**
      * set the material of the geometry
+     *
      * @param material the material of the geometry (Material)
      * @return the geometry (Geometry)
      */

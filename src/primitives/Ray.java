@@ -112,8 +112,8 @@ public class Ray {
         int iterationIndex = 0;
 
         for (GeoPoint item : geoPointList) {
-            if (item._point.distance(getP0()) < minDistance) {
-                minDistance = item._point.distance(getP0());
+            if (item._point.distance(_p0) < minDistance) {
+                minDistance = item._point.distance(_p0);
                 indexOfElementWithClosestPoint = iterationIndex;
             }
             iterationIndex++;

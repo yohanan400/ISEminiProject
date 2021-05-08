@@ -14,7 +14,8 @@ public abstract class RayTracerBase {
     protected Scene _scene;
 
     /**
-     *  c-tor receive scene and set him in the variable
+     * c-tor receive scene and set him in the variable
+     *
      * @param scene scene (Scene)
      */
     public RayTracerBase(Scene scene) {
@@ -22,7 +23,8 @@ public abstract class RayTracerBase {
     }
 
     /**
-     *  method with trace the ray
+     * method with trace the ray
+     *
      * @param ray (Ray)
      * @return right color (Color)
      */

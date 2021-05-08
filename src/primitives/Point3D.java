@@ -1,7 +1,5 @@
 package primitives;
 
-import java.lang.Math;
-
 /**
  * class Point3D representing a point in 3 domination
  *

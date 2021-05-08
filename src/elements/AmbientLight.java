@@ -9,18 +9,18 @@ import primitives.Color;
  */
 public class AmbientLight extends Light {
 
-    private Color _iA;
-    private double _kA;
+    public AmbientLight() {
+        super(Color.BLACK);
+    }
+
     /**
-     *  c-tor calculate and return the intensity
+     * c-tor calculate and return the intensity
+     *
      * @param iA the light intensity on specific pixel/ point (Color)
      * @param kA the light intensity of the ambient light (double)
      */
-    public AmbientLight(Color iA,double kA ) {
+    public AmbientLight(Color iA, double kA) {
         super(iA.scale(kA));
-
-        _iA = new Color(iA);
-        _kA = kA;
     }
 
 }

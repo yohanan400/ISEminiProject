@@ -3,7 +3,6 @@ package renderer;
 import elements.Camera;
 import primitives.Color;
 import primitives.Ray;
-import scene.Scene;
 
 import java.util.MissingResourceException;
 
@@ -15,7 +14,6 @@ import java.util.MissingResourceException;
 public class Render {
 
     ImageWriter _imageWriter = null;
-    Scene _scene = null;
     Camera _camera = null;
     RayTracerBase _rayTracerBase = null;
 
@@ -28,18 +26,6 @@ public class Render {
     public Render setImageWriter(ImageWriter imageWriter) {
         _imageWriter = imageWriter;
         return this;
-    }
-
-    /**
-     * set the scene object
-     *
-     * @param scene the scene object (Scene)
-     * @return The current render object (Render)
-     */
-    public Render setScene(Scene scene) {
-        _scene = scene;
-        return this;
-
     }
 
     /**
@@ -73,10 +59,6 @@ public class Render {
 
             if (_imageWriter == null) {
                 throw new MissingResourceException("Missing imageWriter", "ImageWriter", "String imageName/ int nX/ int nY");
-            }
-
-            if (_scene == null) {
-                throw new MissingResourceException("Missing scene", "Scene", "String name");
             }
 
             if (_camera == null) {

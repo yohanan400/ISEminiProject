@@ -1,13 +1,14 @@
 package primitives;
 
 public class Material {
-    public double kD =0, kS =0;
-    public int nShininess =0;
+    public double kD = 0, kS = 0;
+    public int nShininess = 0;
 
     /**
+     * Attenuation factor
      *
-     * @param kD
-     * @return
+     * @param kD Attenuation factor
+     * @return this
      */
     public Material setkD(double kD) {
         this.kD = kD;
@@ -15,9 +16,10 @@ public class Material {
     }
 
     /**
+     * Attenuation factor
      *
-     * @param kS
-     * @return
+     * @param kS Attenuation factor
+     * @return this
      */
     public Material setkS(double kS) {
         this.kS = kS;
@@ -26,6 +28,7 @@ public class Material {
 
     /**
      * set the shininess factor of the material
+     *
      * @param nShininess shininess factor of the material (int)
      * @return the material (Material)
      */

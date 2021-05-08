@@ -33,6 +33,7 @@ public class Scene {
 
     /**
      * set the name and initialize the geometries list of the scene
+     *
      * @param name the name of the scene (String)
      */
     public Scene(String name) {
@@ -42,9 +43,10 @@ public class Scene {
 
     /**
      * Get the values of the scenes fields from .xml file
+     *
      * @param fileName the .xml file name
      */
-    public void getSceneFieldsFromXML(String fileName){
+    public void getSceneFieldsFromXML(String fileName) {
 
         //get the file
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -54,10 +56,10 @@ public class Scene {
 
             //getting the background color
             NodeList sceneNode = doc.getElementsByTagName("scene");
-            Element element =(Element) sceneNode.item(0);
-            String[] backgroundParams =  element.getAttribute("background-color").split(" ");
-            Color backgroundColor = new Color(Double.parseDouble(backgroundParams[0]) ,
-                    Double.parseDouble(backgroundParams[1]) ,
+            Element element = (Element) sceneNode.item(0);
+            String[] backgroundParams = element.getAttribute("background-color").split(" ");
+            Color backgroundColor = new Color(Double.parseDouble(backgroundParams[0]),
+                    Double.parseDouble(backgroundParams[1]),
                     Double.parseDouble(backgroundParams[2]));
             this.setBackground(backgroundColor);
 
@@ -66,8 +68,8 @@ public class Scene {
             NodeList ambientlightNode = doc.getElementsByTagName("ambient-light");
             Element ambientlightElement = (Element) ambientlightNode.item(0);
             String[] ambientlightParams = ambientlightElement.getAttribute("color").split(" ");
-            Color ambientLightColor = new Color(Double.parseDouble(ambientlightParams[0]) ,
-                    Double.parseDouble(ambientlightParams[1]) ,
+            Color ambientLightColor = new Color(Double.parseDouble(ambientlightParams[0]),
+                    Double.parseDouble(ambientlightParams[1]),
                     Double.parseDouble(ambientlightParams[2]));
             AmbientLight ambientLight = new AmbientLight(ambientLightColor, 1);
             this.setAmbientLight(ambientLight);
@@ -90,27 +92,27 @@ public class Scene {
 
             //collect triangles
             NodeList triangles = doc.getElementsByTagName("triangle");
-            for (int i = 0; i< triangles.getLength(); i++) {
+            for (int i = 0; i < triangles.getLength(); i++) {
                 Element triangleElement = (Element) triangles.item(i);
                 String[] p0Arr = triangleElement.getAttribute("p0").split(" ");
                 String[] p1Arr = triangleElement.getAttribute("p1").split(" ");
                 String[] p2Arr = triangleElement.getAttribute("p2").split(" ");
 
                 Point3D p0 = new Point3D(
-                        Double.parseDouble(p0Arr[0]) ,
-                        Double.parseDouble(p0Arr[1]) ,
+                        Double.parseDouble(p0Arr[0]),
+                        Double.parseDouble(p0Arr[1]),
                         Double.parseDouble(p0Arr[2])
                 );
 
                 Point3D p1 = new Point3D(
-                        Double.parseDouble(p1Arr[0]) ,
-                        Double.parseDouble(p1Arr[1]) ,
+                        Double.parseDouble(p1Arr[0]),
+                        Double.parseDouble(p1Arr[1]),
                         Double.parseDouble(p1Arr[2])
                 );
 
                 Point3D p2 = new Point3D(
-                        Double.parseDouble(p2Arr[0]) ,
-                        Double.parseDouble(p2Arr[1]) ,
+                        Double.parseDouble(p2Arr[0]),
+                        Double.parseDouble(p2Arr[1]),
                         Double.parseDouble(p2Arr[2])
                 );
 
@@ -123,7 +125,7 @@ public class Scene {
             //work just with the Plane(Point3D p0, Vector normal) c-tor
             //and not with public Plane(Point3D p0, Point3D p1, Point3D p2)
             NodeList planes = doc.getElementsByTagName("plane");
-            for (int i = 0; i< planes.getLength(); i++){
+            for (int i = 0; i < planes.getLength(); i++) {
                 Element planeElement = (Element) planes.item(i);
                 String[] p0Arr = planeElement.getAttribute("p0").split(" ");
                 String[] normalArr = planeElement.getAttribute("normal").split(" ");
@@ -141,7 +143,7 @@ public class Scene {
                 _geometries.add(plane);
             }
 
-        }catch (Exception e) {
+        } catch (Exception e) {
             System.out.println("Something get wrong: ");
             e.printStackTrace();
         }
@@ -149,6 +151,7 @@ public class Scene {
 
     /**
      * set the background of the scene
+     *
      * @param background the background of the scene (Color)
      * @return The current scene (Scene)
      */
@@ -159,6 +162,7 @@ public class Scene {
 
     /**
      * set the ambient light of the scene
+     *
      * @param ambientLight the ambient light (AmbientLight)
      * @return The current scene (Scene)
      */
@@ -169,6 +173,7 @@ public class Scene {
 
     /**
      * set the light source list of the scene
+     *
      * @param lightSourceList the light source list (List<LightSource>)
      * @return the scene (Scene)
      */

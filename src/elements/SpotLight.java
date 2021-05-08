@@ -8,21 +8,18 @@ import primitives.Vector;
  * represent spot light
  */
 public class SpotLight extends PointLight {
-    private Vector _direction;
+    private final Vector _direction;
 
     /**
      * c-tor initialize all the fields
      *
      * @param intensity the intensity of the light
      * @param position  the position of the light
-     * @param kC
-     * @param kL
-     * @param kQ
      * @param direction the direction of the light
      */
-    public SpotLight(Color intensity, Point3D position, Vector direction, double kC, double kL, double kQ) {
-        super(intensity, position, kC, kL, kQ);
-        _direction = direction.normalize();
+    public SpotLight(Color intensity, Point3D position, Vector direction) {
+        super(intensity, position);
+        _direction = direction.normalized();
     }
 
     /**
@@ -44,6 +41,6 @@ public class SpotLight extends PointLight {
      */
     @Override
     public Vector getL(Point3D p) {
-        return _direction.getHead().subtract(p).normalize();
+        return super.getL(p);
     }
 }

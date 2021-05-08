@@ -9,10 +9,11 @@ import primitives.Vector;
  */
 public class DirectionalLight extends Light implements LightSource {
 
-    private Vector _direction;
+    private final Vector _direction;
 
     /**
      * c-tor initialize the intensity filed
+     *
      * @param intensity the intensity of the light
      * @param direction the direction of the light
      */
@@ -23,6 +24,7 @@ public class DirectionalLight extends Light implements LightSource {
 
     /**
      * get the intensity light on specific point
+     *
      * @param p the point on the object (Point3D)
      * @return the intensity (Color)
      */
@@ -33,11 +35,12 @@ public class DirectionalLight extends Light implements LightSource {
 
     /**
      * return the normalize direction vector from the light source to the object
+     *
      * @param p the point on the object (Point3D)
      * @return the normalize direction vector from the light source to the object (Vector)
      */
     @Override
     public Vector getL(Point3D p) {
-        return _direction;
+        return _direction.normalize();
     }
 }

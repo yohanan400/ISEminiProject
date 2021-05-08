@@ -17,8 +17,10 @@ public interface LightSource {
     public Color getIntensity(Point3D p);
 
     /**
-     * @param p
-     * @return
+     * return the normalize direction vector from the light source to the object
+     *
+     * @param p the position point (Point3D)
+     * @return the normalized vector (Vector)
      */
     public Vector getL(Point3D p);
 
