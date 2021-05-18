@@ -9,7 +9,6 @@ import primitives.Vector;
  */
 public class SpotLight extends PointLight {
     private final Vector _direction;
-    private double narrowness = 0d;
 
     /**
      * c-tor initialize all the fields
