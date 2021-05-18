@@ -6,11 +6,14 @@ import primitives.Vector;
 
 /**
  * represent point light
+ *
+ * @author Aviel Buta and Yakir Yohanan
  */
 public class PointLight extends Light implements LightSource {
 
     private Point3D _position;
     private double kC = 1d, kL = 0d, kQ = 0d;
+
 
     /**
      * c-tor initialize all the fields
@@ -47,23 +50,50 @@ public class PointLight extends Light implements LightSource {
         return p.subtract(_position).normalize();
     }
 
-    public void setPosition(Point3D position) {
+    /**
+     * Set the position point (the source light position)
+     *
+     * @param position The position point
+     * @return this (PointLight)
+     */
+    public PointLight setPosition(Point3D position) {
         _position = position;
+        return this;
     }
 
+    /**
+     * Set the specular attenuation factor
+     *
+     * @param kC The specular attenuation factor
+     * @return this (PointLight)
+     */
     public PointLight setkC(double kC) {
         this.kC = kC;
         return this;
     }
 
+    /**
+     * Set the light source attenuation factor
+     *
+     * @param kL The light source attenuation factor
+     * @return this (PointLight)
+     */
     public PointLight setkL(double kL) {
         this.kL = kL;
         return this;
 
     }
 
+    /**
+     * Attenuation factor
+     *
+     * @param kQ the attenuation factor
+     * @return this (PointLight)
+     */
     public PointLight setkQ(double kQ) {
         this.kQ = kQ;
         return this;
     }
+
+
 }

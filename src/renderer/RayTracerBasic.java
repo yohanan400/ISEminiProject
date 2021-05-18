@@ -38,12 +38,26 @@ public class RayTracerBasic extends RayTracerBase {
         return calcColor(p, ray);
     }
 
+    /**
+     * calculate the color on specific point on the object
+     *
+     * @param geoPoint The object with the closest intersection point with the object
+     * @param ray      The intersect ray
+     * @return The color on the point
+     */
     private Color calcColor(GeoPoint geoPoint, Ray ray) {
         Color ambientLightIntensity = _scene._ambientLight.getIntensity();
         Color EmissionColor = geoPoint._geometry.getEmission();
         return ambientLightIntensity.add(EmissionColor).add(calcLocalEffects(geoPoint, ray));
     }
 
+    /**
+     * calculate the diffuse and the specular on the object
+     *
+     * @param intersection The object with the closest intersection point with the object
+     * @param ray          The intersect ray
+     * @return The diffuse and the specular on the object
+     */
     private Color calcLocalEffects(GeoPoint intersection, Ray ray) {
         Vector v = ray.getDir();
         Vector n = intersection._geometry.getNormal(intersection._point);
@@ -64,24 +78,42 @@ public class RayTracerBasic extends RayTracerBase {
             if (nl * nv > 0) {
                 // sign(nl) == sing(nv)
                 Color lightIntensity = lightSource.getIntensity(intersection._point);
-                color = color.add(calcDiffusive(kd, l, n, lightIntensity), calcSpecular(ks, l, n, v, nShininess, lightIntensity));
+                color = color.add(calcDiffusive(kd, l, n, lightIntensity, nl), calcSpecular(ks, l, n, v, nShininess, lightIntensity, nl));
             }
         }
         return color;
     }
 
-    private Color calcDiffusive(double kD, Vector l, Vector n, Color lightIntensity) {
-        Color diffuse = lightIntensity.scale(kD * Math.abs(l.dotProduct(n)));
+    /**
+     * calculate the diffuse on the object
+     *
+     * @param kD             Diffuse attenuation factor
+     * @param l              The normalized vector from the position point to attached point
+     * @param n              The normal vector to the object
+     * @param lightIntensity The light intensity
+     * @return The diffuse on the object (Color)
+     */
+    private Color calcDiffusive(double kD, Vector l, Vector n, Color lightIntensity, double nl) {
+        Color diffuse = lightIntensity.scale(kD * Math.abs(nl));
         return diffuse;
     }
 
-    private Color calcSpecular(double kS, Vector l, Vector n, Vector v, int nShininess, Color lightIntensity) {
-        Vector r = l.subtract(n.scale(l.dotProduct(n)).scale(2));
+    /**
+     * calculate the specular on the object
+     *
+     * @param kS             Specular attenuation factor
+     * @param l              The normalized vector from the position point to attached point
+     * @param n              The normal vector to the object
+     * @param v              The direction vector from the camera
+     * @param nShininess     Shininess attenuation factor
+     * @param lightIntensity The light intensity
+     * @return
+     */
+    private Color calcSpecular(double kS, Vector l, Vector n, Vector v, int nShininess, Color lightIntensity, double nl) {
+        Vector r = l.subtract(n.scale(nl).scale(2));
         Color specular = lightIntensity.scale(kS * Math.pow(Math.max(0, v.scale(-1).dotProduct(r)), nShininess));
         return specular;
     }
-
-
 }
 
 

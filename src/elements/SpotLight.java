@@ -9,6 +9,7 @@ import primitives.Vector;
  */
 public class SpotLight extends PointLight {
     private final Vector _direction;
+    private double narrowness = 0d;
 
     /**
      * c-tor initialize all the fields
@@ -30,17 +31,42 @@ public class SpotLight extends PointLight {
      */
     @Override
     public Color getIntensity(Point3D p) {
-        return super.getIntensity(p).scale(Math.max(0, _direction.dotProduct(getL(p))));
+        double max = Math.max(0 , _direction.dotProduct(getL(p)));
+        return super.getIntensity(p).scale(max);
     }
 
     /**
-     * return the normalize direction vector from the light source to the object
+     * Set the specular attenuation factor
      *
-     * @param p the point on the object (Point3D)
-     * @return the normalize direction vector from the light source to the object (Vector)
+     * @param kC The specular attenuation factor
+     * @return this (SpotLight)
      */
     @Override
-    public Vector getL(Point3D p) {
-        return super.getL(p);
+    public SpotLight setkC(double kC) {
+        super.setkC(kC);
+        return this;
+    }
+
+    /**
+     * Set the light source attenuation factor
+     *
+     * @param kL The light source attenuation factor
+     * @return this (SpotLight)
+     */
+    @Override
+    public SpotLight setkL(double kL) {
+        super.setkL(kL);
+        return this;    }
+
+    /**
+     * Attenuation factor
+     *
+     * @param kQ the attenuation factor
+     * @return this (SpotLight)
+     */
+    @Override
+    public SpotLight setkQ(double kQ) {
+        super.setkQ(kQ);
+        return this;
     }
 }

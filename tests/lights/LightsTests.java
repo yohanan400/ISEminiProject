@@ -147,5 +147,57 @@ public class LightsTests {
         render.writeToImage();
     }
 
+    /**
+     * Produce a picture of a one sphere lighted by a directional light, PointLight and spot light.
+     */
+    @Test
+    public void sphereIntegrationTest (){
+        scene1._geometries.add(sphere);
+        DirectionalLight directionalLight = new DirectionalLight(new Color(500, 300, 0), new Vector(1, 1, -1));
+        PointLight pointLight = new PointLight(new Color(500, 300, 0), new Point3D(-300, 200, 100))//
+                .setkL(0.00001).setkQ(0.000001);
+        SpotLight spotLight = new SpotLight(new Color(500, 300, 0), new Point3D(250, 200, 100), new Vector(-1, -1, -1)) //
+                .setkL(0.0000001).setkQ(0.0000001);
+
+        scene1._lightSourceList.add(directionalLight);
+        scene1._lightSourceList.add(pointLight);
+        scene1._lightSourceList.add(spotLight);
+
+        ImageWriter imageWriter = new ImageWriter("sphereIntegrationTest", 500, 500);
+        Render render = new Render()//
+                .setImageWriter(imageWriter) //
+                .setCamera(camera1) //
+                .setRayTracerBase(new RayTracerBasic(scene1));
+        render.renderImage();
+        render.writeToImage();
+    }
+
+    /**
+     * Produce a picture of a two triangles lighted by a directional light, PointLight and spot light.
+     */
+    @Test
+    public void twoTrianglesIntegrationTest (){
+        scene2._geometries.add(triangle1.setMaterial(new Material().setkD(0.5).setkS(0.5).setnShininess(300)),
+                triangle2.setMaterial(new Material().setkD(0.5).setkS(0.5).setnShininess(300)));
+
+        DirectionalLight directionalLight = new DirectionalLight(new Color(250, 170, 170), new Vector(5, 1, -10));
+        PointLight pointLight = new PointLight(new Color(150, 150, 0), new Point3D(-11, 40, -80))//
+                .setkL(0.00000001).setkQ(0.00000001);
+        SpotLight spotLight = new SpotLight(new Color(250, 150, 0), new Point3D(10, -70, -130), new Vector(-1, -5, -7)) //
+                .setkL(0.0000001).setkQ(0.0000001);
+
+       scene2._lightSourceList.add(directionalLight);
+        scene2._lightSourceList.add(pointLight);
+        scene2._lightSourceList.add(spotLight);
+
+        ImageWriter imageWriter = new ImageWriter("twoTrianglesIntegrationTest", 500, 500);
+        Render render = new Render()//
+                .setImageWriter(imageWriter) //
+                .setCamera(camera2) //
+                .setRayTracerBase(new RayTracerBasic(scene2));
+        render.renderImage();
+        render.writeToImage();
+    }
+
 }
 

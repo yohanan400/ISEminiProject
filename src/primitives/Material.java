@@ -1,5 +1,11 @@
 package primitives;
 
+
+/**
+ * The class represent the material of the object
+ *
+ * @author Aviel Buta and Yakir Yohanan
+ */
 public class Material {
     public double kD = 0, kS = 0;
     public int nShininess = 0;
