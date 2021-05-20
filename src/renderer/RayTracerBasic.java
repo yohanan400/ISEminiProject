@@ -78,7 +78,7 @@ public class RayTracerBasic extends RayTracerBase {
             if (nl * nv > 0) {
                 // sign(nl) == sing(nv)
                 Color lightIntensity = lightSource.getIntensity(intersection._point);
-                color = color.add(calcDiffusive(kd, l, n, lightIntensity, nl), calcSpecular(ks, l, n, v, nShininess, lightIntensity, nl));
+                color = color.add(calcDiffusive(kd, lightIntensity, nl), calcSpecular(ks, l, n, v, nShininess, lightIntensity, nl));
             }
         }
         return color;
@@ -93,7 +93,7 @@ public class RayTracerBasic extends RayTracerBase {
      * @param lightIntensity The light intensity
      * @return The diffuse on the object (Color)
      */
-    private Color calcDiffusive(double kD, Vector l, Vector n, Color lightIntensity, double nl) {
+    private Color calcDiffusive(double kD, Color lightIntensity, double nl) {
         Color diffuse = lightIntensity.scale(kD * Math.abs(nl));
         return diffuse;
     }
