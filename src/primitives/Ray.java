@@ -13,6 +13,8 @@ public class Ray {
 
     Point3D _p0;
     Vector _dir;
+    private static final double DELTA = 0.1;
+
 
     /**
      * Ray c-tor receiving a Point3D and a Vector.
@@ -23,6 +25,27 @@ public class Ray {
     public Ray(Point3D p0, Vector dir) {
         _p0 = p0;
         _dir = dir.normalized();
+    }
+
+    /**
+     * c-tor calculate new ray with distance of -/+ DELTA
+     * @param head       the intersection point
+     * @param direction  the direction vector of the intersect ray
+     * @param normal     the normal to the point on the intersected object
+     */
+    public Ray(Point3D head, Vector direction, Vector normal){
+
+      //  double nd = Util.alignZero(normal.dotProduct(direction));
+
+        // if the dot product is equal to zero, then the light will not add any light intensity
+        //if (!Util.isZero(nd)){
+            //calculate the delta sign to move the starting point
+            Vector delta = normal.scale( normal.dotProduct(direction) > 0 ? DELTA : -DELTA);
+
+            // update the starting point
+            _p0 = head.add(delta);
+            _dir= direction.normalized();
+        //}
     }
 
     /**

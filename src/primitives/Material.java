@@ -11,7 +11,17 @@ public class Material {
     public int nShininess = 0;
 
     /**
-     * Attenuation factor
+     * Transparency factor
+     */
+    public double _kT = 0.0;
+
+    /**
+     * refraction factor
+     */
+    public double _kR = 0.0;
+
+    /**
+     * Attenuation factor of diffuse
      *
      * @param kD Attenuation factor
      * @return this
