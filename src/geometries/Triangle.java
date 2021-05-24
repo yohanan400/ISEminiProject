@@ -35,7 +35,7 @@ public class Triangle extends Polygon {
     public List<GeoPoint> findGeoIntersections(Ray ray) {
 
         //check if the ray intersect the plane
-        if (plane.findIntersections(ray) == null) {
+        if (plane.findGeoIntersections(ray) == null) {
             return null;
         }
 

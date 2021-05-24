@@ -11,7 +11,7 @@ import primitives.Vector;
  */
 public class PointLight extends Light implements LightSource {
 
-    private Point3D _position;
+    protected Point3D _position;
     private double kC = 1d, kL = 0d, kQ = 0d;
 
 
@@ -51,6 +51,16 @@ public class PointLight extends Light implements LightSource {
     }
 
     /**
+     * Calculate the distance between the light source and the receiving point
+     * @param point the point to calculate the distance to
+     * @return the distance between the light source and the receiving point
+     */
+    @Override
+    public double getDistance(Point3D point) {
+        return _position.distance(point);
+    }
+
+    /**
      * Set the position point (the source light position)
      *
      * @param position The position point
@@ -67,7 +77,7 @@ public class PointLight extends Light implements LightSource {
      * @param kC The specular attenuation factor
      * @return this (PointLight)
      */
-    public PointLight setkC(double kC) {
+    public PointLight setKc(double kC) {
         this.kC = kC;
         return this;
     }
@@ -78,7 +88,7 @@ public class PointLight extends Light implements LightSource {
      * @param kL The light source attenuation factor
      * @return this (PointLight)
      */
-    public PointLight setkL(double kL) {
+    public PointLight setKl(double kL) {
         this.kL = kL;
         return this;
 
@@ -90,7 +100,7 @@ public class PointLight extends Light implements LightSource {
      * @param kQ the attenuation factor
      * @return this (PointLight)
      */
-    public PointLight setkQ(double kQ) {
+    public PointLight setKq(double kQ) {
         this.kQ = kQ;
         return this;
     }

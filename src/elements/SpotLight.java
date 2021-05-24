@@ -35,14 +35,24 @@ public class SpotLight extends PointLight {
     }
 
     /**
+     * Calculate the distance between the light source and the receiving point
+     * @param point the point to calculate the distance to
+     * @return the distance between the light source and the receiving point
+     */
+    @Override
+    public double getDistance(Point3D point) {
+        return _position.distance(point);
+    }
+
+    /**
      * Set the specular attenuation factor
      *
      * @param kC The specular attenuation factor
      * @return this (SpotLight)
      */
     @Override
-    public SpotLight setkC(double kC) {
-        super.setkC(kC);
+    public SpotLight setKc(double kC) {
+        super.setKc(kC);
         return this;
     }
 
@@ -53,8 +63,8 @@ public class SpotLight extends PointLight {
      * @return this (SpotLight)
      */
     @Override
-    public SpotLight setkL(double kL) {
-        super.setkL(kL);
+    public SpotLight setKl(double kL) {
+        super.setKl(kL);
         return this;    }
 
     /**
@@ -64,8 +74,8 @@ public class SpotLight extends PointLight {
      * @return this (SpotLight)
      */
     @Override
-    public SpotLight setkQ(double kQ) {
-        super.setkQ(kQ);
+    public SpotLight setKq(double kQ) {
+        super.setKq(kQ);
         return this;
     }
 }

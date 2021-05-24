@@ -16,7 +16,7 @@ public class Material {
      * @param kD Attenuation factor
      * @return this
      */
-    public Material setkD(double kD) {
+    public Material setKd(double kD) {
         this.kD = kD;
         return this;
     }
@@ -27,7 +27,7 @@ public class Material {
      * @param kS Attenuation factor
      * @return this
      */
-    public Material setkS(double kS) {
+    public Material setKs(double kS) {
         this.kS = kS;
         return this;
     }
@@ -38,7 +38,7 @@ public class Material {
      * @param nShininess shininess factor of the material (int)
      * @return the material (Material)
      */
-    public Material setnShininess(int nShininess) {
+    public Material setNShininess(int nShininess) {
         this.nShininess = nShininess;
         return this;
     }

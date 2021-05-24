@@ -2,11 +2,10 @@ package renderer;
 
 import elements.LightSource;
 import geometries.Intersectable.GeoPoint;
-import primitives.Color;
-import primitives.Material;
-import primitives.Ray;
-import primitives.Vector;
+import primitives.*;
 import scene.Scene;
+
+import java.util.List;
 
 import static primitives.Util.alignZero;
 
@@ -16,6 +15,8 @@ import static primitives.Util.alignZero;
  * @author Aviel Buta and Yakir Yohanan
  */
 public class RayTracerBasic extends RayTracerBase {
+
+    private static final double DELTA = 0.1;
 
     public RayTracerBasic(Scene scene) {
         super(scene);
@@ -75,10 +76,12 @@ public class RayTracerBasic extends RayTracerBase {
             Vector l = lightSource.getL(intersection._point);
 
             double nl = alignZero(n.dotProduct(l));
+            // if sign(nl) == sing(nv)
             if (nl * nv > 0) {
-                // sign(nl) == sing(nv)
-                Color lightIntensity = lightSource.getIntensity(intersection._point);
-                color = color.add(calcDiffusive(kd, lightIntensity, nl), calcSpecular(ks, l, n, v, nShininess, lightIntensity, nl));
+                if (unshaded(lightSource ,l,n, intersection)) {
+                    Color lightIntensity = lightSource.getIntensity(intersection._point);
+                    color = color.add(calcDiffusive(kd, lightIntensity, nl), calcSpecular(ks, l, n, v, nShininess, lightIntensity, nl));
+                }
             }
         }
         return color;
@@ -88,8 +91,7 @@ public class RayTracerBasic extends RayTracerBase {
      * calculate the diffuse on the object
      *
      * @param kD             Diffuse attenuation factor
-     * @param l              The normalized vector from the position point to attached point
-     * @param n              The normal vector to the object
+     * @param nl             The normalized vector from the position point to attached point dot the normal vector to the object
      * @param lightIntensity The light intensity
      * @return The diffuse on the object (Color)
      */
@@ -113,6 +115,39 @@ public class RayTracerBasic extends RayTracerBase {
         Vector r = l.subtract(n.scale(nl).scale(2));
         Color specular = lightIntensity.scale(kS * Math.pow(Math.max(0, v.scale(-1).dotProduct(r)), nShininess));
         return specular;
+    }
+
+    /**
+     * Check if there have an intersections between the object to the light source
+     * @param l The ray from the light source
+     * @param n The normal to the object
+     * @param geoPoint The intersection point between the light ray and the object
+     * @return It there not have an intersections with the shadow ray (Boolean)
+     */
+    private boolean unshaded(LightSource light, Vector l, Vector n, GeoPoint geoPoint){
+
+        // the light ray from the intersection point to the light
+        Vector lightDirection = l.scale(-1);
+
+        //calculate the delta size to move the starting point of the shadow ray
+        Vector delta = n.scale(n.dotProduct(lightDirection) > 0 ? DELTA : -DELTA);
+
+        // update the starting point
+        Point3D point = geoPoint._point.add(delta);
+
+        // create the shadow ray
+        Ray lightRay= new Ray(point, lightDirection);
+
+        //check if there have an intersections between the object to the light source
+        List<GeoPoint> intersections = _scene._geometries.findGeoIntersections(lightRay);
+        if (intersections == null) return true;
+        double lightDistance= light.getDistance(geoPoint._point);
+        for (GeoPoint gp: intersections) {
+            if (alignZero(gp._point.distance(geoPoint._point) - lightDistance) <= 0)
+                return false;
+        }
+        return true;
+
     }
 }
 
