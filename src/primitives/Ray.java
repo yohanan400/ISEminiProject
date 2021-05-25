@@ -34,18 +34,9 @@ public class Ray {
      * @param normal     the normal to the point on the intersected object
      */
     public Ray(Point3D head, Vector direction, Vector normal){
-
-      //  double nd = Util.alignZero(normal.dotProduct(direction));
-
-        // if the dot product is equal to zero, then the light will not add any light intensity
-        //if (!Util.isZero(nd)){
-            //calculate the delta sign to move the starting point
             Vector delta = normal.scale( normal.dotProduct(direction) > 0 ? DELTA : -DELTA);
-
-            // update the starting point
             _p0 = head.add(delta);
             _dir= direction.normalized();
-        //}
     }
 
     /**
