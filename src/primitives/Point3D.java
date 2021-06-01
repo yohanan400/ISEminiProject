@@ -7,19 +7,31 @@ package primitives;
  */
 
 public class Point3D {
-
+    
+    /**
+     * The x coordinate
+     */
     final Coordinate _x;
+
+    /**
+     * The y coordinate
+     */
     final Coordinate _y;
+
+    /**
+     * The z coordinate
+     */
     final Coordinate _z;
 
+    // The zero point for shortcut
     public static Point3D ZERO = new Point3D(0.0d, 0.0d, 0.0d);
 
     /**
-     * Point3D c-tor receiving 3 double values
+     * c-tor, initiate the coordinates of the point with the receiving values
      *
-     * @param x double value
-     * @param y double value
-     * @param z double value
+     * @param x The x coordinate
+     * @param y The y coordinate
+     * @param z The z coordinate
      */
     public Point3D(double x, double y, double z) {
         _x = new Coordinate(x);
@@ -27,80 +39,96 @@ public class Point3D {
         _z = new Coordinate(z);
     }
 
+    /**
+     * Get the x coordinate
+     *
+     * @return The x coordinate (double)
+     */
     public double getX() {
         return _x.coord;
     }
 
+    /**
+     * Get the y coordinate
+     *
+     * @return The y coordinate (double)
+     */
     public double getY() {
         return _y.coord;
     }
 
+    /**
+     * Get the z coordinate
+     *
+     * @return The z coordinate (double)
+     */
     public double getZ() {
         return _z.coord;
     }
 
     /**
-     * subtract method return new Vector witch his coordinates is the subtract of the
-     * receiving point's coordinates from 'this' point's coordinates.
+     * Subtract method return new Vector wich the coordinates are the subtract
+     * of the receiving point's coordinates from 'this' point's coordinates.
      *
-     * @param point Point3D value
-     * @return Vector value
+     * @param point The point to subtract from 'this' point
+     * @return The received vector from the subtraction (Vector)
      */
     public Vector subtract(Point3D point) {
 
-        Point3D newPoint = new Point3D(_x.coord - point._x.coord,
-                _y.coord - point._y.coord,
-                _z.coord - point._z.coord);
+        Point3D newPoint = new Point3D(getX() - point.getX(),
+                getY() - point.getY(),
+                getZ() - point.getZ());
 
         return new Vector(newPoint);
     }
 
 
     /**
-     * add method return new Poind3D witch his coordinates is the sum of the
+     * Add method return new point (Point3D) wich his coordinates is the sum of the
      * receiving vector's coordinates and 'this' point's coordinates.
      *
-     * @param vector Vector value
-     * @return Point3D value
+     * @param vector The vector to add to 'this' point
+     * @return New point after adding the vector coordinates values (Point3D)
      */
     public Point3D add(Vector vector) {
 
-        Point3D newPoint = new Point3D(_x.coord + vector._head._x.coord,
-                _y.coord + vector._head._y.coord,
-                _z.coord + vector._head._z.coord);
+        Point3D newPoint = new Point3D(getX() + vector._head.getX(),
+                getY() + vector._head.getY(),
+                getZ() + vector._head.getZ());
 
         return newPoint;
     }
 
     /**
-     * distanceSquared method return the distance between 2 points power 2.
+     * Calculate the distance between 2 points by power of 2.
      *
-     * @param point Point3D value
-     * @return double value
+     * @param point The point to measure the distance from
+     * @return the squared distance (double)
      */
     public double distanceSquared(Point3D point) {
 
-        double distanceX = (_x.coord - point._x.coord),
-                distanceY = (_y.coord - point._y.coord),
-                distanceZ = (_z.coord - point._z.coord);
+        // Calculate the difference between the points
+        double distanceX = (getX() - point.getX()),
+                distanceY = (getY() - point.getY()),
+                distanceZ = (getZ() - point.getZ());
 
-        double distance = distanceX * distanceX
+        // Calculate the squared distance
+        double distanceSquared = distanceX * distanceX
                 + distanceY * distanceY
                 + distanceZ * distanceZ;
 
-        return distance;
+        return distanceSquared;
     }
 
     /**
-     * distanceSquared method return the distance between 2 points.
+     * Calculate the distance between 2 points.
      *
-     * @param point Point3D value
-     * @return double value
+     * @param point The point to measure the distance from
+     * @return The distance (double)
      */
     public double distance(Point3D point) {
 
         return Math.sqrt(distanceSquared(point));
-
     }
 
 

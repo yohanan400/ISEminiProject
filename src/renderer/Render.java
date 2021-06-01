@@ -18,97 +18,116 @@ public class Render {
     RayTracerBase _rayTracerBase = null;
 
     /**
-     * set the image object
+     * Set the image object
      *
-     * @param imageWriter the image object (ImageWriter)
-     * @return The current render object (Render)
+     * @param imageWriter The image object (ImageWriter)
+     * @return this (Render)
      */
     public Render setImageWriter(ImageWriter imageWriter) {
         _imageWriter = imageWriter;
+
+        // Return this for chaining
         return this;
     }
 
     /**
-     * set the camera object
+     * Set the camera object
      *
      * @param camera the camera object (Camera)
-     * @return The current render object (Render)
+     * @return this (Render)
      */
     public Render setCamera(Camera camera) {
         _camera = camera;
+
+        // return this for chaining
         return this;
 
     }
 
     /**
-     * set the rayTracerBase object
+     * Set the rayTracerBase object
      *
-     * @param rayTracerBase the rayTracerBase object (RayTracerBase)
-     * @return The current render object (Render)
+     * @param rayTracerBase The rayTracerBase object (RayTracerBase)
+     * @return this (Render)
      */
     public Render setRayTracerBase(RayTracerBase rayTracerBase) {
         _rayTracerBase = rayTracerBase;
+
+        // return this for chaining
         return this;
     }
 
     /**
-     * renderImage go through all the pixels and calculate their color and paint them
+     * Go through all the pixels and calculate their color and paint them
      */
     public void renderImage() {
         try {
 
+            // Check if have a image writer object
             if (_imageWriter == null) {
                 throw new MissingResourceException("Missing imageWriter", "ImageWriter", "String imageName/ int nX/ int nY");
             }
 
+            // Check if have a camera object
             if (_camera == null) {
                 throw new MissingResourceException("Missing camera", "Camera", "Point3D p0/ Vector vUp/ Vector vTo");
             }
 
+            // Check if have ray tracer (base) object
             if (_rayTracerBase == null) {
                 throw new MissingResourceException("Missing rayTracerBase", "RayTracerBase", "Scene scene");
             }
 
+            // Go through the view plane to all pixels and paint them by calling to writePixel function
             for (int i = 0; i < _imageWriter.getNy(); i++) {
                 for (int j = 0; j < _imageWriter.getNx(); j++) {
+                    // Create the ray from the camera to the objects
                     Ray ray = _camera.constructRayThroughPixel(_imageWriter.getNx(), _imageWriter.getNy(), j, i);
+                    // Set the color of the current pixel
                     Color color = _rayTracerBase.traceRay(ray);
+                    // Paint the pixel
                     _imageWriter.writePixel(j, i, color);
                 }
             }
-        } catch (MissingResourceException e) { // if one of the objects are null then throw UnsupportedOperationException to the user
+        } catch (MissingResourceException e) {
+            // If one of the objects are null then throw UnsupportedOperationException to the user
             throw new UnsupportedOperationException("No implement yet:" + e.getClassName());
         }
     }
 
     /**
-     * print a grid on the image
+     * Print a grid on the image
      *
-     * @param interval the interval between all grid lines (int)
-     * @param color    the color of the lines (Color)
+     * @param interval The interval between all grid lines (int)
+     * @param color    The color of the lines (Color)
      */
     public void printGrid(int interval, Color color) {
 
+        // Check if have a image writer object
         if (_imageWriter == null) {
             throw new MissingResourceException("Missing imageWriter", "ImageWriter", "String imageName/ int nX/ int nY");
         }
 
+        // Create the grid
         for (int i = 0; i < _imageWriter.getNx(); i++) {
             for (int j = 0; j < _imageWriter.getNy(); j++) {
                 if ((i % interval == 0) || (j % interval == 0))
+                    // Paint the current pixel
                     _imageWriter.writePixel(i, j, color);
             }
         }
     }
 
     /**
-     * produce to the image
+     * Produce to the image
      */
     public void writeToImage() {
+
+        // Check if have a image writer object
         if (_imageWriter == null) {
             throw new MissingResourceException("Missing imageWriter", "ImageWriter", "String imageName/ int nX/ int nY");
         }
-
+        // Write to image
         _imageWriter.writeToImage();
     }
 }

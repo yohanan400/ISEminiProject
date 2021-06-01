@@ -1,25 +1,27 @@
 package geometries;
 
-import primitives.*;
+import primitives.Point3D;
+import primitives.Ray;
+import primitives.Vector;
 
 import java.util.List;
 
 /**
- * Tube class representing three-dimensional tube in 3D Cartesian coordinate
+ * Tube class representing three-dimensional tube (infinite cylinder) in 3D Cartesian coordinate
  * system
  *
  * @author Aviel Buta and Yakir Yohanan
  */
 public class Tube extends Geometry {
 
-    protected Ray _axisRay;
-    protected double _radius;
+    protected Ray _axisRay; // The centered ray of the tube
+    protected double _radius; // The radius of the tube
 
     /**
-     * Tube c-tor receiving ray (Ray) and radius (double)
+     * c-tor initiate the fields with the receiving values
      *
-     * @param axisRay Ray value
-     * @param radius  double value
+     * @param axisRay The centered ray of the tube
+     * @param radius  The radius of the tube
      */
     public Tube(Ray axisRay, double radius) {
         _axisRay = axisRay;
@@ -27,38 +29,45 @@ public class Tube extends Geometry {
     }
 
     /**
-     * getAxisRay return the ray value
+     * Return the centered ray of the tube
      *
-     * @return Ray value
+     * @return The centered ray of the tube (Ray)
      */
     public Ray getAxisRay() {
         return _axisRay;
     }
 
     /**
-     * getRadius return the radius value
+     * Return the radius value of the tube
      *
-     * @return double value
+     * @return The radius value of the tube (double)
      */
     public double getRadius() {
         return _radius;
     }
 
     /**
-     * getNormal receiving a point, calculate and return the normal of the tube in the current point.
+     * Receiving a point, calculate and return the normal of the tube in the current point.
      *
-     * @param point Point3D value
-     * @return Vector value
+     * @param point A point on the tube
+     * @return The normal of the tube in the receiving point (Vector)
      */
     @Override
     public Vector getNormal(Point3D point) {
 
-        double projection = _axisRay.getDir().dotProduct(point.subtract(_axisRay.getP0()));
+        Vector centeredVectorDirection = _axisRay.getDir();
+        Point3D p0 = _axisRay.getP0();
+
+        // If the projection equals to zero we cant calculate a normal.
+        double projection = centeredVectorDirection.dotProduct(point.subtract(p0));
         if (projection == 0) throw new IllegalArgumentException("the projection cannot be 0");
 
-        Point3D center = _axisRay.getP0().add(_axisRay.getDir().scale(projection));
+        // Calculate the point on the centered ray of the tube to calculate the normal with it.
+        Point3D center = p0.add(centeredVectorDirection.scale(projection));
+
+        // Calculate the normal
         Vector v = point.subtract(center);
-        return v.normalize();
+        return v.normalize(); // Return the normalized normal
     }
 
     @Override
@@ -72,11 +81,13 @@ public class Tube extends Geometry {
         return _axisRay != null ? _axisRay.equals(tube._axisRay) : tube._axisRay == null;
     }
 
-    @Override
-    public List<Point3D> findIntersections(Ray ray) {
-        return null;
-    }
-
+    /**
+     * Return list of intersection GeoPoint
+     *
+     * @param ray The light ray
+     * @return List of intersection GeoPoint
+     */
+    // NOT IMPLEMENTED
     @Override
     public List<GeoPoint> findGeoIntersections(Ray ray) {
         return null;
@@ -89,6 +100,4 @@ public class Tube extends Geometry {
                 ", _radius=" + _radius +
                 '}';
     }
-
-
 }

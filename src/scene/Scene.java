@@ -19,22 +19,44 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * combine all the attributes of the scene
+ * Represent a scene
  *
  * @author Aviel Buta and Yakir Yohanan
  */
 public class Scene {
 
+    /**
+     * The scene name
+     */
     public final String _name;
+
+    /**
+     * The background of the scene
+     * (initiate to black)
+     */
     public Color _background = Color.BLACK;
+
+    /**
+     * The ambient light of the scene
+     * (initiate to non (black))
+     */
     public AmbientLight _ambientLight = new AmbientLight(_background, 0);
+
+    /**
+     * The geometries in the scene (List of geometries)
+     */
     public Geometries _geometries;
+
+    /**
+     * The lights sources in the scene (List of lights)
+     */
+    // linked list because all the time we need to use it, we need to go trough all the elements
     public List<LightSource> _lightSourceList = new LinkedList<LightSource>();
 
     /**
-     * set the name and initialize the geometries list of the scene
+     * c-tor, initialize the name of the scene and the geometries list of the scene
      *
-     * @param name the name of the scene (String)
+     * @param name The name of the scene (String)
      */
     public Scene(String name) {
         _name = name;
@@ -44,11 +66,11 @@ public class Scene {
     /**
      * Get the values of the scenes fields from .xml file
      *
-     * @param fileName the .xml file name
+     * @param fileName The .xml file name
      */
     public void getSceneFieldsFromXML(String fileName) {
 
-        //get the file
+        //Get the file
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         try {
             DocumentBuilder builder = factory.newDocumentBuilder();
@@ -144,41 +166,48 @@ public class Scene {
             }
 
         } catch (Exception e) {
+            // If the reading of the file go wrong
             System.out.println("Something get wrong: ");
             e.printStackTrace();
         }
     }
 
     /**
-     * set the background of the scene
+     * Set the background of the scene
      *
-     * @param background the background of the scene (Color)
-     * @return The current scene (Scene)
+     * @param background The background color of the scene (Color)
+     * @return this (Scene)
      */
     public Scene setBackground(Color background) {
         _background = background;
+
+        // return this for chaining
         return this;
     }
 
     /**
-     * set the ambient light of the scene
+     * Set the ambient light of the scene
      *
-     * @param ambientLight the ambient light (AmbientLight)
-     * @return The current scene (Scene)
+     * @param ambientLight The ambient light (AmbientLight)
+     * @return this (Scene)
      */
     public Scene setAmbientLight(AmbientLight ambientLight) {
         _ambientLight = ambientLight;
+
+        // return this for chaining
         return this;
     }
 
     /**
-     * set the light source list of the scene
+     * Set the light source list of the scene
      *
-     * @param lightSourceList the light source list (List<LightSource>)
-     * @return the scene (Scene)
+     * @param lightSourceList The light source list (List<LightSource>)
+     * @return this (Scene)
      */
     public Scene setLightSourceList(List<LightSource> lightSourceList) {
         _lightSourceList = lightSourceList;
+
+        // return this for chaining
         return this;
     }
 }

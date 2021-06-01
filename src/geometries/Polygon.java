@@ -85,11 +85,24 @@ public class Polygon extends Geometry {
         }
     }
 
+    /**
+     * Return the normal to the polygon
+     *
+     * @param point Point on the surface of the geometry shape
+     * @return The normal
+     */
     @Override
     public Vector getNormal(Point3D point) {
         return plane.getNormal();
     }
 
+    /**
+     * Return list of intersection GeoPoint
+     *
+     * @param ray The light ray
+     * @return List of intersection GeoPoint
+     */
+    // NOT IMPLEMENTED
     @Override
     public List<GeoPoint> findGeoIntersections(Ray ray) {
         return null;

@@ -15,24 +15,24 @@ import java.util.List;
  */
 public class Cylinder extends Tube {
 
-    double _height;
+    double _height; //The height of the cylinder
 
     /**
-     * cylinder c-tor receiving a Ray, and two doubles
+     * Cylinder c-tor receiving a Ray, and two doubles
      *
-     * @param axisRay Ray value
-     * @param radius  double value
-     * @param height  double value
+     * @param axisRay The centered ray of the cylinder
+     * @param radius  The radius of the cylinder
+     * @param height  The height of the cylinder
      */
     public Cylinder(Ray axisRay, double radius, double height) {
-        super(axisRay, radius);
+        super(axisRay, radius); // initialize the fields to the received values
         _height = height;
     }
 
     /**
-     * getHeight return the height of the cylinder
+     * Return the height of the cylinder
      *
-     * @return double value
+     * @return The height of the cylinder (double)
      */
     public double getHeight() {
         return _height;
@@ -40,36 +40,37 @@ public class Cylinder extends Tube {
 
 
     /**
-     * getNormal method return the normal vector of the cylinder
+     * Return the normal vector of the cylinder
      *
-     * @param point Point3D value
-     * @return return the normal of cylinder (Vector value)
+     * @param point The point to measure the normal (Point3D)
+     * @return The normal of cylinder (Vector)
      */
     @Override
     public Vector getNormal(Point3D point) {
 
-        // if the point is the center base
-        if (point.equals(_axisRay.getP0()) || point.equals(_axisRay.getP0().add(_axisRay.getDir().scale(_height)))) {
-            return _axisRay.getDir();
+        // The center of sides of the cylinder
+        Vector directionOfCylinder = _axisRay.getDir();
+        Point3D centerOfOneSide = _axisRay.getP0();
+        Point3D centerOfSecondSide = _axisRay.getP0().add(_axisRay.getDir().scale(_height));
+
+        // If the point is the center base (on the sides of the cylinder)
+        if (point.equals(centerOfOneSide) || point.equals(centerOfSecondSide)) {
+            // return the centered ray
+            return directionOfCylinder;
         }
 
-        double projection = _axisRay.getDir().dotProduct(point.subtract(_axisRay.getP0()));
-        //if the point is on the bases but not the center point
+        double projection = directionOfCylinder.dotProduct(point.subtract(centerOfOneSide));
+        //If the point is on the bases but not the center point
         if (projection == 0) {
-            Vector v1 = point.subtract(_axisRay.getP0());
+            Vector v1 = point.subtract(centerOfOneSide);
             return v1.normalize();
         }
 
-        //if the point is on the side of the cylinder
-        Point3D center = _axisRay.getP0().add(_axisRay.getDir().scale(projection));
+        //If the point is on the side of the cylinder
+        Point3D center = centerOfOneSide.add(directionOfCylinder.scale(projection));
         Vector v = point.subtract(center);
         return v.normalize();
 
-    }
-
-    @Override
-    public List<Point3D> findIntersections(Ray ray) {
-        return null;
     }
 
     @Override

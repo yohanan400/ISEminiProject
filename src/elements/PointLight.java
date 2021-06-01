@@ -5,45 +5,54 @@ import primitives.Point3D;
 import primitives.Vector;
 
 /**
- * represent point light
+ * Represent point light
  *
  * @author Aviel Buta and Yakir Yohanan
  */
 public class PointLight extends Light implements LightSource {
 
-    protected Point3D _position;
-    private double kC = 1d, kL = 0d, kQ = 0d;
+    protected Point3D _position; // The position point of the light source in space
+    private double kC = 1d; // The specular attenuation factor, required to ensure that the denominator in getIntensity >𝟏
+    private double kL = 0d; // The light source attenuation factor
+    private double kQ = 0d;// The attenuation factor of the energy coming to the point
 
 
     /**
      * c-tor initialize all the fields
      *
-     * @param intensity the intensity of the light
-     * @param position  the position of the light
+     * @param intensity The intensity of the light
+     * @param position  The position of the light
      */
     public PointLight(Color intensity, Point3D position) {
-        super(intensity);
+        super(intensity); // Initialize the intensity to the received intensity
         _position = position;
     }
 
     /**
-     * calculate and return the intensity light on specific point
+     * Calculate and return the intensity light on specific point
      *
-     * @param p the point on the object (Point3D)
-     * @return the intensity (Color)
+     * @param p The point on the object (Point3D)
+     * @return The intensity (Color)
      */
     @Override
     public Color getIntensity(Point3D p) {
+        // The intensity of the color of the light
+        // (the distribution of the light in the surface area)
+        // is proportional to squared distance
+
+        //Calculate the denominator of the proportion
         double distance = _position.distance(p);
         double denominator = kC + kL * distance + kQ * distance * distance;
+
+        // return the final intensity
         return getIntensity().scale(1 / denominator);
     }
 
     /**
-     * return the normalize direction vector from the light source to the object
+     * Return the normalize direction vector from the light source to the object
      *
-     * @param p the point on the object (Point3D)
-     * @return the normalize direction vector from the light source to the object (Vector)
+     * @param p The point on the object (Point3D)
+     * @return The normalize direction vector from the light source to the object (Vector)
      */
     @Override
     public Vector getL(Point3D p) {
@@ -52,8 +61,9 @@ public class PointLight extends Light implements LightSource {
 
     /**
      * Calculate the distance between the light source and the receiving point
-     * @param point the point to calculate the distance to
-     * @return the distance between the light source and the receiving point
+     *
+     * @param point The point to calculate the distance to
+     * @return The distance between the light source and the receiving point
      */
     @Override
     public double getDistance(Point3D point) {
@@ -68,6 +78,8 @@ public class PointLight extends Light implements LightSource {
      */
     public PointLight setPosition(Point3D position) {
         _position = position;
+
+        // return this for chaining
         return this;
     }
 
@@ -79,6 +91,8 @@ public class PointLight extends Light implements LightSource {
      */
     public PointLight setKc(double kC) {
         this.kC = kC;
+
+        // return this for chaining
         return this;
     }
 
@@ -90,20 +104,22 @@ public class PointLight extends Light implements LightSource {
      */
     public PointLight setKl(double kL) {
         this.kL = kL;
+
+        // return this for chaining
         return this;
 
     }
 
     /**
-     * Attenuation factor
+     * Set the energy attenuation factor
      *
-     * @param kQ the attenuation factor
+     * @param kQ The attenuation factor
      * @return this (PointLight)
      */
     public PointLight setKq(double kQ) {
         this.kQ = kQ;
+
+        // return this for chaining
         return this;
     }
-
-
 }

@@ -7,49 +7,68 @@ package primitives;
  * @author Aviel Buta and Yakir Yohanan
  */
 public class Material {
-    public double kD = 0, kS = 0;
+
+    /**
+     * The diffuse attenuation factor of the object material type
+     */
+    public double kD = 0;
+
+    /**
+     * The specular attenuation factor of the object material type
+     */
+    public double kS = 0;
+
+    /**
+     * The shininess factor of the object material type
+     */
     public int nShininess = 0;
 
     /**
-     * Transparency factor
+     * The transparency attenuation factor of the object material type
      */
     public double _kT = 0.0;
 
     /**
-     * refraction factor
+     * The refraction attenuation factor of the object material type
      */
     public double _kR = 0.0;
 
     /**
-     * Attenuation factor of diffuse
+     * Set the diffuse attenuation factor
      *
      * @param kD Attenuation factor
-     * @return this
+     * @return this (Material)
      */
     public Material setKd(double kD) {
         this.kD = kD;
+
+        // return this for chaining
         return this;
     }
 
     /**
-     * Attenuation factor
+     * Set the specular attenuation factor
      *
      * @param kS Attenuation factor
-     * @return this
+     * @return this (Material)
      */
     public Material setKs(double kS) {
         this.kS = kS;
+
+        // return this for chaining
         return this;
     }
 
     /**
-     * set the shininess factor of the material
+     * Set the shininess factor of the material
      *
      * @param nShininess shininess factor of the material (int)
-     * @return the material (Material)
+     * @return this (Material)
      */
     public Material setNShininess(int nShininess) {
         this.nShininess = nShininess;
+
+        // return this for chaining
         return this;
     }
 }

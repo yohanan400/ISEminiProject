@@ -1,6 +1,5 @@
 package geometries;
 
-import primitives.Point3D;
 import primitives.Ray;
 
 import java.util.Arrays;
@@ -8,63 +7,38 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * the class represent collect of geometries
+ * Represent collect of geometries
  *
  * @author Aviel Buta and Yakir Yohanan
  */
 public class Geometries implements Intersectable {
 
-    // we choose linkList because we need to go through all the objects iteratively
-    private final List<Intersectable> _intersectables = new LinkedList<>();
+    // We choose linkList because we need to go through all the objects iteratively
+    private final List<Intersectable> _intersectables = new LinkedList<>(); // List of all the geometries
 
     /**
      * geometries c-tor
      */
     public Geometries() {
-        // nothing to add
+        // nothing to add, we already initialize in the declaration of the filed.
     }
 
     /**
-     * geometries c-tor. add all the intersectable received as parameters
+     * geometries c-tor. Initialize the intersectable geometries list to the received parameters
      *
-     * @param intersectable list of intersectables
+     * @param intersectable List of intersectables
      */
     public Geometries(Intersectable... intersectable) {
         add(intersectable);
     }
 
     /**
-     * add all intersectables in array's param to _intersectables
+     * Add all intersectable geometries in array's param to _intersectables
      *
-     * @param intersectable array of objects (geometries)
+     * @param intersectable Array of objects (geometries)
      */
     public void add(Intersectable... intersectable) {
         _intersectables.addAll(Arrays.asList(intersectable));
-    }
-
-    /**
-     * Find the intersection points of all objects in the list
-     *
-     * @param ray light ray
-     * @return List of intersection points (Point3D)
-     */
-    @Override
-    public List<Point3D> findIntersections(Ray ray) {
-        List<Point3D> result = null;
-
-        for (Intersectable item : _intersectables) {
-            List<Point3D> intersectionPoints = item.findIntersections(ray);
-
-            if (intersectionPoints != null) {
-
-                if (result == null) {
-                    result = new LinkedList<>();
-                }
-
-                result.addAll(intersectionPoints);
-            }
-        }
-        return result;
     }
 
     /**
@@ -75,20 +49,21 @@ public class Geometries implements Intersectable {
      */
     @Override
     public List<GeoPoint> findGeoIntersections(Ray ray) {
-        List<GeoPoint> result = null;
+        List<GeoPoint> result = null; // Initialize the intersection GeoPoints list
 
+        // For each geometry in the saved list in the _intersection field find the intersection GeoPoints
         for (Intersectable geo : _intersectables) {
             List<GeoPoint> intersectionPoints = geo.findGeoIntersections(ray);
 
             if (intersectionPoints != null) {
 
-                if (result == null) {
+                if (result == null) { // If this is the first time to add an intersection, initialize the list
                     result = new LinkedList<>();
                 }
 
-                result.addAll(intersectionPoints);
+                result.addAll(intersectionPoints); // Add the intersection GeoPoints to the list
             }
         }
-        return result;
+        return result; // The list with all the intersection GeoPoints of the geometries in the list
     }
 }

@@ -13,12 +13,12 @@ import static primitives.Util.isZero;
  */
 public class Camera {
 
-    private Point3D _p0;
-    final private Vector _vUp, _vTo, _vRight;
-    private double _width, _height, _distance;
+    private Point3D _p0; // The center of the camera lens
+    final private Vector _vUp, _vTo, _vRight; // The direction vectors
+    private double _width, _height, _distance; // The grid values. (distance is the distance between the grid and the camera)
 
     /**
-     * c-tor receive 1 starring point and 2 orthogonals vectors.
+     * c-tor receive 1 starting point and 2 orthogonal vectors (and normalized them).
      *
      * @param p0  starting point (Point3D)
      * @param vUp 'up' vector (Vector)
@@ -26,18 +26,21 @@ public class Camera {
      */
     public Camera(Point3D p0, Vector vUp, Vector vTo) {
 
+        // Check if the direction vectors are orthogonal
         if (!isZero(vUp.dotProduct(vTo)))
             throw new IllegalArgumentException("The received vectors are not orthogonal");
 
+        // Initialize the values center point and up and to direction vectors
         _p0 =p0;
         _vUp = vUp.normalized();
         _vTo = vTo.normalized();
 
+        // Calculate the right direction vector
         _vRight = vTo.crossProduct(vUp).normalize();
     }
 
     /**
-     * setting the size of the View Plane
+     * Setting the size of the View Plane
      *
      * @param width  width of the View Plane (double)
      * @param height height of the View Plane (double)
@@ -48,17 +51,20 @@ public class Camera {
         _width = width;
         _height = height;
 
+        // return this for chaining
         return this;
     }
 
     /**
-     * set the distance between the camera and the View Plane and the Camera
+     * Set the distance between the View Plane and the Camera
      *
      * @param distance the distance (double)
      * @return return the camera itself (Camera)
      */
     public Camera setDistance(double distance) {
         _distance = distance;
+
+        // return this for chaining
         return this;
     }
 
@@ -85,13 +91,14 @@ public class Camera {
         double yI = -1 * (i - (nY - 1) / 2d) * rY;
         double xJ = (j - (nX - 1) / 2d) * rX;
 
-        // in the beginning pIJ is the center pixel, and if we need to move up and down or right and left
+        // in the beginning pIJ is the center pixel, and if we need to move up and down or right and left we'll add it
         Point3D pIJ = pC;
         if (xJ != 0) pIJ = pIJ.add(_vRight.scale(xJ));
         if (yI != 0) pIJ = pIJ.add(_vUp.scale(yI));
 
         Vector vIJ = pIJ.subtract(_p0);
 
+        // return the ray go through the pixel
         return new Ray(_p0, vIJ);
 
 

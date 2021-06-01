@@ -17,7 +17,7 @@ import static primitives.Util.alignZero;
 public class Triangle extends Polygon {
 
     /**
-     * Triangle c-tor receiving a list of vertices (Point3D).
+     * c-tor initiate the vertices with the receiving list of vertices.
      *
      * @param vertices Point3D[]
      */
@@ -26,34 +26,40 @@ public class Triangle extends Polygon {
     }
 
     /**
-     * find the intersection point of the ray and the triangle
+     * Find the intersection point of the ray and the triangle
      *
      * @param ray The light ray
-     * @return GeoPoint with the triangle and the intersection point
+     * @return List of intersection GeoPoint between the ray and triangle
      */
     @Override
     public List<GeoPoint> findGeoIntersections(Ray ray) {
 
-        //check if the ray intersect the plane
+        // Check if the ray intersect the containing plane of the triangle
+        // If not return null (sure not intersect)
         if (plane.findGeoIntersections(ray) == null) {
             return null;
         }
 
+        // Create the triangle
         Vector v1 = vertices.get(0).subtract(ray.getP0());
         Vector v2 = vertices.get(1).subtract(ray.getP0());
         Vector v3 = vertices.get(2).subtract(ray.getP0());
 
+        // Calculate the normals
         Vector n1 = v1.crossProduct(v2).normalize();
         Vector n2 = v2.crossProduct(v3).normalize();
         Vector n3 = v3.crossProduct(v1).normalize();
 
         Vector v = ray.getDir();
 
+        // If all in the same direction the ray intersect the triangle
         if ((alignZero(v.dotProduct(n1)) > 0 && alignZero(v.dotProduct(n2)) > 0 && alignZero(v.dotProduct(n3)) > 0) ||
                 (alignZero(v.dotProduct(n1)) < 0 && alignZero(v.dotProduct(n2)) < 0 && alignZero(v.dotProduct(n3)) < 0)) {
 
+            // find the intersection point and return it as a list of GeoPoint
             return List.of(new GeoPoint(this, plane.findGeoIntersections(ray).get(0)._point));
         }
+        // If the ray not intersect the triangle
         return null;
     }
 

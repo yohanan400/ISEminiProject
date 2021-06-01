@@ -17,42 +17,55 @@ import static primitives.Util.isZero;
  */
 public class Plane extends Geometry {
 
-    Point3D _p0;
-    Vector _normal;
+    Point3D _p0; // point on the plane
+    Vector _normal; // the normal of the plane
 
     /**
-     * plane c-tor receiving 3 Point3D values
+     * c-tor receiving 3 points on the plane
      * and calculate the normal of the plane
      *
-     * @param p0 Point3D value
-     * @param p1 Point3D value
-     * @param p2 Point3D value
+     * @param p0 1st point on the plane (Point3D)
+     * @param p1 2nd point on the plane (Point3D)
+     * @param p2 3rd point on the plane (Point3D)
      */
     public Plane(Point3D p0, Point3D p1, Point3D p2) {
         _p0 = p0;
+
+        // To calculate the normal we take 2 vectors (from the three received points)
+        // and cross Product them. Eventually we normalize the normal.
+
+        // Calculate the 2 vectors
         Vector v1 = new Vector(p1.subtract(p0).getHead());
         Vector v2 = new Vector(p2.subtract(p0).getHead());
+
+        // Calculate the normal and normalize him
         _normal = new Vector(v1.crossProduct(v2).normalize().getHead());
     }
 
     /**
-     * plane c-tor receiving Point3D values and Vector value
+     * c-tor initialize the fields with the receiving values
      *
-     * @param p0     Point3D value
-     * @param normal Vector value
+     * @param p0     Point on the plane
+     * @param normal The normal of the plane
      */
     public Plane(Point3D p0, Vector normal) {
         _p0 = p0;
         _normal = normal;
     }
 
+    /**
+     * Get the normal of the plane on a specific point
+     *
+     * @param point Point on the surface of the geometry shape
+     * @return The normal on the receiving point
+     */
     @Override
     public Vector getNormal(Point3D point) {
-        return null;
+        return null; // NOT IMPLEMENTED
     }
 
     /**
-     * getP0 method return the relative point of the plane
+     * Return the relative point of the plane
      *
      * @return Point3D value
      */
@@ -61,7 +74,7 @@ public class Plane extends Geometry {
     }
 
     /**
-     * getNormal method return the normal vector of the plane
+     * Return the normal vector of the plane
      *
      * @return Vector value
      */
@@ -70,23 +83,29 @@ public class Plane extends Geometry {
     }
 
     /**
-     * find the intersection point of the ray and the plane
+     * Find the intersection point of the ray and the plane
      *
      * @param ray The light ray
-     * @return GeoPoint with the plane and the intersection point
+     * @return List of intersection GeoPoint between the plane and the ray
      */
     @Override
     public List<GeoPoint> findGeoIntersections(Ray ray) {
 
+        // If the ray start at the plane
         if (_p0.equals(ray.getP0())) {
             return null;
         }
 
+        // If the ration between the ray points (in general) and the plane points (in general)
+        // is bigger then 1, it is a intersection point.
+        // Ray points: 𝑃=𝑃0+𝑡∙𝑣
+        // Plane points: N∙(𝑄0−𝑃)
+        // 𝑡 = ( 𝑁∙(𝑄0−𝑃0) ) / 𝑁∙𝑣
         double numerator = (double) _normal.dotProduct(_p0.subtract(ray.getP0()));
         double denominator = (double) _normal.dotProduct(ray.getDir());
 
-        //if the numerator equal to 0, the starting point is at the plane
-        // if the denominator equal to 0, denominator can't be equal to 0
+        // If the numerator equal to 0, the starting point is at the plane
+        // If the denominator equal to 0, denominator can't be equal to 0
         if (isZero(numerator) || isZero(denominator)) {
             return null;
         }
@@ -98,12 +117,12 @@ public class Plane extends Geometry {
             return null;
         }
 
-        // the intersection point
+        // The intersection point
         Point3D p = new Point3D(ray.getP0().add(ray.getDir().scale(t)).getX(),
                 ray.getP0().add(ray.getDir().scale(t)).getY(),
                 ray.getP0().add(ray.getDir().scale(t)).getZ());
 
-        return List.of(new GeoPoint(this, p));
+        return List.of(new GeoPoint(this, p)); // List of intersection GeoPoint
     }
 
     @Override

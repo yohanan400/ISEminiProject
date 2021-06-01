@@ -12,28 +12,28 @@ import primitives.Vector;
  */
 public abstract class Geometry implements Intersectable {
 
-    protected Color emission = Color.BLACK;
-    private Material _material = new Material();
+    protected Color emission = Color.BLACK; // The color of the geometry
+    private Material _material = new Material(); // The material type of the geometry
 
     /**
-     * calculate the normal
+     * Calculate the normal of the geometry in the received point
      *
      * @param point Point on the surface of the geometry shape
-     * @return the normal of the Geometry shape (Vector type)
+     * @return The normal of the geometry shape (Vector type)
      */
     public abstract Vector getNormal(Point3D point);
 
     /**
-     * return the emission of the object
+     * Return the emission of the object
      *
-     * @return Color value
+     * @return The emission (Color)
      */
     public Color getEmission() {
         return emission;
     }
 
     /**
-     * return the material of the geometry
+     * Return the material type of the geometry
      *
      * @return the material of the geometry (Material)
      */
@@ -42,24 +42,24 @@ public abstract class Geometry implements Intersectable {
     }
 
     /**
-     * set the emission of the object
+     * Set the emission of the object
      *
      * @param emission the emission of the object
      * @return this
      */
     public Geometry setEmission(Color emission) {
         this.emission = emission;
-        return this;
+        return this; // return this for chaining
     }
 
     /**
-     * set the material of the geometry
+     * Set the material type of the geometry
      *
-     * @param material the material of the geometry (Material)
+     * @param material The material type of the geometry (Material)
      * @return the geometry (Geometry)
      */
     public Geometry setMaterial(Material material) {
         _material = material;
-        return this;
+        return this; // return this for chaining
     }
 }

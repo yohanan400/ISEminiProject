@@ -5,7 +5,7 @@ import primitives.Ray;
 import scene.Scene;
 
 /**
- * an abstract class responsible on the Ray tracer
+ * An abstract class responsible to ray tracer
  *
  * @author Aviel Buta and Yakir Yohanan
  */
@@ -14,20 +14,20 @@ public abstract class RayTracerBase {
     protected Scene _scene;
 
     /**
-     * c-tor receive scene and set him in the variable
+     * c-tor, initiate the _scene field with the receiving value
      *
-     * @param scene scene (Scene)
+     * @param scene The scene (Scene)
      */
     public RayTracerBase(Scene scene) {
         _scene = scene;
     }
 
     /**
-     * method with trace the ray
+     * Trace the ray and calculate the color of the intersection point
+     * of the ray and any object (or the background if no intersections exist)
      *
-     * @param ray (Ray)
-     * @return right color (Color)
+     * @param ray The ray to trace after (Ray)
+     * @return The color of the intersection point (or background if no intersections exist) (Color)
      */
     public abstract Color traceRay(Ray ray);
-
 }

@@ -4,25 +4,28 @@ import elements.LightSource;
 import geometries.Intersectable.GeoPoint;
 import primitives.*;
 import scene.Scene;
-
 import java.util.List;
-
 import static primitives.Util.alignZero;
 
 /**
- * implementation of RayTracerBase class
+ * Implementation of RayTracerBase class
  *
  * @author Aviel Buta and Yakir Yohanan
  */
 public class RayTracerBasic extends RayTracerBase {
 
+     // The number of continuous rays to calculate the impact on the intersection points
     private static final int MAX_CALC_COLOR_LEVEL = 10;
+
+    // Stop condition, the minimum impact of rays to continue calculate
     private static final double MIN_CALC_COLOR_K = 0.001;
+
+    // The starting impact value of ray on intersection point
     private static final double INITIAL_K = 1.0;
 
 
     /**
-     * c-tor create RayTracerBasic with scene received
+     * c-tor, initiate the scene field with received scene
      *
      * @param scene The scene (Scene)
      */
@@ -31,24 +34,28 @@ public class RayTracerBasic extends RayTracerBase {
     }
 
     /**
-     * if the ray intersect  the geometry, paint in the right color
+     * If the ray intersect the geometry, paint in the final color
      *
-     * @param ray the ray we check if he intersect with the geometry (Ray)
-     * @return the right color to paint the pixel (Color)
+     * @param ray The ray to check if he intersect the geometry (Ray)
+     * @return The color to paint the pixel (Color)
      */
     @Override
     public Color traceRay(Ray ray) {
 
+        // Search the closest intersection point of the ray in the geometry
         GeoPoint closestPoint = findClosestIntersection(ray);
+
+        // If no intersection paint as a background,
+        // else calculate the color to paint and return it
         return closestPoint == null ? _scene._background : calcColor(closestPoint, ray);
     }
 
     /**
-     * calculate the color of the receiving point
+     * Calculate the color of the receiving point
      *
-     * @param geopoint the intersection point (GeoPoint)
-     * @param ray      the ray cross the point (Ray)
-     * @return the color (Color)
+     * @param geopoint The intersection point (and the intersected geometry) (GeoPoint)
+     * @param ray      The intersect ray (Ray)
+     * @return The final color (Color)
      */
     private Color calcColor(GeoPoint geopoint, Ray ray) {
         return calcColor(geopoint, ray, MAX_CALC_COLOR_LEVEL, INITIAL_K)
@@ -56,26 +63,31 @@ public class RayTracerBasic extends RayTracerBase {
     }
 
     /**
-     * calculate the color on specific point on the object
+     * Calculate the color on specific point on the object
      *
-     * @param intersection The object with the closest intersection point with the object
+     * @param intersection The intersected geometry object with the closest intersection point with the ray
      * @param ray          The intersect ray
-     * @param level        The number of intersection levels the ray intersect
+     * @param level        The number of intersection levels the ray intersect (the depth of continuous ray to check)
      * @param k            The attenuation factor of the intersected ray
-     * @return The color on the point
+     * @return The color of the point
      */
     private Color calcColor(GeoPoint intersection, Ray ray, int level, double k) {
+        // The emission color of the intersected geometry object
         Color color = intersection._geometry.getEmission();
+
+        // Adding the local effects on the point (e.g diffuse and specular)
         color = color.add(calcLocalEffects(intersection, ray, k));
+
+        // If is the last level return the final color, else calculate the global effects (e.g reflected and reflected rays)
         return 1 == level ? color : color.add(calcGlobalEffects(intersection, ray, level, k));
     }
 
     /**
-     * calculate the diffuse and the specular on the object
+     * Calculate the diffuse and the specular on the object
      *
-     * @param intersection The object with the closest intersection point with the object
+     * @param intersection The intersected geometry object with the closest intersection point with the ray
      * @param ray          The intersect ray
-     * @param k            Attenuation factor
+     * @param k            Attenuation factor of the impact of ray on point
      * @return The diffuse and the specular on the object
      */
     private Color calcLocalEffects(GeoPoint intersection, Ray ray, double k) {

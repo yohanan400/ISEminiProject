@@ -3,138 +3,149 @@ package primitives;
 import static primitives.Point3D.ZERO;
 
 /**
- * Vector class representing a vector.
+ * Vector class representing a vector in the space (3D).
  *
  * @author Aviel Buta and Yakir Yohanan
  */
 public class Vector {
 
+    /**
+     * The head of the vector
+     */
     Point3D _head;
 
     /**
-     * Vector c-tor receiving 3 double values
+     * c-tor, initiate the coordinate of the vector's head with the receiving values
      *
-     * @param x double value
-     * @param y double value
-     * @param z double value
+     * @param x The x coordinate
+     * @param y The y coordinate
+     * @param z The z coordinate
      */
     public Vector(double x, double y, double z) {
+        //Creating the new point with the receiving coordinates
         Point3D newPoint = new Point3D(x, y, z);
 
+        // Check if the coordinates create the ZERO vector, because in our program its can't be.
         if (newPoint.equals(ZERO)) throw new IllegalArgumentException("The vector cannot be the 'zero vector' ");
+
+        // Update the head to be the created point
         _head = new Point3D(x, y, z);
     }
 
     /**
-     * Vector c-tor receiving Point3D
+     * c-tor, initiate the coordinate of the vector's head with the receiving point's coordinates
      *
-     * @param head Point3D value
+     * @param head The point to initiate the coordinate with
      */
     public Vector(Point3D head) {
+        // Check if the coordinates create the ZERO vector, because in our program its can't be.
         if (head.equals(ZERO)) throw new IllegalArgumentException("The vector cannot be the 'zero vector' ");
         _head = head;
     }
 
     /**
-     * add method return vector witch is the sum of two vectors
+     * Adding two vectors, 'this' and the received one
      *
-     * @param vector Vector value
-     * @return Vector value
+     * @param vector The vector to add to 'this'
+     * @return New vector after adding (Vector)
      */
     public Vector add(Vector vector) {
-        Vector newVector = new Vector(_head._x.coord + vector._head._x.coord,
-                _head._y.coord + vector._head._y.coord,
-                _head._z.coord + vector._head._z.coord);
+        Vector newVector = new Vector(getHead().getX() + vector.getHead().getX(),
+                getHead().getY() + vector.getHead().getY(),
+                getHead().getZ() + vector.getHead().getZ());
 
         return newVector;
     }
 
     /**
-     * subtract method return new Vector witch his coordinates is the subtract of the
-     * receiving Vector coordinates from 'this' Vector coordinates.
+     * Subtract the receiving Vector coordinates from 'this' Vector coordinates.
      *
-     * @param vector Vector value
-     * @return Vector value
+     * @param vector The vector to subtract from 'this'
+     * @return New vector after subtracting (Vector)
      */
     public Vector subtract(Vector vector) {
-        Vector newVector = new Vector(_head._x.coord - vector._head._x.coord,
-                _head._y.coord - vector._head._y.coord,
-                _head._z.coord - vector._head._z.coord);
+        Vector newVector = new Vector(getHead().getX() - vector.getHead().getX(),
+                getHead().getY() - vector.getHead().getY(),
+                getHead().getZ() - vector.getHead().getZ());
 
         return newVector;
     }
 
     /**
-     * scale return multiple vector by a receiving scalar
+     * Scaling vector by a receiving scalar
      *
-     * @param scalar double value
-     * @return Vector value
+     * @param scalar The scalar scaling value
+     * @return New vector after scaling (Vector)
      */
     public Vector scale(double scalar) {
 
-        return new Vector(_head._x.coord * scalar, _head._y.coord * scalar, _head._z.coord * scalar);
+        return new Vector(getHead().getX() * scalar, getHead().getY() * scalar, getHead().getZ() * scalar);
     }
 
 
     /**
-     * dotProduct return sum of multiple between the coordinates of the two vectors
+     * Calculating an dot product between two vectors
+     * by summarize the scaling results between the coordinates
      *
-     * @param vector Vector value
-     * @return double value
+     * @param vector The vector to product with
+     * @return The dot product result (double)
      */
     public double dotProduct(Vector vector) {
-        return (_head._x.coord * vector._head._x.coord +
-                _head._y.coord * vector._head._y.coord +
-                _head._z.coord * vector._head._z.coord);
+        return (getHead().getX() * vector.getHead().getX() +
+                getHead().getY() * vector.getHead().getY() +
+                getHead().getZ() * vector.getHead().getZ());
     }
 
     /**
-     * crossProduct calculate cartesian product and return the a new Vector
+     * Calculate cross product between two vectors
      *
-     * @param vector Vector value
-     * @return Vector value
+     * @param vector The vector to product with
+     * @return The new Vector with the coordinates after scaling (Vector)
      */
     public Vector crossProduct(Vector vector) {
         return new Vector(
-                _head._y.coord * vector._head._z.coord - _head._z.coord * vector._head._y.coord,
-                _head._z.coord * vector._head._x.coord - _head._x.coord * vector._head._z.coord,
-                _head._x.coord * vector._head._y.coord - _head._y.coord * vector._head._x.coord
+                getHead().getY() * vector.getHead().getZ() - getHead().getZ() * vector.getHead().getY(),
+                getHead().getZ() * vector.getHead().getX() - getHead().getX() * vector.getHead().getZ(),
+                getHead().getX() * vector.getHead().getY() - getHead().getY() * vector.getHead().getX()
         );
     }
 
     /**
-     * lengthSquared method calculate the length of vector (power 2)
+     * Calculate the length of the vector (powered by 2)
      *
-     * @return double value
+     * @return The squared length of the vector (double)
      */
     public double lengthSquared() {
-        return _head._x.coord * _head._x.coord
-                + _head._y.coord * _head._y.coord
-                + _head._z.coord * _head._z.coord;
+        return getHead().getX() * getHead().getX()
+                + getHead().getY() * getHead().getY()
+                + getHead().getZ() * getHead().getZ();
     }
 
 
     /**
-     * length method calculate the length of vector
+     * Calculate the length of the vector
      *
-     * @return double value
+     * @return The length of the vector (double)
      */
     public double length() {
         return Math.sqrt(this.lengthSquared());
     }
 
     /**
-     * normalize method normalize the vector
+     * Normalize the vector
      *
-     * @return Vector value
+     * @return The normalized vector (Vector)
      */
     public Vector normalize() {
+
+        //Calculate the length of the vector to reduce the coordinate with
         double length = this.length();
 
+        //Normalize the vector
         Point3D newPoint = new Point3D(
-                _head._x.coord / length,
-                _head._y.coord / length,
-                _head._z.coord / length
+                getHead().getX() / length,
+                getHead().getY() / length,
+                getHead().getZ() / length
         );
 
         _head = newPoint;
@@ -143,19 +154,23 @@ public class Vector {
     }
 
     /**
-     * normalized method return a new normalize vector
+     * Return a new normalize vector
      *
-     * @return Vector value
+     * @return The new normalized vector
      */
     public Vector normalized() {
-        Vector newVector = new Vector(this._head);
+
+        // Create new vector with the same values
+        Vector newVector = new Vector(getHead());
+
+        // normalized and return the new vector
         return newVector.normalize();
     }
 
     /**
-     * getHead return the head point of the vector
+     * Return the head point of the vector
      *
-     * @return Point3D value
+     * @return The head point of the vector (Point3D)
      */
     public Point3D getHead() {
         return _head;
