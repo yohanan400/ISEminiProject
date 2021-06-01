@@ -44,6 +44,9 @@ class PlaneTests {
         }, "The vector cannot be the 'zero vector' ");
     }
 
+    /**
+     * Test method for {@link geometries.Plane#findIntersections(Ray)}
+     */
     @Test
     void findIntersectionsTest() {
         Plane plane = new Plane(new Point3D(1,0,1), new Point3D(0,1,1), new Point3D(1,1,1));

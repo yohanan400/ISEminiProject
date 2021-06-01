@@ -15,6 +15,9 @@ import static org.junit.jupiter.api.Assertions.assertNull;
  */
 class GeometriesTests {
 
+    /**
+     * Test for {@link geometries.Geometries#findIntersections(Ray)}
+     */
     @Test
     void findIntersections() {
         Plane plane = new Plane(new Point3D(1, 0, 0), new Point3D(2, 0, 0), new Point3D(1.5, 0, 1));

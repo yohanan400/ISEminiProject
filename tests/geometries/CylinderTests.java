@@ -42,6 +42,5 @@ class CylinderTests {
         // TC11: check second center base normal (if p = o)
         assertEquals(cy._axisRay.getDir(), cy.getNormal(new Point3D(0,0,10)),
                 "Bad normal to second base center of the cylinder");
-
     }
 }

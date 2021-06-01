@@ -17,7 +17,9 @@ import static org.junit.jupiter.api.Assertions.assertNull;
  */
 class RayTests {
 
-
+    /**
+     * Test method for {@link primitives.Ray#findClosestPoint(List)}
+     */
     @Test
     void findClosestPoint() {
 
@@ -52,6 +54,9 @@ class RayTests {
         assertNull(ray3.findClosestPoint(point3DList), "The list is empty!!");
     }
 
+    /**
+     * Test method for {@link primitives.Ray#getClosestGeoPoint(List)}
+     */
     @Test
     void getClosestGeoPoint() {
 
@@ -87,5 +92,4 @@ class RayTests {
         geoPointsList.clear();
         assertNull(ray3.getClosestGeoPoint(geoPointsList), "The list is empty!!");
     }
-
 }

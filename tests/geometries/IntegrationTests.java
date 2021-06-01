@@ -1,10 +1,6 @@
 package geometries;
 
 import elements.Camera;
-import geometries.Intersectable;
-import geometries.Plane;
-import geometries.Sphere;
-import geometries.Triangle;
 import org.junit.jupiter.api.Test;
 import primitives.Point3D;
 import primitives.Ray;
@@ -21,10 +17,11 @@ public class IntegrationTests {
 
     /**
      * Goes through the whole View Plane and summarise all the intersections points
+     *
      * @param geometry the intersect object
-     * @param camera the camera
-     * @param nY number of rows (int)
-     * @param nX number of columns (int)
+     * @param camera   the camera
+     * @param nY       number of rows (int)
+     * @param nX       number of columns (int)
      * @return the number of intersections
      */
     private int sumOfIntersections(Intersectable geometry, Camera camera, int nY, int nX) {
@@ -124,5 +121,4 @@ public class IntegrationTests {
 
 
     }
-
 }

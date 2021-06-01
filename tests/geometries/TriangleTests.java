@@ -17,6 +17,9 @@ import static org.junit.jupiter.api.Assertions.assertNull;
  */
 class TriangleTests {
 
+    /**
+     * Test method for {@link geometries.Triangle#findIntersections(Ray)}
+     */
     @Test
     void findIntersections() {
         Triangle t = new Triangle(new Point3D(0, 1, 0), new Point3D(0, 5, 0), new Point3D(0, 3, 5));

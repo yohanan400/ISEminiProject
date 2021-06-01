@@ -33,7 +33,5 @@ class TubeTests {
                     tu.getNormal(new Point3D(0, 0, 1));
                 },
                 "can't be ZERO vector");
-
-
     }
 }

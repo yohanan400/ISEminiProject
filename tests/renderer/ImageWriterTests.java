@@ -3,6 +3,8 @@ package renderer;
 import org.junit.jupiter.api.Test;
 import primitives.Color;
 
+import java.util.List;
+
 /**
  * Testing ImageWriter Class
  *
@@ -24,8 +26,5 @@ public class ImageWriterTests {
             }
         }
         image1.writeToImage();
-
     }
-
-
 }
