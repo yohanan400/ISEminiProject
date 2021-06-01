@@ -71,4 +71,30 @@ public class Material {
         // return this for chaining
         return this;
     }
+
+    /**
+     * Set the Transparency attenuation factor
+     *
+     * @param kT Transparency factor
+     * @return this (Material)
+     */
+    public Material setKt(double kT) {
+        _kT = kT;
+
+        // return this for chaining
+        return this;
+    }
+
+    /**
+     * Set the refraction attenuation factor
+     *
+     * @param kR refraction factor
+     * @return this (Material)
+     */
+    public Material setKr(double kR) {
+        _kR = kR;
+
+        // return this for chaining
+        return this;
+    }
 }
