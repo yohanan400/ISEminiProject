@@ -48,12 +48,12 @@ public class IntegrationTests {
         //TC01: Sphere r=1 (2 intersections)
         Sphere sphere1 = new Sphere(new Point3D(0, 0, -3), 1d);
         Camera camera1 = new Camera(new Point3D(0, 0, 0), new Vector(0, 1, 0),
-                new Vector(0, 0, -1)).setDistance(1).setViewPlaneSize(3, 3);
+                new Vector(0, 0, -1)).setViewPlaneDistance(1).setViewPlaneSize(3, 3);
         assertEquals(2, sumOfIntersections(sphere1, camera1, 3, 3), "sphere with r=1");
 
         //--new camera for tests 02,03,04--
         Camera camera2 = new Camera(new Point3D(0, 0, 0.5), new Vector(0, 1, 0),
-                new Vector(0, 0, -1)).setDistance(1).setViewPlaneSize(3, 3);
+                new Vector(0, 0, -1)).setViewPlaneDistance(1).setViewPlaneSize(3, 3);
 
         //TC02: Sphere r=2.5 (18 intersections)
         Sphere sphere2 = new Sphere(new Point3D(0, 0, -2.5), 2.5);
@@ -70,7 +70,7 @@ public class IntegrationTests {
         //TC05: Sphere r=0.5 (0 intersections)
         Sphere sphere5 = new Sphere(new Point3D(0, 0, 1), 0.5);
         Camera camera3 = new Camera(new Point3D(0, 0, 0.25), new Vector(0, 1, 0),
-                new Vector(0, 0, -1)).setDistance(1).setViewPlaneSize(3, 3);
+                new Vector(0, 0, -1)).setViewPlaneDistance(1).setViewPlaneSize(3, 3);
         assertEquals(0, sumOfIntersections(sphere5, camera3, 3, 3), "sphere with r=0.5");
 
     }
@@ -84,7 +84,7 @@ public class IntegrationTests {
     public void planeIntegrationTest() {
 
         Camera camera = new Camera(new Point3D(0, 0, 1), new Vector(0, 1, 0),
-                new Vector(0, 0, -1)).setDistance(1).setViewPlaneSize(3, 3);
+                new Vector(0, 0, -1)).setViewPlaneDistance(1).setViewPlaneSize(3, 3);
 
         //TC01: The plane parallel to the View Plane (9 intersections)
         Plane plane1 = new Plane(new Point3D(0, 0, -2), new Vector(0, 0, 1));
@@ -109,7 +109,7 @@ public class IntegrationTests {
     public void triangleIntegrationTest() {
 
         Camera camera = new Camera(new Point3D(0, 0, 1), new Vector(0, 1, 0),
-                new Vector(0, 0, -1)).setDistance(1).setViewPlaneSize(3, 3);
+                new Vector(0, 0, -1)).setViewPlaneDistance(1).setViewPlaneSize(3, 3);
 
         //TC01: Small triangle (1 intersection)
         Triangle triangle1 = new Triangle(new Point3D(0, 1, -2), new Point3D(1, -1, -2), new Point3D(-1, -1, -2));

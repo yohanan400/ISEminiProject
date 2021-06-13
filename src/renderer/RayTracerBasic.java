@@ -16,13 +16,19 @@ import static primitives.Util.alignZero;
  */
 public class RayTracerBasic extends RayTracerBase {
 
-    // The number of continuous rays to calculate the impact on the intersection points
+    /**
+     * The number of continuous rays to calculate the impact on the intersection points
+     */
     private static final int MAX_CALC_COLOR_LEVEL = 10;
 
-    // Stop condition, the minimum impact of rays to continue calculate
+    /**
+     * Stop condition, the minimum impact of rays to continue calculate
+     */
     private static final double MIN_CALC_COLOR_K = 0.001;
 
-    // The starting impact value of ray on intersection point
+    /**
+     * The starting impact value of ray on intersection point
+     */
     private static final double INITIAL_K = 1.0;
 
 
@@ -175,32 +181,6 @@ public class RayTracerBasic extends RayTracerBase {
         Color specular = lightIntensity.scale(kS * Math.pow(Math.max(0, v.scale(-1).dotProduct(r)), nShininess));
         return specular;
     }
-
-//    /**
-//     * Check if there have an intersections between the object to the light source
-//     *
-//     * @param l        The ray from the light source
-//     * @param n        The normal to the object
-//     * @param geoPoint The intersection point between the light ray and the object
-//     * @return It there not have an intersections with the shadow ray (Boolean)
-//     */
-//    private boolean unshaded(LightSource light, Vector l, Vector n, GeoPoint geoPoint) {
-//
-//        if (geoPoint._geometry.getMaterial()._kT == 0)
-//            return true;
-//
-//        Ray lightRay = new Ray(geoPoint._point, l.scale(-1), n);
-//
-//        //check if there have an intersections between the object to the light source
-//        List<GeoPoint> intersections = _scene._geometries.findGeoIntersections(lightRay);
-//        if (intersections == null) return true;
-//        double lightDistance = light.getDistance(geoPoint._point);
-//        for (GeoPoint gp : intersections) {
-//            if (alignZero(gp._point.distance(geoPoint._point) - lightDistance) <= 0 && gp._geometry.getMaterial()._kT == 0)
-//                return false;
-//        }
-//        return true;
-//    }
 
     /**
      * Calculate partial shadow

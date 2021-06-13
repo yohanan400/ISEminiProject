@@ -6,7 +6,11 @@ import primitives.Color;
  * An abstract class, represent the light
  */
 abstract class Light {
-    protected Color _intensity; // The intensity of the color of the light
+
+    /**
+     * The intensity of the color of the light
+     */
+    protected Color _intensity;
 
     /**
      * c-tor initialize the intensity filed

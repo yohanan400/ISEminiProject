@@ -15,7 +15,10 @@ import java.util.List;
  */
 public class Cylinder extends Tube {
 
-    double _height; //The height of the cylinder
+    /**
+     * The height of the cylinder
+     */
+    double _height;
 
     /**
      * Cylinder c-tor receiving a Ray, and two doubles
@@ -26,6 +29,7 @@ public class Cylinder extends Tube {
      */
     public Cylinder(Ray axisRay, double radius, double height) {
         super(axisRay, radius); // initialize the fields to the received values
+        System.out.println("Cylinder created");
         _height = height;
     }
 
@@ -53,9 +57,14 @@ public class Cylinder extends Tube {
         Point3D centerOfOneSide = _axisRay.getP0();
         Point3D centerOfSecondSide = _axisRay.getP0().add(_axisRay.getDir().scale(_height));
 
+        System.out.println("cylinder getNormal called");
+
         // If the point is the center base (on the sides of the cylinder)
         if (point.equals(centerOfOneSide) || point.equals(centerOfSecondSide)) {
             // return the centered ray
+
+            System.out.println("on the center of the cylinder");
+
             return directionOfCylinder;
         }
 
@@ -63,14 +72,25 @@ public class Cylinder extends Tube {
         //If the point is on the bases but not the center point
         if (projection == 0) {
             Vector v1 = point.subtract(centerOfOneSide);
+            System.out.println("on the bases but not center");
+
             return v1.normalize();
         }
+
+        System.out.println("on the side");
 
         //If the point is on the side of the cylinder
         Point3D center = centerOfOneSide.add(directionOfCylinder.scale(projection));
         Vector v = point.subtract(center);
         return v.normalize();
+    }
 
+    @Override
+    public List<GeoPoint> findGeoIntersections(Ray ray) {
+
+
+
+        return null;
     }
 
     @Override

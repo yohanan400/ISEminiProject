@@ -13,8 +13,19 @@ import java.util.MissingResourceException;
  */
 public class Render {
 
+    /**
+     * The object responsible to make the jpeg after the render of the scene
+     */
     ImageWriter _imageWriter = null;
+
+    /**
+     * The camera of the scene
+     */
     Camera _camera = null;
+
+    /**
+     * The ray tracer object to trace after the rays from the camera to the scene objects
+     */
     RayTracerBase _rayTracerBase = null;
 
     /**
@@ -82,11 +93,14 @@ public class Render {
             for (int i = 0; i < _imageWriter.getNy(); i++) {
                 for (int j = 0; j < _imageWriter.getNx(); j++) {
                     // Create the ray from the camera to the objects
-                    Ray ray = _camera.constructRayThroughPixel(_imageWriter.getNx(), _imageWriter.getNy(), j, i);
-                    // Set the color of the current pixel
-                    Color color = _rayTracerBase.traceRay(ray);
+                    Color color = Color.BLACK;
+                    for (int k = 1; k<=100; k++) {
+                        Ray ray = _camera.constructRayThroughPixel(_imageWriter.getNx(), _imageWriter.getNy(), j, i);
+                        // Set the color of the current pixel
+                        color = color.add(_rayTracerBase.traceRay(ray));
+                    }
                     // Paint the pixel
-                    _imageWriter.writePixel(j, i, color);
+                    _imageWriter.writePixel(j, i, color.reduce(100));
                 }
             }
         } catch (MissingResourceException e) {

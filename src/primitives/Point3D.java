@@ -7,7 +7,7 @@ package primitives;
  */
 
 public class Point3D {
-    
+
     /**
      * The x coordinate
      */
@@ -23,7 +23,9 @@ public class Point3D {
      */
     final Coordinate _z;
 
-    // The zero point for shortcut
+    /**
+     * The zero point for shortcut
+     */
     public static Point3D ZERO = new Point3D(0.0d, 0.0d, 0.0d);
 
     /**

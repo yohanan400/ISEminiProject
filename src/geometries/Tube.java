@@ -14,8 +14,15 @@ import java.util.List;
  */
 public class Tube extends Geometry {
 
-    protected Ray _axisRay; // The centered ray of the tube
-    protected double _radius; // The radius of the tube
+    /**
+     * The centered ray of the tube
+     */
+    protected Ray _axisRay;
+
+    /**
+     * The radius of the tube
+     */
+    protected double _radius;
 
     /**
      * c-tor initiate the fields with the receiving values
@@ -67,18 +74,9 @@ public class Tube extends Geometry {
 
         // Calculate the normal
         Vector v = point.subtract(center);
-        return v.normalize(); // Return the normalized normal
-    }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Tube tube = (Tube) o;
-
-        if (Double.compare(tube._radius, _radius) != 0) return false;
-        return _axisRay != null ? _axisRay.equals(tube._axisRay) : tube._axisRay == null;
+        // Return the normalized normal
+        return v.normalize();
     }
 
     /**
@@ -91,6 +89,17 @@ public class Tube extends Geometry {
     @Override
     public List<GeoPoint> findGeoIntersections(Ray ray) {
         return null;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Tube tube = (Tube) o;
+
+        if (Double.compare(tube._radius, _radius) != 0) return false;
+        return _axisRay != null ? _axisRay.equals(tube._axisRay) : tube._axisRay == null;
     }
 
     @Override

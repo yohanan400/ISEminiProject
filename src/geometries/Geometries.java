@@ -14,7 +14,10 @@ import java.util.List;
 public class Geometries implements Intersectable {
 
     // We choose linkList because we need to go through all the objects iteratively
-    private final List<Intersectable> _intersectables = new LinkedList<>(); // List of all the geometries
+    /**
+     * List of all the geometries
+     */
+    private final List<Intersectable> _intersectables = new LinkedList<>();
 
     /**
      * geometries c-tor

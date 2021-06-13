@@ -25,10 +25,10 @@ public class LightsTests {
             .setAmbientLight(new AmbientLight(new Color(java.awt.Color.WHITE), 0.15));
     private Camera camera1 = new Camera(new Point3D(0, 0, 1000), new Vector(0, 1, 0), new Vector(0, 0, -1))  //
             .setViewPlaneSize(150, 150) //
-            .setDistance(1000);
+            .setViewPlaneDistance(1000);
     private Camera camera2 = new Camera(new Point3D(0, 0, 1000), new Vector(0, 1, 0), new Vector(0, 0, -1)) //
             .setViewPlaneSize(200, 200) //
-            .setDistance(1000);
+            .setViewPlaneDistance(1000);
 
     private static Geometry triangle1 = new Triangle( //
             new Point3D(-150, -150, -150), new Point3D(150, -150, -150), new Point3D(75, 75, -150));

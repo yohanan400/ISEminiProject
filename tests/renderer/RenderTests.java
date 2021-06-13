@@ -18,7 +18,7 @@ import scene.Scene;
  */
 public class RenderTests {
     private Camera camera = new Camera(Point3D.ZERO, new Vector(0, 1, 0), new Vector(0, 0, -1)) //
-            .setDistance(100) //
+            .setViewPlaneDistance(100) //
             .setViewPlaneSize(500, 500);
 
     /**

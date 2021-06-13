@@ -12,8 +12,15 @@ import primitives.Vector;
  */
 public abstract class Geometry implements Intersectable {
 
-    protected Color emission = Color.BLACK; // The color of the geometry
-    private Material _material = new Material(); // The material type of the geometry
+    /**
+     * The color of the geometry
+     */
+    protected Color emission = Color.BLACK;
+
+    /**
+     * The material type of the geometry
+     */
+    private Material _material = new Material();
 
     /**
      * Calculate the normal of the geometry in the received point
@@ -49,7 +56,9 @@ public abstract class Geometry implements Intersectable {
      */
     public Geometry setEmission(Color emission) {
         this.emission = emission;
-        return this; // return this for chaining
+
+        // return this for chaining
+        return this;
     }
 
     /**
@@ -60,6 +69,8 @@ public abstract class Geometry implements Intersectable {
      */
     public Geometry setMaterial(Material material) {
         _material = material;
-        return this; // return this for chaining
+
+        // return this for chaining
+        return this;
     }
 }

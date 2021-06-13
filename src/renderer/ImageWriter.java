@@ -19,20 +19,30 @@ import java.util.logging.Logger;
  */
 public class ImageWriter {
 
-    // The view plane size (width pixels and height pixels)
+    /**
+     * The view plane size (width pixels and height pixels)
+     */
     private int nX;
     private int nY;
 
-    // The path to the images directory
+    /**
+     * The path to the images directory
+     */
     private static final String FOLDER_PATH = System.getProperty("user.dir") + "/images";
 
-    // The buffer of the image
+    /**
+     * The buffer of the image
+     */
     private BufferedImage image;
 
-    // The name of the image to save
+    /**
+     * The name of the image to save
+     */
     private String imageName;
 
-    // log massage
+    /**
+     * log massage
+     */
     private Logger logger = Logger.getLogger("ImageWriter");
 
     // ***************** Constructors ********************** //

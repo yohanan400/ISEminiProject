@@ -8,7 +8,11 @@ import primitives.Vector;
  * Represent spot light
  */
 public class SpotLight extends PointLight {
-    private final Vector _direction; // The direction vector of the spot light
+
+    /**
+     * The direction vector of the spot light
+     */
+    private final Vector _direction;
 
     /**
      * c-tor initialize all the fields

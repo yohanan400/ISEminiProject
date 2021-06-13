@@ -1,5 +1,6 @@
 package renderer;
 
+import elements.Camera;
 import primitives.Color;
 import primitives.Ray;
 import scene.Scene;
@@ -11,6 +12,9 @@ import scene.Scene;
  */
 public abstract class RayTracerBase {
 
+    /**
+     * The scene object to trace after the ray intersect his geometries objects
+     */
     protected Scene _scene;
 
     /**

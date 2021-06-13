@@ -11,10 +11,25 @@ import primitives.Vector;
  */
 public class PointLight extends Light implements LightSource {
 
-    protected Point3D _position; // The position point of the light source in space
-    private double kC = 1d; // The specular attenuation factor, required to ensure that the denominator in getIntensity >𝟏
-    private double kL = 0d; // The light source attenuation factor
-    private double kQ = 0d;// The attenuation factor of the energy coming to the point
+    /**
+     * The position point of the light source in space
+     */
+    protected Point3D _position;
+
+    /**
+     * The specular attenuation factor, required to ensure that the denominator in getIntensity >𝟏
+     */
+    private double kC = 1d;
+
+    /**
+     * The light source attenuation factor
+     */
+    private double kL = 0d;
+
+    /**
+     * The attenuation factor of the energy coming to the point
+     */
+    private double kQ = 0d;
 
 
     /**

@@ -20,7 +20,7 @@ public class CameraTests {
      */
     @Test
     public void testConstructRayThroughPixel() {
-        Camera camera = new Camera(Point3D.ZERO, new Vector(0, -1, 0), new Vector(0, 0, 1)).setDistance(10);
+        Camera camera = new Camera(Point3D.ZERO, new Vector(0, -1, 0), new Vector(0, 0, 1)).setViewPlaneDistance(10);
 
         // ============ Equivalence Partitions Tests ==============
         // TC01: 3X3 Corner (0,0)

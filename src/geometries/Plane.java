@@ -17,8 +17,15 @@ import static primitives.Util.isZero;
  */
 public class Plane extends Geometry {
 
-    Point3D _p0; // point on the plane
-    Vector _normal; // the normal of the plane
+    /**
+     * Point on the plane
+     */
+    Point3D _p0;
+
+    /**
+     * The normal of the plane
+     */
+    Vector _normal;
 
     /**
      * c-tor receiving 3 points on the plane
@@ -61,7 +68,12 @@ public class Plane extends Geometry {
      */
     @Override
     public Vector getNormal(Point3D point) {
-        return null; // NOT IMPLEMENTED
+
+        Vector v1 = point.subtract(_p0);
+        Vector v2 = v1.crossProduct(_normal);
+        Vector v3 = v1.subtract(v2);
+
+        return v3.crossProduct(v1).normalize();
     }
 
     /**

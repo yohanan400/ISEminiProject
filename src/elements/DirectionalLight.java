@@ -9,7 +9,10 @@ import primitives.Vector;
  */
 public class DirectionalLight extends Light implements LightSource {
 
-    private final Vector _direction; // The direction of the directional light
+    /**
+     * The direction of the directional light
+     */
+    private final Vector _direction;
 
     /**
      * c-tor initialize the intensity filed
