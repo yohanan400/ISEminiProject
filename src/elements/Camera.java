@@ -37,12 +37,12 @@ public class Camera {
     /**
      *  To do depth of field (True) or not (False)
      */
-    private boolean DOF = true;
+    private boolean DOF = false;
 
     /**
      * The distance from the camera to the view plane
      */
-    private double _distance;
+    private double _viewPlaneDistance;
 
     /**
      * The distance from the camera to the focal plane
@@ -135,7 +135,7 @@ public class Camera {
      * @return return the camera itself (Camera)
      */
     public Camera setViewPlaneDistance(double distance) {
-        _distance = distance;
+        _viewPlaneDistance = distance;
 
         // return this for chaining
         return this;
@@ -154,7 +154,7 @@ public class Camera {
     public Ray constructRayThroughPixel(int nX, int nY, int j, int i) {
 
         //Image center
-        Point3D pC = _p0.add(_vTo.scale(_distance));
+        Point3D pC = _p0.add(_vTo.scale(_viewPlaneDistance));
 
         // Ratio (pixel width & height)
         double rX = _width / nX;
@@ -181,7 +181,7 @@ public class Camera {
     public Ray constructRayThroughPixelDOF(Point3D pIJ, Vector vIJ) {
 
         // The distance from the view plane to the focal plane
-        double distance = _focalDistance - _distance;
+        double distance = _focalDistance - _viewPlaneDistance;
 
         // Create the focal point
         // Take the centered point on the view plane and go with the same direction, from the camera
@@ -230,7 +230,7 @@ public class Camera {
         return _height;
     }
 
-    public double getDistance() {
-        return _distance;
+    public double getViewPlaneDistance() {
+        return _viewPlaneDistance;
     }
 }

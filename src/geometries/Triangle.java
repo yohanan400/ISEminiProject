@@ -26,6 +26,22 @@ public class Triangle extends Polygon {
     }
 
     /**
+     * Get the normal of the plane on a specific point
+     *
+     * @param point Point on the surface of the geometry shape
+     * @return The normal on the receiving point
+     */
+    @Override
+    public Vector getNormal(Point3D point) {
+
+        Vector v1 = point.subtract(plane._p0);
+        Vector v2 = v1.crossProduct(plane._normal);
+        Vector v3 = v1.subtract(v2);
+
+        return v3.crossProduct(v1).normalize();
+    }
+
+    /**
      * Find the intersection point of the ray and the triangle
      *
      * @param ray The light ray
@@ -34,16 +50,19 @@ public class Triangle extends Polygon {
     @Override
     public List<GeoPoint> findGeoIntersections(Ray ray) {
 
+        List<GeoPoint> intersectionsList = plane.findGeoIntersections(ray);
+
         // Check if the ray intersect the containing plane of the triangle
         // If not return null (sure not intersect)
-        if (plane.findGeoIntersections(ray) == null) {
+        if (intersectionsList == null) {
             return null;
         }
 
         // Create the triangle
-        Vector v1 = vertices.get(0).subtract(ray.getP0());
-        Vector v2 = vertices.get(1).subtract(ray.getP0());
-        Vector v3 = vertices.get(2).subtract(ray.getP0());
+        Point3D p0 = ray.getP0();
+        Vector v1 = vertices.get(0).subtract(p0);
+        Vector v2 = vertices.get(1).subtract(p0);
+        Vector v3 = vertices.get(2).subtract(p0);
 
         // Calculate the normals
         Vector n1 = v1.crossProduct(v2).normalize();
@@ -52,12 +71,15 @@ public class Triangle extends Polygon {
 
         Vector v = ray.getDir();
 
+        double vn1 = alignZero(v.dotProduct(n1));
+        double vn2 = alignZero(v.dotProduct(n2));
+        double vn3 = alignZero(v.dotProduct(n3));
+
         // If all in the same direction the ray intersect the triangle
-        if ((alignZero(v.dotProduct(n1)) > 0 && alignZero(v.dotProduct(n2)) > 0 && alignZero(v.dotProduct(n3)) > 0) ||
-                (alignZero(v.dotProduct(n1)) < 0 && alignZero(v.dotProduct(n2)) < 0 && alignZero(v.dotProduct(n3)) < 0)) {
+        if ((vn1 > 0 && vn2 > 0 && vn3 > 0) || (vn1 < 0 && vn2 < 0 && vn3 < 0)) {
 
             // find the intersection point and return it as a list of GeoPoint
-            return List.of(new GeoPoint(this, plane.findGeoIntersections(ray).get(0)._point));
+            return List.of(new GeoPoint(this, intersectionsList.get(0)._point));
         }
         // If the ray not intersect the triangle
         return null;

@@ -129,10 +129,12 @@ public class Plane extends Geometry {
             return null;
         }
 
+        Point3D point = ray.getP0().add(ray.getDir().scale(t));
+
         // The intersection point
-        Point3D p = new Point3D(ray.getP0().add(ray.getDir().scale(t)).getX(),
-                ray.getP0().add(ray.getDir().scale(t)).getY(),
-                ray.getP0().add(ray.getDir().scale(t)).getZ());
+        Point3D p = new Point3D(point.getX(),
+                point.getY(),
+                point .getZ());
 
         return List.of(new GeoPoint(this, p)); // List of intersection GeoPoint
     }

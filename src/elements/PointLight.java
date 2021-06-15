@@ -5,7 +5,13 @@ import primitives.Point3D;
 import primitives.Vector;
 
 /**
- * Represent point light
+ * A point light is located at a point in space and sends light out in all directions equally.
+ * The direction of light hitting a surface is the line from the point of contact back to the center of the light object.
+ * The intensity diminishes with distance from the light, reaching zero at a specified range.
+ * Light intensity is inversely proportional to the square of the distance from the source.
+ * This is known as ‘inverse square law’ and is similar to how light behaves in the real world.
+ *
+ * Point lights are useful for simulating lamps and other local sources of light in a scene.
  *
  * @author Aviel Buta and Yakir Yohanan
  */

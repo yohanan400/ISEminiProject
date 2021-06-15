@@ -5,7 +5,15 @@ import primitives.Point3D;
 import primitives.Vector;
 
 /**
- * Represent spot light
+ * Like a point light, a spot light has a specified location and range over which the light falls off.
+ * However, the spot light is constrained to an angle, resulting in a cone-shaped region of illumination.
+ * The center of the cone points in the forward direction of the light object.
+ * Light also diminishes at the edges of the spot light’s cone.
+ * Widening the angle increases the width of the cone and with it increases the size of this fade, known as the ‘penumbra’.
+ *
+ * Spot lights are generally used for artificial light sources such as flashlights, car headlights and searchlights.
+ *
+ * @author Aviel Buta and Yakir Yohanan
  */
 public class SpotLight extends PointLight {
 

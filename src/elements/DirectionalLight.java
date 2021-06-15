@@ -5,7 +5,14 @@ import primitives.Point3D;
 import primitives.Vector;
 
 /**
- * represent directional light
+ * Directional lights are very useful for creating effects such as sunlight in your scenes.
+ * Behaving in many ways like the sun, directional lights can be thought of as distant light sources
+ * which exist infinitely far away.
+ * A directional light does not have any identifiable source position and so the light object can be placed anywhere in the scene.
+ * All objects in the scene are illuminated as if the light is always from the same direction.
+ * The distance of the light from the target object is not defined and so the light does not diminish.
+ *
+ * @author Aviel Buta and Yakir Yohanan
  */
 public class DirectionalLight extends Light implements LightSource {
 
