@@ -34,6 +34,8 @@ public class SpotLight extends PointLight {
         _direction = direction.normalized(); // normalize the direction vector for the calculations
     }
 
+    //--------------------------------------------------- GETTERS ---------------------------------------------------//
+
     /**
      * Calculate and return the intensity light on specific point
      *
@@ -61,6 +63,8 @@ public class SpotLight extends PointLight {
     public double getDistance(Point3D point) {
         return _position.distance(point);
     }
+
+    //--------------------------------------------------- SETTERS ---------------------------------------------------//
 
     /**
      * Set the specular attenuation factor

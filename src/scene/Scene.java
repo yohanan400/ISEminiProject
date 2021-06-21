@@ -25,6 +25,8 @@ import java.util.List;
  */
 public class Scene {
 
+    //--------------------------------------------------- FIELDS ---------------------------------------------------//
+
     /**
      * The scene name
      */
@@ -52,6 +54,8 @@ public class Scene {
      */
     // linked list because all the time we need to use it, we need to go trough all the elements
     public List<LightSource> _lightSourceList = new LinkedList<LightSource>();
+
+    //--------------------------------------------------- C-TOR ---------------------------------------------------//
 
     /**
      * c-tor, initialize the name of the scene and the geometries list of the scene
@@ -171,6 +175,8 @@ public class Scene {
             e.printStackTrace();
         }
     }
+
+    //--------------------------------------------------- SETTERS ---------------------------------------------------//
 
     /**
      * Set the background of the scene

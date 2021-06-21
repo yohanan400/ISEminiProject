@@ -16,6 +16,8 @@ import static primitives.Util.alignZero;
  */
 public class RayTracerBasic extends RayTracerBase {
 
+    //--------------------------------------------------- FIELDS ---------------------------------------------------//
+
     /**
      * The number of continuous rays to calculate the impact on the intersection points
      */
@@ -31,6 +33,7 @@ public class RayTracerBasic extends RayTracerBase {
      */
     private static final double INITIAL_K = 1.0;
 
+    //--------------------------------------------------- METHODS ---------------------------------------------------//
 
     /**
      * c-tor, initiate the scene field with received scene

@@ -17,6 +17,8 @@ import primitives.Vector;
  */
 public class PointLight extends Light implements LightSource {
 
+    //--------------------------------------------------- FIELDS ---------------------------------------------------//
+
     /**
      * The position point of the light source in space
      */
@@ -37,6 +39,7 @@ public class PointLight extends Light implements LightSource {
      */
     private double kQ = 0d;
 
+    //--------------------------------------------------- C-TOR ---------------------------------------------------//
 
     /**
      * c-tor initialize all the fields
@@ -48,6 +51,8 @@ public class PointLight extends Light implements LightSource {
         super(intensity); // Initialize the intensity to the received intensity
         _position = position;
     }
+
+    //--------------------------------------------------- GETTERS ---------------------------------------------------//
 
     /**
      * Calculate and return the intensity light on specific point
@@ -103,6 +108,8 @@ public class PointLight extends Light implements LightSource {
         // return this for chaining
         return this;
     }
+
+    //--------------------------------------------------- SETTERS ---------------------------------------------------//
 
     /**
      * Set the specular attenuation factor

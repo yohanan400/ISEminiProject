@@ -3,7 +3,8 @@ package renderer;
 import elements.Camera;
 import primitives.Color;
 import primitives.Ray;
-
+import java.util.ArrayList;
+import java.util.List;
 import java.util.MissingResourceException;
 
 /**
@@ -13,6 +14,7 @@ import java.util.MissingResourceException;
  */
 public class Render {
 
+    //--------------------------------------------------- FIELDS ----------------------------------------------------//
     /**
      * The object responsible to make the jpeg after the render of the scene
      */
@@ -45,6 +47,39 @@ public class Render {
      */
     private boolean print = false;
 
+    /**
+     * Static variable for determine the max depth number of the recursion
+     */
+    private static final int MAX_DEPTH_OF_ADAPTIVE = 8;
+
+    /**
+     * Static variable for determine the starting number of the recursion depth
+     */
+    private static final int STARTING_DEPTH = 1;
+
+    /**
+     * Static variable for determine the starting sign of the quarter
+     * 1 equals to plus sign and -1 equals to minus sign
+     * In particular:
+     * 1,1   - The first quarter
+     * -1,1   - The second quarter
+     * -1,-1  - The third quarter
+     * 1,-1  - The fourth quarter
+     */
+    private static final int STARTING_SIGN = 1;
+
+    /**
+     * To cast multiple rays (super sampling) - true, or not - false
+     */
+    private boolean superSampling = false;
+
+    /**
+     * To cast rays adaptively (true) or not (false)
+     */
+    private boolean adaptiveGrid = false;
+
+
+    //--------------------------------------------------- SETTERS ---------------------------------------------------//
 
     /**
      * Set multi-threading <br>
@@ -61,7 +96,6 @@ public class Render {
         else {
             int cores = Runtime.getRuntime().availableProcessors() - SPARE_THREADS;
             this.threadsCount = cores <= 2 ? 1 : cores;
-            System.out.println(cores);
         }
 
         // Return this for chaining
@@ -119,6 +153,34 @@ public class Render {
         // return this for chaining
         return this;
     }
+
+    /**
+     * Set if to cast multiple rays (superSampling)
+     *
+     * @param superSampling boolean
+     * @return this (Render)
+     */
+    public Render setSuperSampling(boolean superSampling) {
+        this.superSampling = superSampling;
+
+        // Return this for chaining
+        return this;
+    }
+
+    /**
+     * Set if to cast rays adaptively (true) or not (false)
+     *
+     * @param adaptiveGrid boolean
+     * @return this (Render)
+     */
+    public Render setAdaptiveGrid(boolean adaptiveGrid) {
+        this.adaptiveGrid = adaptiveGrid;
+
+        // Return this for chaining
+        return this;
+    }
+
+    //--------------------------------------- PIXEL CLASS ---------------------------------------//
 
     /**
      * Pixel is an internal helper class whose objects are associated with a Render
@@ -241,22 +303,232 @@ public class Render {
             }
         }
     }
+    //--------------------------------------- END OF Pixel CLASS ---------------------------------------//
+
+
+    //----------------------------------------------- CAMERA'S METHODS -----------------------------------------------//
 
     /**
-     * Cast ray from camera in order to color a pixel
-     * @param nX resolution on X axis (number of pixels in row)
-     * @param nY resolution on Y axis (number of pixels in column)
+     * Cast ray from camera in order to paint a pixel
+     *
+     * @param nX  resolution on X axis (number of pixels in row)
+     * @param nY  resolution on Y axis (number of pixels in column)
      * @param col pixel's column number (pixel index in row)
      * @param row pixel's row number (pixel index in column)
      */
     private void castRay(int nX, int nY, int col, int row) {
         Color color = Color.BLACK;
-        for (int k = 1; k <= 10; k++) {
-            Ray ray = _camera.constructRayThroughPixel(nX, nY, col, row);
-            color = color.add(_rayTracerBase.traceRay(ray));
+        // If adaptive grid ware selected so do it, and if not its depend
+        // if to cast multiple rays (superSampling) or just ont
+        if (adaptiveGrid) {
+            color = adaptiveGrid(nX, nY, col, row);
+        } else {
+            Ray ray;
+            if (superSampling) {
+                int numOfRays = 100;
+                for (int i = 1; i < numOfRays; i++) {
+                    ray = _camera.constructRayThroughPixel(nX, nY, col, row);
+                    color = color.add(_rayTracerBase.traceRay(ray));
+                }
+                color = color.reduce(numOfRays);
+            } else {
+                ray = _camera.constructRayThroughPixel(nX, nY, col, row);
+                color = color.add(_rayTracerBase.traceRay(ray));
+            }
         }
-        _imageWriter.writePixel(col, row, color.reduce(10));
+        // Paint the current pixel
+        _imageWriter.writePixel(col, row, color);
     }
+
+    /**
+     * Cast rays adaptively to the object and calculate the final color of the pixel
+     *
+     * @param nX  number of columns (int)
+     * @param nY  number of rows (int)
+     * @param col column index of the point in the view plane (int)
+     * @param row row index of the point in the view plane (int)
+     * @return The final color of the pixel (Color)
+     */
+    private Color adaptiveGrid(int nX, int nY, int col, int row) {
+
+        Color color = Color.BLACK;
+        List<Color> colors = new ArrayList<>();
+        // Collect all the four colors of the four pixel's corners
+        // and add it to 'color' for calculating the average color of the pixel (the final color of the pixel)
+        // ---
+        // The order of the ray list is:
+        // up-right corner   -  1  -- index 0
+        // up-left corner    -  2  -- index 2
+        // down-left corner  -  3  -- index 1
+        // down-right corner -  4  -- index 3
+        // --
+        // The order of the colors of the corners are in the same order of the ray list
+        List<Ray> ray = _camera.constructRayThroughPixelAdaptive(nX, nY, col, row, STARTING_DEPTH, STARTING_SIGN, STARTING_SIGN);
+        for (int i = 0; i < ray.size(); i++) {
+            // We save the colors for comparing them for knowing if we need to make deeper grid
+            colors.add(_rayTracerBase.traceRay(ray.get(i)));
+            color = color.add(colors.get(i));
+        }
+
+        // We organize the list of the rays and they colors (colRayList) refer to:
+        // up-right corner   -  1  -- index 0
+        // up-left corner    -  2  -- index 1
+        // down-left corner  -  3  -- index 2
+        // down-right corner -  4  -- index 3
+        // the average color -     -- index 4
+        List<Color> colRayList = new ArrayList<>();
+        colRayList.add(colors.get(0));
+        colRayList.add(colors.get(2));
+        colRayList.add(colors.get(1));
+        colRayList.add(colors.get(3));
+
+
+        // If not all four corners are with the same variety, make deeper grid
+        if (!colRayList.get(0).isEqual(colRayList.get(1)) ||
+                !colRayList.get(1).isEqual(colRayList.get(2)) ||
+                !colRayList.get(2).isEqual(colRayList.get(3))) {
+
+            color = Color.BLACK;
+            List<Color> colRay1 = adaptiveGrid2(nX, nY, col, row, STARTING_DEPTH + 1, 1, 1, List.of(colRayList.get(0))); // Right up
+            color = color.add(colRay1.get(4));
+
+            List<Color> colRay2 = adaptiveGrid2(nX, nY, col, row, STARTING_DEPTH + 1, -1, 1
+                    , List.of(colRay1.get(1), colRayList.get(1), colRay1.get(2))); // Left up
+            color = color.add(colRay2.get(4));
+
+
+            List<Color> colRay3 = adaptiveGrid2(nX, nY, col, row, STARTING_DEPTH + 1, -1, -1,
+                    List.of(colRay1.get(2), colRay2.get(2), colRayList.get(2))); // left down
+            color = color.add(colRay3.get(4));
+
+
+            List<Color> colRay4 = adaptiveGrid2(nX, nY, col, row, STARTING_DEPTH + 1, 1, -1,
+                    List.of(colRay1.get(3), colRay1.get(2), colRay3.get(3), colRayList.get(3))); // right down
+            color = color.add(colRay4.get(4));
+
+        }
+        return color.reduce(4);
+    }
+
+    /**
+     * @param nX        number of columns (int)
+     * @param nY        number of rows (int)
+     * @param col       column index of the point in the view plane (int)
+     * @param row       row index of the point in the view plane (int)
+     * @param depth     The depth of the recursion
+     * @param signX     The X sign of the current quarter
+     * @param signY     The Y sign of the current quarter
+     * @param oldColors List of colors we already calculate
+     * @return List of the corners colors and the average of them
+     */
+    private List<Color> adaptiveGrid2(int nX, int nY, int col, int row, int depth, int signX, int signY, List<Color> oldColors) {
+
+        Color color = Color.BLACK;
+        // List to save the colors for calculating and reorganized
+        List<Color> colors = new ArrayList<>();
+        // List to save the final colors
+        List<Color> colRayList = new ArrayList<>();
+
+        // REORGANIZED
+        // We organize the list of the rays and they colors (colRayList) refer to:
+        // up-right corner   -  1  -- index 0
+        // up-left corner    -  2  -- index 1
+        // down-left corner  -  3  -- index 2
+        // down-right corner -  4  -- index 3
+        // the average color -     -- index 4
+        List<Ray> rays = _camera.constructRayThroughPixelAdaptive(nX, nY, col, row, depth, signX, signY); // The new corners
+
+        // First quarter
+        if (signX > 0 && signY > 0) {
+            colRayList.add(oldColors.get(0)); // up-right corner
+            color = color.add(oldColors.get(0));
+
+            for (int i = 0; i < 3; i++) {
+                colRayList.add(_rayTracerBase.traceRay(rays.get(i)));
+                color = color.add(colRayList.get(i + 1));
+            }
+        }
+
+        // Second quarter
+        if (signX < 0 && signY > 0) {
+            colRayList.add(oldColors.get(0)); // up-right corner
+            color = color.add(oldColors.get(0));
+
+            colRayList.add(oldColors.get(1)); // up-left corner
+            color = color.add(oldColors.get(1));
+
+            colors.add(_rayTracerBase.traceRay(rays.get(0)));
+            colRayList.add(colors.get(0)); // down-left corner
+            color = color.add(colors.get(0));
+
+            colRayList.add(oldColors.get(2)); // down-right corner
+            color = color.add(oldColors.get(2));
+        }
+
+        // Third quarter
+        if (signX < 0 && signY < 0) {
+
+            colRayList.add(oldColors.get(0)); // up-right corner
+            color = color.add(oldColors.get(0));
+
+
+            colRayList.add(oldColors.get(1)); // up-left corner
+            color = color.add(oldColors.get(1));
+
+
+            colRayList.add(oldColors.get(2)); // down-left corner
+            color = color.add(oldColors.get(2));
+
+
+            colors.add(_rayTracerBase.traceRay(rays.get(0)));
+            colRayList.add(colors.get(0)); // down-right corner
+            color = color.add(colors.get(0));
+        }
+
+        // Fourth quarter
+        if (signX > 0 && signY < 0) {
+            //We receive all the corners colors as parameters (in 'oldRays')
+            // so we just add them to 'colRayList'.
+            for (int i = 0; i < 4; i++) {
+                colRayList.add(oldColors.get(i)); // We receive them sorted so we just save them
+                color = color.add(oldColors.get(i));
+            }
+        }
+
+        if (depth >= MAX_DEPTH_OF_ADAPTIVE) {
+            colRayList.add(color.reduce(4));
+            return colRayList;
+        }
+
+        // Check if all corners in the same variety
+        if (!colRayList.get(0).isEqual(colRayList.get(1)) ||
+                !colRayList.get(1).isEqual(colRayList.get(2)) ||
+                !colRayList.get(2).isEqual(colRayList.get(3))) {
+
+            color = Color.BLACK;
+            List<Color> colRay1 = adaptiveGrid2(nX, nY, col, row, depth + 1, 1, 1, List.of(colRayList.get(0))); // Right up
+            color = color.add(colRay1.get(4));
+
+            List<Color> colRay2 = adaptiveGrid2(nX, nY, col, row, depth + 1, -1, 1
+                    , List.of(colRay1.get(1), colRayList.get(1), colRay1.get(2))); // Left up
+            color = color.add(colRay2.get(4));
+
+            List<Color> colRay3 = adaptiveGrid2(nX, nY, col, row, depth + 1, -1, -1,
+                    List.of(colRay1.get(2), colRay2.get(2), colRayList.get(2))); // Left down
+            color = color.add(colRay3.get(4));
+
+
+            List<Color> colRay4 = adaptiveGrid2(nX, nY, col, row, depth + 1, 1, -1,
+                    List.of(colRay1.get(3), colRay1.get(2), colRay3.get(3), colRayList.get(3))); // Right down
+            color = color.add(colRay4.get(4));
+        }
+
+        // Returns a list with four current corners
+        // colors, and the average of the colors
+        colRayList.add(color.reduce(4));
+        return colRayList;
+    }
+
 
     /**
      * This function renders image's pixel color map from the scene included with

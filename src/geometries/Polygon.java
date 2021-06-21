@@ -105,6 +105,11 @@ public class Polygon extends Geometry {
     // NOT IMPLEMENTED
     @Override
     public List<GeoPoint> findGeoIntersections(Ray ray) {
-        return null;
+        if (plane.findGeoIntersections(ray) == null)
+            return null;
+
+        Triangle tri = new Triangle(vertices.get(0), vertices.get(1), vertices.get(2));
+        if (tri.findGeoIntersections(ray) != null) return tri.findGeoIntersections(ray);
+        return new Triangle(vertices.get(0), vertices.get(3), vertices.get(2)).findGeoIntersections(ray);
     }
 }

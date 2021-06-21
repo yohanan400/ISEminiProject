@@ -1,6 +1,5 @@
 package renderer;
 
-import elements.Camera;
 import primitives.Color;
 import primitives.Ray;
 import scene.Scene;

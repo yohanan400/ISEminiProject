@@ -45,7 +45,7 @@ public class ImageWriter {
      */
     private Logger logger = Logger.getLogger("ImageWriter");
 
-    // ***************** Constructors ********************** //
+    //--------------------------------------------------- C-TOR ---------------------------------------------------//
 
     /**
      * Image Writer constructor accepting image name and View Plane parameters,
@@ -62,7 +62,7 @@ public class ImageWriter {
         image = new BufferedImage(nX, nY, BufferedImage.TYPE_INT_RGB);
     }
 
-    // ***************** Getters/Setters ********************** //
+    //--------------------------------------------------- GETTERS ---------------------------------------------------//
 
     /**
      * View Plane Y axis resolution
@@ -82,7 +82,7 @@ public class ImageWriter {
         return nX;
     }
 
-    // ***************** Operations ******************** //
+    //--------------------------------------------------- METHODS ---------------------------------------------------//
 
     /**
      * Function writeToImage produces unoptimized png file of the image according to

@@ -1,8 +1,11 @@
+package MP2;
+
+import org.junit.jupiter.api.Test;
 
 import elements.Camera;
 import elements.PointLight;
 import geometries.Triangle;
-import org.junit.jupiter.api.Test;
+
 import primitives.Color;
 import primitives.Material;
 import primitives.Point3D;
@@ -17,12 +20,13 @@ import scene.Scene;
  *
  * @author Dan
  */
-
 public class TeapotTest {
     private final Camera camera = new Camera(new Point3D(0, 0, -1000), new Vector(0, 1, 0), new Vector(0, 0, 1)) //
-            .setViewPlaneDistance(1000).setViewPlaneSize(200, 200);
-    private final Scene scene = new Scene("Test scene");
+            .setViewPlaneDistance(1000).setViewPlaneSize(200, 200)
+            .setDOF(false).setFocalDistance(new Point3D(0, 0, -1000).distance(new Point3D(19.6148, 17.1865, 43.0399)))
+            .setApertureRadiusSize(5);
 
+    private final Scene scene = new Scene("Test scene");
     private static final Color color = new Color(200, 0, 0);
     private static final Material mat = new Material().setKd(0.5).setKs(0.5).setNShininess(60);
 
@@ -1566,7 +1570,8 @@ public class TeapotTest {
                 .setCamera(camera) //
                 .setImageWriter(imageWriter) //
                 .setRayTracerBase(new RayTracerBasic(scene))
-                .setMultithreading(0);//.setDebugPrint();
+                .setMultithreading(0).setDebugPrint()
+                .setAdaptiveGrid(true);
         render.renderImage();
         render.printGrid(50, new Color(java.awt.Color.YELLOW));
         render.writeToImage();
