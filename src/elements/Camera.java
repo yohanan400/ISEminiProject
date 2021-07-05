@@ -239,6 +239,7 @@ public class Camera {
 
         // If the first time, we need the right-up corner
         if (depth == 1) {
+            // Calculate the center of the 'new pixel'
             Point3D pIJ1 = pIJ.add(_vRight.scale(axisXLength * signX)).add(_vUp.scale(axisYLength * signY)); // Right up
             Vector vIJ1 = pIJ1.subtract(_p0);
             if (DOF) rays.add(constructRayThroughPixelDOF(pIJ1, vIJ1));
@@ -283,9 +284,9 @@ public class Camera {
      * Generate one ray from the camera's aperture (rematch the starting point to some point on the aperture)
      * to the object and go through the focal plane
      *
-     * @param pIJ The starting point of the ray
-     * @param vIJ The direction vector to the object
-     * @return The new ray wich starting at the aperture and go through the focal plane (Ray)
+     * @param pIJ The center of the current pixel in the view plane
+     * @param vIJ The direction vector from the camera, through the pixel, to the scene
+     * @return The new ray from the aperture to the focal plane (in particular, focal point) (Ray)
      */
     public Ray constructRayThroughPixelDOF(Point3D pIJ, Vector vIJ) {
 
@@ -311,7 +312,6 @@ public class Camera {
         while (pointOnAperture.distance(_p0) > _apertureRadiusSize);
 
         return new Ray(pointOnAperture, focalPoint.subtract(pointOnAperture));
-        //return focalPoint.subtract(pointOnAperture);
     }
 
     //--------------------------------------------------- GETTERS ---------------------------------------------------//

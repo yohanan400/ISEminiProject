@@ -109,7 +109,7 @@ public class Polygon extends Geometry {
             return null;
 
         Triangle tri = new Triangle(vertices.get(0), vertices.get(1), vertices.get(2));
-        if (tri.findGeoIntersections(ray) != null) return tri.findGeoIntersections(ray);
+        if (tri.findGeoIntersections    (ray) != null) return tri.findGeoIntersections(ray);
         return new Triangle(vertices.get(0), vertices.get(3), vertices.get(2)).findGeoIntersections(ray);
     }
 }

@@ -28,7 +28,7 @@ public class DepthOfFiledTests {
                 .setViewPlaneSize(200, 200)
                 .setViewPlaneDistance(800)
                 .setDOF(true)
-                .setApertureRadiusSize(5)
+                .setApertureRadiusSize(10)
                 .setFocalDistance(new Point3D(0, 0, 2000).distance(new Point3D(20, 10, 1500)));
 
         scene.setAmbientLight(new AmbientLight(new Color(java.awt.Color.WHITE), 0.15));

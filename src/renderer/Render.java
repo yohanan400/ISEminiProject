@@ -50,7 +50,7 @@ public class Render {
     /**
      * Static variable for determine the max depth number of the recursion
      */
-    private static final int MAX_DEPTH_OF_ADAPTIVE = 8;
+    private static final int MAX_DEPTH_OF_ADAPTIVE = 6;
 
     /**
      * Static variable for determine the starting number of the recursion depth
