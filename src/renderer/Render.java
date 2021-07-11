@@ -2,10 +2,15 @@ package renderer;
 
 import elements.Camera;
 import primitives.Color;
+import primitives.Point3D;
 import primitives.Ray;
+
+import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.MissingResourceException;
+
+import static primitives.Util.random;
 
 /**
  * Render class responsible to render the scene
@@ -50,21 +55,21 @@ public class Render {
     /**
      * Static variable for determine the max depth number of the recursion
      */
-    private static final int MAX_DEPTH_OF_ADAPTIVE = 6;
+    private static final int MAX_DEPTH_OF_ADAPTIVE = 10;
 
     /**
      * Static variable for determine the starting number of the recursion depth
      */
-    private static final int STARTING_DEPTH = 1;
+    public static final int STARTING_DEPTH = 1;
 
     /**
      * Static variable for determine the starting sign of the quarter
      * 1 equals to plus sign and -1 equals to minus sign
      * In particular:
-     * 1,1   - The first quarter
-     * -1,1   - The second quarter
+     *  1, 1  - The first quarter
+     * -1, 1  - The second quarter
      * -1,-1  - The third quarter
-     * 1,-1  - The fourth quarter
+     *  1,-1  - The fourth quarter
      */
     private static final int STARTING_SIGN = 1;
 
@@ -306,7 +311,7 @@ public class Render {
     //--------------------------------------- END OF Pixel CLASS ---------------------------------------//
 
 
-    //----------------------------------------------- CAMERA'S METHODS -----------------------------------------------//
+    //----------------------------------------------- RENDER'S METHODS -----------------------------------------------//
 
     /**
      * Cast ray from camera in order to paint a pixel
@@ -353,57 +358,55 @@ public class Render {
 
         Color color = Color.BLACK;
         List<Color> colors = new ArrayList<>();
+
+        //-----------------------
+        // calculate the center of the main pixel
+        Point3D center = _camera.centerOfMainPixel(nX, nY, col, row);
+
+        // calculate the sub-pixels centers
+        List<Point3D> centers = _camera.centerOfPixels(nX, nY, center , STARTING_DEPTH);
+        //-----------------------
+
+
         // Collect all the four colors of the four pixel's corners
         // and add it to 'color' for calculating the average color of the pixel (the final color of the pixel)
         // ---
         // The order of the ray list is:
         // up-right corner   -  1  -- index 0
-        // up-left corner    -  2  -- index 2
-        // down-left corner  -  3  -- index 1
+        // up-left corner    -  2  -- index 1
+        // down-left corner  -  3  -- index 2
         // down-right corner -  4  -- index 3
         // --
         // The order of the colors of the corners are in the same order of the ray list
-        List<Ray> ray = _camera.constructRayThroughPixelAdaptive(nX, nY, col, row, STARTING_DEPTH, STARTING_SIGN, STARTING_SIGN);
+        List<Ray> ray = _camera.constructRayThroughPixelAdaptive(nX, nY, STARTING_DEPTH, STARTING_SIGN, STARTING_SIGN, center);
         for (int i = 0; i < ray.size(); i++) {
             // We save the colors for comparing them for knowing if we need to make deeper grid
             colors.add(_rayTracerBase.traceRay(ray.get(i)));
             color = color.add(colors.get(i));
         }
 
-        // We organize the list of the rays and they colors (colRayList) refer to:
-        // up-right corner   -  1  -- index 0
-        // up-left corner    -  2  -- index 1
-        // down-left corner  -  3  -- index 2
-        // down-right corner -  4  -- index 3
-        // the average color -     -- index 4
-        List<Color> colRayList = new ArrayList<>();
-        colRayList.add(colors.get(0));
-        colRayList.add(colors.get(2));
-        colRayList.add(colors.get(1));
-        colRayList.add(colors.get(3));
-
-
         // If not all four corners are with the same variety, make deeper grid
-        if (!colRayList.get(0).isEqual(colRayList.get(1)) ||
-                !colRayList.get(1).isEqual(colRayList.get(2)) ||
-                !colRayList.get(2).isEqual(colRayList.get(3))) {
+        if (!colors.get(0).isEqual(colors.get(1)) ||
+                !colors.get(1).isEqual(colors.get(2)) ||
+                !colors.get(2).isEqual(colors.get(3))) {
 
             color = Color.BLACK;
-            List<Color> colRay1 = adaptiveGrid2(nX, nY, col, row, STARTING_DEPTH + 1, 1, 1, List.of(colRayList.get(0))); // Right up
+            List<Color> colRay1 = adaptiveGrid2(nX, nY, col, row, STARTING_DEPTH + 1, 1, 1, List.of(colors.get(0))
+            ,centers.get(0)); // Right up
             color = color.add(colRay1.get(4));
 
             List<Color> colRay2 = adaptiveGrid2(nX, nY, col, row, STARTING_DEPTH + 1, -1, 1
-                    , List.of(colRay1.get(1), colRayList.get(1), colRay1.get(2))); // Left up
+                    , List.of(colRay1.get(1), colors.get(1), colRay1.get(2)),centers.get(1)); // Left up
             color = color.add(colRay2.get(4));
 
 
             List<Color> colRay3 = adaptiveGrid2(nX, nY, col, row, STARTING_DEPTH + 1, -1, -1,
-                    List.of(colRay1.get(2), colRay2.get(2), colRayList.get(2))); // left down
+                    List.of(colRay1.get(2), colRay2.get(2), colors.get(2)),centers.get(2)); // left down
             color = color.add(colRay3.get(4));
 
 
             List<Color> colRay4 = adaptiveGrid2(nX, nY, col, row, STARTING_DEPTH + 1, 1, -1,
-                    List.of(colRay1.get(3), colRay1.get(2), colRay3.get(3), colRayList.get(3))); // right down
+                    List.of(colRay1.get(3), colRay1.get(2), colRay3.get(3), colors.get(3)),centers.get(3)); // right down
             color = color.add(colRay4.get(4));
 
         }
@@ -421,11 +424,11 @@ public class Render {
      * @param oldColors List of colors we already calculate
      * @return List of the corners colors and the average of them
      */
-    private List<Color> adaptiveGrid2(int nX, int nY, int col, int row, int depth, int signX, int signY, List<Color> oldColors) {
+    private List<Color> adaptiveGrid2(int nX, int nY, int col, int row, int depth, int signX, int signY, List<Color> oldColors, Point3D centerOfPixel) {
 
+        // To calculate the final average color
         Color color = Color.BLACK;
-        // List to save the colors for calculating and reorganized
-        List<Color> colors = new ArrayList<>();
+
         // List to save the final colors
         List<Color> colRayList = new ArrayList<>();
 
@@ -436,7 +439,7 @@ public class Render {
         // down-left corner  -  3  -- index 2
         // down-right corner -  4  -- index 3
         // the average color -     -- index 4
-        List<Ray> rays = _camera.constructRayThroughPixelAdaptive(nX, nY, col, row, depth, signX, signY); // The new corners
+        List<Ray> rays = _camera.constructRayThroughPixelAdaptive(nX, nY, depth, signX, signY, centerOfPixel); // The new corners
 
         // First quarter
         if (signX > 0 && signY > 0) {
@@ -457,9 +460,8 @@ public class Render {
             colRayList.add(oldColors.get(1)); // up-left corner
             color = color.add(oldColors.get(1));
 
-            colors.add(_rayTracerBase.traceRay(rays.get(0)));
-            colRayList.add(colors.get(0)); // down-left corner
-            color = color.add(colors.get(0));
+            colRayList.add(_rayTracerBase.traceRay(rays.get(0))); // down-left corner
+            color = color.add(colRayList.get(2));
 
             colRayList.add(oldColors.get(2)); // down-right corner
             color = color.add(oldColors.get(2));
@@ -471,18 +473,14 @@ public class Render {
             colRayList.add(oldColors.get(0)); // up-right corner
             color = color.add(oldColors.get(0));
 
-
             colRayList.add(oldColors.get(1)); // up-left corner
             color = color.add(oldColors.get(1));
-
 
             colRayList.add(oldColors.get(2)); // down-left corner
             color = color.add(oldColors.get(2));
 
-
-            colors.add(_rayTracerBase.traceRay(rays.get(0)));
-            colRayList.add(colors.get(0)); // down-right corner
-            color = color.add(colors.get(0));
+            colRayList.add(_rayTracerBase.traceRay(rays.get(0))); // down-right corner
+            color = color.add(colRayList.get(3));
         }
 
         // Fourth quarter
@@ -495,6 +493,7 @@ public class Render {
             }
         }
 
+        // Stop recursive condition
         if (depth >= MAX_DEPTH_OF_ADAPTIVE) {
             colRayList.add(color.reduce(4));
             return colRayList;
@@ -505,21 +504,24 @@ public class Render {
                 !colRayList.get(1).isEqual(colRayList.get(2)) ||
                 !colRayList.get(2).isEqual(colRayList.get(3))) {
 
+            List<Point3D> centers = _camera.centerOfPixels(nX, nY, centerOfPixel , depth);
+
             color = Color.BLACK;
-            List<Color> colRay1 = adaptiveGrid2(nX, nY, col, row, depth + 1, 1, 1, List.of(colRayList.get(0))); // Right up
+            List<Color> colRay1 = adaptiveGrid2(nX, nY, col, row, depth + 1, 1, 1, List.of(colRayList.get(0))
+            ,centers.get(0)); // Right up
             color = color.add(colRay1.get(4));
 
             List<Color> colRay2 = adaptiveGrid2(nX, nY, col, row, depth + 1, -1, 1
-                    , List.of(colRay1.get(1), colRayList.get(1), colRay1.get(2))); // Left up
+                    , List.of(colRay1.get(1), colRayList.get(1), colRay1.get(2)),centers.get(1)); // Left up
             color = color.add(colRay2.get(4));
 
             List<Color> colRay3 = adaptiveGrid2(nX, nY, col, row, depth + 1, -1, -1,
-                    List.of(colRay1.get(2), colRay2.get(2), colRayList.get(2))); // Left down
+                    List.of(colRay1.get(2), colRay2.get(2), colRayList.get(2)),centers.get(2)); // Left down
             color = color.add(colRay3.get(4));
 
 
             List<Color> colRay4 = adaptiveGrid2(nX, nY, col, row, depth + 1, 1, -1,
-                    List.of(colRay1.get(3), colRay1.get(2), colRay3.get(3), colRayList.get(3))); // Right down
+                    List.of(colRay1.get(3), colRay1.get(2), colRay3.get(3), colRayList.get(3)),centers.get(3)); // Right down
             color = color.add(colRay4.get(4));
         }
 

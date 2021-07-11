@@ -67,7 +67,7 @@ public class DepthOfFiledTests {
         Camera camera = new Camera(new Point3D(0, 0, 2000), new Vector(0, 1, 0), new Vector(0, 0, -1)) //
                 .setViewPlaneSize(200, 200)
                 .setViewPlaneDistance(1000)
-                .setDOF(true)
+                .setDOF(false)
                 .setApertureRadiusSize(20)
                 .setFocalDistance(new Point3D(0, 0, 2000).distance(new Point3D(60, 80, -20)));
 
@@ -101,14 +101,14 @@ public class DepthOfFiledTests {
         scene._lightSourceList.add(new PointLight(new Color(160, 80, 240), new Point3D(-100, -100, 100))//
                 .setKl(0.00000001).setKq(0.0000001));
 
-        ImageWriter imageWriter = new ImageWriter("depthOfFieldTest9", 600, 600);
+        ImageWriter imageWriter = new ImageWriter("depthOfFieldTest13", 600, 600);
         Render render = new Render() //
                 .setImageWriter(imageWriter) //
                 .setCamera(camera) //
                 .setRayTracerBase(new RayTracerBasic(scene))
-                .setMultithreading(0)
+                .setMultithreading(1)
                 .setDebugPrint()
-                .setAdaptiveGrid(true)
+                .setAdaptiveGrid(false)
                 .setSuperSampling(false);
 
         render.renderImage();

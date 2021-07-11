@@ -131,9 +131,9 @@ public class Color {
      */
     public Boolean isEqual(Color color){
 
-        if (Math.abs(this.r- color.r) > 5 ||
-                Math.abs(this.g- color.g) > 5 ||
-                Math.abs(this.b- color.b) > 5)
+        if (Math.abs(this.r- color.r) > 1 ||
+                Math.abs(this.g- color.g) > 1||
+                Math.abs(this.b- color.b) > 1)
             return false;
 
         return true;

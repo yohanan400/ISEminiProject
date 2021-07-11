@@ -9,6 +9,7 @@ import java.util.List;
 
 import static primitives.Util.isZero;
 import static primitives.Util.random;
+import static renderer.Render.STARTING_DEPTH;
 
 /**
  * Camera class representing a camera in 3d space.
@@ -197,6 +198,68 @@ public class Camera {
     }
 
     /**
+     * Calculate the four centers of the sub-pixels
+     *
+     * @param nX    number of columns (int)
+     * @param nY    number of rows (int)
+     * @param pIJ   Center of a pixel
+     * @param depth The depth of the adaptive recursion
+     * @return A list with four sub-pixels centers
+     */
+    public List<Point3D> centerOfPixels(int nX, int nY, Point3D pIJ, int depth) {
+
+        List<Point3D> centerOfPixels = new LinkedList<>();
+
+        // Ratio (pixel width & height)
+        double rX = _width / nX;
+        double rY = _height / nY;
+
+        double axisXLength = rX / Math.pow(2, depth);
+        double axisYLength = rY / Math.pow(2, depth);
+
+        Point3D center1 = pIJ.add(_vUp.scale(axisYLength)).add(_vRight.scale(axisXLength));
+        Point3D center2 = pIJ.add(_vUp.scale(axisYLength)).add(_vRight.scale(axisXLength * -1));
+        Point3D center3 = pIJ.add(_vUp.scale(axisYLength * -1)).add(_vRight.scale(axisXLength * -1));
+        Point3D center4 = pIJ.add(_vUp.scale(axisYLength * -1)).add(_vRight.scale(axisXLength));
+
+        centerOfPixels.add(center1);
+        centerOfPixels.add(center2);
+        centerOfPixels.add(center3);
+        centerOfPixels.add(center4);
+
+        return centerOfPixels;
+    }
+
+    /**
+     * Calculate the center of a pixel
+     *
+     * @param nX number of columns (int)
+     * @param nY number of rows (int)
+     * @param j  The current column in the view plane
+     * @param i  The current row in the view plane
+     * @return The center of the pixel
+     */
+    public Point3D centerOfMainPixel(int nX, int nY, int j, int i) {
+        //Image center
+        Point3D pC = _p0.add(_vTo.scale(_viewPlaneDistance));
+
+        // Ratio (pixel width & height)
+        double rX = _width / nX;
+        double rY = _height / nY;
+
+        //Pixel [i,j] center
+        double yI = -1 * (i - (nY - 1) / 2d) * rY;
+        double xJ = (j - (nX - 1) / 2d) * rX;
+
+        // in the beginning pIJ is the center pixel, and if we need to move up and down or right and left
+        Point3D pIJ = pC;
+        if (xJ != 0) pIJ = pIJ.add(_vRight.scale(xJ));
+        if (yI != 0) pIJ = pIJ.add(_vUp.scale(yI));
+
+        return pIJ;
+    }
+
+    /**
      * Generate the rays from the camera to the object
      * and go through the view plane and the focal plane.
      * <p>
@@ -204,63 +267,48 @@ public class Camera {
      *
      * @param nX number of columns (int)
      * @param nY number of rows (int)
-     * @param j  column index of the point in the view plane (int)
-     * @param i  row index of the point in the view plane (int)
      * @return List of rays from the lens of the camera to the p(i,j) in the view plane (Ray)
      */
-    public List<Ray> constructRayThroughPixelAdaptive(int nX, int nY, int j, int i, int depth, int signX, int signY) {
+    public List<Ray> constructRayThroughPixelAdaptive(int nX, int nY, int depth, int signX, int signY, Point3D pIJ) {
 
         List<Ray> rays = new LinkedList<>();
-
-        //Image center
-        Point3D pC = _p0.add(_vTo.scale(_viewPlaneDistance));
-
 
         // Ratio (pixel width & height)
         double rX = _width / nX;
         double rY = _height / nY;
 
-        double axisXLength = rX / 4 * (depth - 1) * signX;
-        double axisYLength = rY / 4 * (depth - 1) * signY;
+        double axisXLength = rX / Math.pow(2, depth);
+        double axisYLength = rY / Math.pow(2, depth);
 
-        if (depth == 1) {
-            axisXLength = rX / 2;
-            axisYLength = rY / 2;
-        }
-
-        //Pixel [i,j] center
-        double xJ = (j - (nX - 1) / 2d) * rX + axisXLength;
-        double yI = -1 * (i - (nY - 1) / 2d) * rY + axisYLength;
-
-        // In the beginning pIJ is the center pixel, and if we need to move up and down or right and left we'll add it
-        Point3D pIJ = pC;
-        if (xJ != 0) pIJ = pIJ.add(_vRight.scale(xJ));
-        if (yI != 0) pIJ = pIJ.add(_vUp.scale(yI));
 
         // If the first time, we need the right-up corner
-        if (depth == 1) {
-            // Calculate the center of the 'new pixel'
+        if (depth == STARTING_DEPTH) {
             Point3D pIJ1 = pIJ.add(_vRight.scale(axisXLength * signX)).add(_vUp.scale(axisYLength * signY)); // Right up
             Vector vIJ1 = pIJ1.subtract(_p0);
             if (DOF) rays.add(constructRayThroughPixelDOF(pIJ1, vIJ1));
             else rays.add(new Ray(_p0, vIJ1));
         }
 
-        // If we are in the first quarter or the 2nd (or it's the first time) we need the left-down corner
-        if (signY > 0) {
-            Point3D pIJ3 = pIJ.add(_vRight.scale(axisXLength * -signX)).add(_vUp.scale(axisYLength * -signY)); // Left down
+        // If we are in the 2nd quarter, we need the left-down corner
+        if (signX < 0 && signY > 0) {
+            Point3D pIJ3 = pIJ.add(_vRight.scale(axisXLength * signX)).add(_vUp.scale(axisYLength * -signY)); // Left down
             Vector vIJ3 = pIJ3.subtract(_p0);
             if (DOF) rays.add(constructRayThroughPixelDOF(pIJ3, vIJ3));
             else rays.add(new Ray(_p0, vIJ3));
         }
 
-        // If we are in the first quarter (or it's the first time) we need the left-up and right-down corners too
+        // If we are in the first quarter (or it's the first time) we need the left-down, left-up and right-down corners too
         if (signX > 0 && signY > 0) {
+
             Point3D pIJ2 = pIJ.add(_vRight.scale(axisXLength * -signX)).add(_vUp.scale(axisYLength * signY)); // Left up
             Vector vIJ2 = pIJ2.subtract(_p0);
             if (DOF) rays.add(constructRayThroughPixelDOF(pIJ2, vIJ2));
             else rays.add(new Ray(_p0, vIJ2));
 
+            Point3D pIJ3 = pIJ.add(_vRight.scale(axisXLength * -signX)).add(_vUp.scale(axisYLength * -signY)); // Left down
+            Vector vIJ3 = pIJ3.subtract(_p0);
+            if (DOF) rays.add(constructRayThroughPixelDOF(pIJ3, vIJ3));
+            else rays.add(new Ray(_p0, vIJ3));
 
             Point3D pIJ4 = pIJ.add(_vRight.scale(axisXLength * signX)).add(_vUp.scale(axisYLength * -signY)); // Right down
             Vector vIJ4 = pIJ4.subtract(_p0);
@@ -270,7 +318,7 @@ public class Camera {
 
         // If we are in the 3rd quarter we need the right-down corner
         if (signX < 0 && signY < 0) {
-            Point3D pIJ4 = pIJ.add(_vRight.scale(axisXLength * signX)).add(_vUp.scale(axisYLength * -signY)); // Right down
+            Point3D pIJ4 = pIJ.add(_vRight.scale(axisXLength * -signX)).add(_vUp.scale(axisYLength * signY)); // Right down
             Vector vIJ4 = pIJ4.subtract(_p0);
             if (DOF) rays.add(constructRayThroughPixelDOF(pIJ4, vIJ4));
             else rays.add(new Ray(_p0, vIJ4));

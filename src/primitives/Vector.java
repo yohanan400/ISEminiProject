@@ -97,6 +97,19 @@ public class Vector {
     }
 
     /**
+     * Calculating an dot product between vector and point
+     * by summarize the scaling results between the coordinates
+     *
+     * @param point3D The point to product with
+     * @return The dot product result (double)
+     */
+    public double dotProduct(Point3D point3D) {
+        return (getHead().getX() * point3D.getX() +
+                getHead().getY() * point3D.getY() +
+                getHead().getZ() * point3D.getZ());
+    }
+
+    /**
      * Calculate cross product between two vectors
      *
      * @param vector The vector to product with

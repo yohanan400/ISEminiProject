@@ -4,8 +4,10 @@ import primitives.Point3D;
 import primitives.Ray;
 import primitives.Vector;
 
+import java.util.LinkedList;
 import java.util.List;
 
+import static primitives.Util.alignZero;
 import static primitives.Util.isZero;
 
 /**
@@ -93,7 +95,12 @@ public class Polygon extends Geometry {
      */
     @Override
     public Vector getNormal(Point3D point) {
-        return plane.getNormal();
+        Vector v1 = point.subtract(vertices.get(0));
+        Vector v2 = point.subtract(vertices.get(1));
+
+        Vector v3 = v1.crossProduct(v2);
+
+        return v3.normalize();
     }
 
     /**
@@ -102,14 +109,46 @@ public class Polygon extends Geometry {
      * @param ray The light ray
      * @return List of intersection GeoPoint
      */
-    // NOT IMPLEMENTED
     @Override
     public List<GeoPoint> findGeoIntersections(Ray ray) {
-        if (plane.findGeoIntersections(ray) == null)
-            return null;
+        List<GeoPoint> planeIntersectionPoint = plane.findGeoIntersections(ray);
+        if (planeIntersectionPoint == null) return null;
 
-        Triangle tri = new Triangle(vertices.get(0), vertices.get(1), vertices.get(2));
-        if (tri.findGeoIntersections    (ray) != null) return tri.findGeoIntersections(ray);
-        return new Triangle(vertices.get(0), vertices.get(3), vertices.get(2)).findGeoIntersections(ray);
+        Point3D intersectionPoint = planeIntersectionPoint.get(0)._point;
+
+        Point3D p0 = ray.getP0();
+        Vector v = ray.getDir();
+
+        // Create the polygon
+        List<Vector> vectors = new LinkedList<>();
+        for (Point3D ver : vertices) {
+            vectors.add(ver.subtract(p0));
+        }
+
+        // Calculate the normals
+        List<Vector> normalVectors = new LinkedList<>();
+        for (int i = 1; i < vectors.size(); i++) {
+            normalVectors.add(vectors.get(i - 1).crossProduct(vectors.get(i)).normalize());
+        }
+        int index = vectors.size();
+        normalVectors.add(vectors.get(index - 1).crossProduct(vectors.get(0)).normalize());
+
+        // Collect the signs
+        List<Double> sign = new LinkedList<>();
+        for (Vector normalVector : normalVectors) {
+            sign.add(alignZero(v.dotProduct(normalVector)));
+        }
+
+        // Compare between the signs
+        boolean withTheSameSign = true;
+        for (int i = 1; i < sign.size(); i++) {
+            if ((sign.get(i - 1) > 0 && sign.get(i) < 0) || (sign.get(i - 1) < 0 && sign.get(i) > 0)) {
+                withTheSameSign = false;
+                break;
+            }
+        }
+
+        if (withTheSameSign) return List.of(new GeoPoint(this, intersectionPoint));
+        else return null;
     }
 }
