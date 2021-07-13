@@ -124,16 +124,15 @@ public class Color {
 
     /**
      * Compare two colors if they are in the same variety
-     * The range of the variety is 5 for each r,g,b.
+     * The range of the variety is 1 for each r,g,b.
      *
      * @param color The color to compare with
      * @return If in the same variety or not (Boolean)
      */
     public Boolean isEqual(Color color){
-
-        if (Math.abs(this.r- color.r) > 1 ||
-                Math.abs(this.g- color.g) > 1||
-                Math.abs(this.b- color.b) > 1)
+        if (Math.abs(this.r- color.r) > 10 ||
+                Math.abs(this.g- color.g) > 10||
+                Math.abs(this.b- color.b) > 10)
             return false;
 
         return true;
