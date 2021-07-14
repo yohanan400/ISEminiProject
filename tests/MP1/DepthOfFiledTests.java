@@ -5,7 +5,6 @@ import elements.Camera;
 import elements.PointLight;
 import elements.SpotLight;
 import geometries.Plane;
-import geometries.Polygon;
 import geometries.Sphere;
 import geometries.Triangle;
 import org.junit.jupiter.api.Test;
@@ -34,18 +33,18 @@ public class DepthOfFiledTests {
         scene.setAmbientLight(new AmbientLight(new Color(java.awt.Color.WHITE), 0.15));
 
         scene._geometries.add( //
-                new Plane(new Point3D(0,-20,0), new Vector(0,1,0)).setEmission(new Color(java.awt.Color.green)),
-                new Sphere( new Point3D(-10, 3, 1000), 10) //
+                new Plane(new Point3D(0, -20, 0), new Vector(0, 1, 0)).setEmission(new Color(java.awt.Color.green)),
+                new Sphere(new Point3D(-10, 3, 1000), 10) //
                         .setEmission(new Color(java.awt.Color.BLUE)) //
                         .setMaterial(new Material().setKd(0.2).setKs(0.2).setNShininess(30).setKt(0.6)),
-                new Sphere( new Point3D(20, 10, 1500), 10) //
+                new Sphere(new Point3D(20, 10, 1500), 10) //
                         .setEmission(new Color(java.awt.Color.red)) //
                         .setMaterial(new Material().setKd(0.2).setKs(0.2).setNShininess(30).setKt(0.6))
         );
 
         scene._lightSourceList.add(new SpotLight(new Color(700, 400, 400), new Point3D(30, 25, 0), new Vector(0, 0, -1)) //
                 .setKl(4E-5).setKq(2E-7));
-        scene._lightSourceList.add(new PointLight(new Color(160,80,240), new Point3D(-100, -100, 100))//
+        scene._lightSourceList.add(new PointLight(new Color(160, 80, 240), new Point3D(-100, -100, 100))//
                 .setKl(0.00000000001).setKq(0.0000000001));
 
         ImageWriter imageWriter = new ImageWriter("depthOfFieldTest10", 600, 600);
@@ -67,7 +66,7 @@ public class DepthOfFiledTests {
         Camera camera = new Camera(new Point3D(0, 0, 2000), new Vector(0, 1, 0), new Vector(0, 0, -1)) //
                 .setViewPlaneSize(200, 200)
                 .setViewPlaneDistance(1000)
-                .setDOF(false)
+                .setDOF(true)
                 .setApertureRadiusSize(20)
                 .setFocalDistance(new Point3D(0, 0, 2000).distance(new Point3D(60, 80, -20)));
 

@@ -1,5 +1,6 @@
 package elements;
 
+import primitives.Color;
 import primitives.Point3D;
 import primitives.Ray;
 import primitives.Vector;
@@ -9,6 +10,7 @@ import java.util.List;
 
 import static primitives.Util.isZero;
 import static primitives.Util.random;
+import static renderer.Render.MAX_DEPTH_OF_ADAPTIVE;
 import static renderer.Render.STARTING_DEPTH;
 
 /**
@@ -43,7 +45,7 @@ public class Camera {
     /**
      * To do depth of field (True) or not (False)
      */
-    private boolean DOF = false;
+    public boolean DOF = false;
 
     /**
      * The distance from the camera to the view plane
@@ -291,7 +293,7 @@ public class Camera {
 
         // If we are in the 2nd quarter, we need the left-down corner
         if (signX < 0 && signY > 0) {
-            Point3D pIJ3 = pIJ.add(_vRight.scale(axisXLength * signX)).add(_vUp.scale(axisYLength * -signY)); // Left down
+            Point3D pIJ3 = pIJ.add(_vRight.scale(axisXLength * -signX)).add(_vUp.scale(axisYLength * -signY)); // Left down
             Vector vIJ3 = pIJ3.subtract(_p0);
             if (DOF) rays.add(constructRayThroughPixelDOF(pIJ3, vIJ3));
             else rays.add(new Ray(_p0, vIJ3));
@@ -327,6 +329,105 @@ public class Camera {
         // return the ray go through the pixel
         return rays;
     }
+
+    //-----------------------------------------------------------------------------------------------------
+    //-----------------------------------------------------------------------------------------------------
+    //-----------------------------------------------------------------------------------------------------
+    //-----------------------------------------------------------------------------------------------------
+    //-----------------------------------------------------------------------------------------------------
+    //-----------------------------------------------------------------------------------------------------
+
+
+
+    public List<Point3D> centerOfPixelsDOF(Point3D pIJ, int depth) {
+
+        List<Point3D> centerOfPixels = new LinkedList<>();
+
+        // Ratio (pixel width & height)
+        double axisLength = _apertureRadiusSize / Math.pow(2, depth);
+
+
+        Point3D center1 = new Point3D(pIJ.getX()+axisLength, pIJ.getY()+axisLength, pIJ.getZ());
+        Point3D center2 = new Point3D(pIJ.getX()+axisLength*-1, pIJ.getY()+axisLength, pIJ.getZ());
+        Point3D center3 = new Point3D(pIJ.getX()+axisLength*-1, pIJ.getY()+axisLength*-1, pIJ.getZ());
+        Point3D center4 = new Point3D(pIJ.getX()+axisLength, pIJ.getY()+axisLength*-1, pIJ.getZ());
+
+        centerOfPixels.add(center1);
+        centerOfPixels.add(center2);
+        centerOfPixels.add(center3);
+        centerOfPixels.add(center4);
+
+        return centerOfPixels;
+    }
+
+   public Point3D findFocalPoint(Point3D pointOnVP){
+       // The distance from the view plane to the focal plane
+       double distance = _focalDistance - _viewPlaneDistance;
+
+       Vector vIJ = pointOnVP.subtract(_p0);
+       Point3D focalPoint = pointOnVP.add(vIJ.normalize().scale(distance));
+
+       return focalPoint;
+   }
+
+
+    public List<Ray> constractRayAdaptivGridDOF(Point3D focalPoint, int depth, int signX, int signY, Point3D pIJ){
+
+
+
+        List<Ray> rays = new LinkedList<>();
+
+        // Ratio (aperture width & height)
+        double axisLength = _apertureRadiusSize / Math.pow(2, depth);
+
+
+        // If the first time, we need the right-up corner
+        if (depth == STARTING_DEPTH) {
+            Point3D pIJ1 = new Point3D( pIJ.getX()+axisLength * signX, pIJ.getY()+axisLength * signY,pIJ.getZ() ); // Right up
+            Vector vIJ1 = focalPoint.subtract(pIJ1);
+            rays.add(new Ray(pIJ1, vIJ1));
+        }
+
+        // If we are in the 2nd quarter, we need the left-down corner
+        if (signX < 0 && signY > 0) {
+            Point3D pIJ3 = new Point3D( pIJ.getX()+axisLength * signX, pIJ.getY()+axisLength * -signY,pIJ.getZ() ); // Left down
+            Vector vIJ3 = focalPoint.subtract(pIJ3);
+            rays.add(new Ray(pIJ3, vIJ3));
+        }
+
+        // If we are in the first quarter (or it's the first time) we need the left-down, left-up and right-down corners too
+        if (signX > 0 && signY > 0) {
+
+            Point3D pIJ2 = new Point3D( pIJ.getX()+axisLength * -signX, pIJ.getY()+axisLength * signY,pIJ.getZ() ); // Left up
+            Vector vIJ2 = focalPoint.subtract(pIJ2);
+            rays.add(new Ray(pIJ2, vIJ2));
+
+            Point3D pIJ3 = new Point3D( pIJ.getX()+axisLength * -signX, pIJ.getY()+axisLength * -signY,pIJ.getZ() ); // Left down
+            Vector vIJ3 = focalPoint.subtract(pIJ3);
+            rays.add(new Ray(pIJ3, vIJ3));
+
+            Point3D pIJ4 = new Point3D( pIJ.getX()+axisLength * signX, pIJ.getY()+axisLength * -signY,pIJ.getZ() ); // Right down
+            Vector vIJ4 = focalPoint.subtract(pIJ4);
+            rays.add(new Ray(pIJ4, vIJ4));
+        }
+
+        // If we are in the 3rd quarter we need the right-down corner
+        if (signX < 0 && signY < 0) {
+            Point3D pIJ4 = new Point3D( pIJ.getX()+axisLength * signX, pIJ.getY()+axisLength * -signY,pIJ.getZ() ); // Right down
+            Vector vIJ4 = focalPoint.subtract(pIJ4);
+            rays.add(new Ray(pIJ4, vIJ4));
+        }
+
+        // return the ray go through the pixel
+        return rays;
+
+    }
+    //-----------------------------------------------------------------------------------------------------
+    //-----------------------------------------------------------------------------------------------------
+    //-----------------------------------------------------------------------------------------------------
+    //-----------------------------------------------------------------------------------------------------
+    //-----------------------------------------------------------------------------------------------------
+    //-----------------------------------------------------------------------------------------------------
 
     /**
      * Generate one ray from the camera's aperture (rematch the starting point to some point on the aperture)

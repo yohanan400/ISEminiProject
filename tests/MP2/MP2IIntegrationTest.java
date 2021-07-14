@@ -23,7 +23,7 @@ public class MP2IIntegrationTest {
         Camera camera = new Camera(new Point3D(0, 0, 1000), new Vector(0, 1, 0), new Vector(0, 0, -1))
                 .setViewPlaneDistance(1000)
                 .setViewPlaneSize(800, 800)
-                .setDOF(false)
+                .setDOF(true)
                 .setApertureRadiusSize(30)
                 .setFocalDistance(new Point3D(0, 0, 1000).distance(new Point3D(-150,0,200)));
 
@@ -132,12 +132,12 @@ public class MP2IIntegrationTest {
 
 
         scene.setAmbientLight(new AmbientLight(new Color(java.awt.Color.blue), 0.15));
-        ImageWriter imageWriter = new ImageWriter("finalPictureSuperSampling", 600, 600);
+        ImageWriter imageWriter = new ImageWriter("finalPicturtest4", 600, 600);
 
 
         Render render = new Render()
-                .setSuperSampling(true)
-//                .setAdaptiveGrid(true)
+//                .setSuperSampling(true)
+                .setAdaptiveGrid(true)
                 .setCamera(camera)
                 .setRayTracerBase(new RayTracerBasic(scene))
                 .setImageWriter(imageWriter)
