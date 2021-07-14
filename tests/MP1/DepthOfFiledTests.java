@@ -17,6 +17,9 @@ import renderer.RayTracerBasic;
 import renderer.Render;
 import scene.Scene;
 
+/**
+ * DOF test class
+ */
 public class DepthOfFiledTests {
 
     private Scene scene = new Scene("Test scene");

@@ -269,6 +269,10 @@ public class Camera {
      *
      * @param nX number of columns (int)
      * @param nY number of rows (int)
+     * @param depth The depth of the recursion
+     * @param signX The X sign of the quarter
+     * @param signY The Y sign of the quarter
+     * @param pIJ The center of the quarter
      * @return List of rays from the lens of the camera to the p(i,j) in the view plane (Ray)
      */
     public List<Ray> constructRayThroughPixelAdaptive(int nX, int nY, int depth, int signX, int signY, Point3D pIJ) {
@@ -330,15 +334,13 @@ public class Camera {
         return rays;
     }
 
-    //-----------------------------------------------------------------------------------------------------
-    //-----------------------------------------------------------------------------------------------------
-    //-----------------------------------------------------------------------------------------------------
-    //-----------------------------------------------------------------------------------------------------
-    //-----------------------------------------------------------------------------------------------------
-    //-----------------------------------------------------------------------------------------------------
 
-
-
+    /**
+     * Find the 4 sub-pixels center of the aperture
+     * @param pIJ The center of the pixel
+     * @param depth The depth of the recursion
+     * @return List of the 4 sub-pixel centers
+     */
     public List<Point3D> centerOfPixelsDOF(Point3D pIJ, int depth) {
 
         List<Point3D> centerOfPixels = new LinkedList<>();
@@ -360,6 +362,11 @@ public class Camera {
         return centerOfPixels;
     }
 
+    /**
+     * Find the point in the focal plane
+     * @param pointOnVP The point of the view plane
+     * @return The 
+     */
    public Point3D findFocalPoint(Point3D pointOnVP){
        // The distance from the view plane to the focal plane
        double distance = _focalDistance - _viewPlaneDistance;

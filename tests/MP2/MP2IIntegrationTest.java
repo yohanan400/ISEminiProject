@@ -14,6 +14,9 @@ import renderer.RayTracerBasic;
 import renderer.Render;
 import scene.Scene;
 
+/**
+ * Mini project 2 integration test class
+ */
 public class MP2IIntegrationTest {
 
 

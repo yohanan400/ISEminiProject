@@ -207,7 +207,7 @@ public class Scene {
     /**
      * Set the light source list of the scene
      *
-     * @param lightSourceList The light source list (List<LightSource>)
+     * @param lightSourceList The light source list to be set
      * @return this (Scene)
      */
     public Scene setLightSourceList(List<LightSource> lightSourceList) {
