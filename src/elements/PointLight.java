@@ -25,7 +25,7 @@ public class PointLight extends Light implements LightSource {
     protected Point3D _position;
 
     /**
-     * The specular attenuation factor, required to ensure that the denominator in getIntensity >𝟏
+     * The specular attenuation factor, required to ensure that the denominator in getIntensity >1
      */
     private double kC = 1d;
 

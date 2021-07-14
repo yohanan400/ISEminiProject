@@ -72,16 +72,16 @@ class PlaneTests {
                 "Ray is parallel to the plane, the ray not included in the plane");
 
         // **** Group: Ray is orthogonal to the plane
-        //TC12: according to 𝑃0, before the plane
+        //TC12: according to p0, before the plane
         assertEquals(List.of(new Point3D(1,1,1)),
                 plane.findIntersections(new Ray(new Point3D(1,1,0), new Vector(0,0,1))),
                 "Ray is orthogonal to the plane, according to p0, before the plane");
 
-        //TC13: according to 𝑃0, in the plane
+        //TC13: according to p0, in the plane
         assertNull(plane.findIntersections(new Ray(new Point3D(1,2,1), new Vector(0,0,1))),
                 "Ray is orthogonal to the plane, according to p0, in the plane");
 
-        //TC14: according to 𝑃0, after the plane
+        //TC14: according to p0, after the plane
         assertNull(plane.findIntersections(new Ray(new Point3D(1,2,2), new Vector(0,0,1))),
                 "Ray is orthogonal to the plane, according to p0, after the plane");
 

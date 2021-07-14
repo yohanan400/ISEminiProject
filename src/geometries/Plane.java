@@ -110,9 +110,9 @@ public class Plane extends Geometry {
 
         // If the ration between the ray points (in general) and the plane points (in general)
         // is bigger then 1, it is a intersection point.
-        // Ray points: 𝑃=𝑃0+𝑡∙𝑣
-        // Plane points: N∙(𝑄0−𝑃)
-        // 𝑡 = ( 𝑁∙(𝑄0−𝑃0) ) / 𝑁∙𝑣
+        // Ray points: p=0+t*v
+        // Plane points: N*(Q0-p)
+        // t = (N*(Q0-P0))/(N*v)
         double numerator = (double) _normal.dotProduct(_p0.subtract(ray.getP0()));
         double denominator = (double) _normal.dotProduct(ray.getDir());
 
