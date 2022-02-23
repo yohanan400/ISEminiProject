@@ -3,30 +3,32 @@
 This project is part of the "introduction to software engineering" course. In this project, we create a little graphical library with the ability to determine the material, its reflection & reflection percentage, and of course its shape.
 
 The shapes: 
-sphere
-plane
-triangle
+sphere,
+plane,
+triangle.
+
+
 [Preparation for cylinder and tube - need to implement the intersections method (findGeoIntersections)]
 
 The elements:
-Camera
-Directional light
-Point light
-Spotlight
-Ambient light
+Camera,
+Directional light,
+Point light,
+Spotlight,
+Ambient light.
 
 The primitives that make up the shapes:
-Coordinate
-Point (3D)
-Ray
-Vector
+Coordinate,
+Point (3D),
+Ray,
+Vector.
 
 Material factors:
-kD - The diffuse attenuation factor
-kS - The specular attenuation factor
-nShininess - The shininess factor
-kT - The transparency attenuation factor
-kR - The refraction attenuation factor
+kD - The diffuse attenuation factor,
+kS - The specular attenuation factor,
+nShininess - The shininess factor,
+kT - The transparency attenuation factor,
+kR - The refraction attenuation factor.
 
 In our project, we implement Ray Tracing, and to improve the performances, we also implement Adaptive Supersampling.
 
